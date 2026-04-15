@@ -309,30 +309,89 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 bg-slate-950">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+      <footer className="bg-slate-950 text-slate-300">
+        <div className="max-w-7xl mx-auto px-6 py-16">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+            {/* Product */}
+            <div>
+              <h4 className="text-white font-bold mb-4">Product</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Home</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Services</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Gallery</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">FAQ</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Contact</a></li>
+              </ul>
+            </div>
+            {/* Products */}
+            <div>
+              <h4 className="text-white font-bold mb-4">Products</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-teal-400 transition-colors">MAXXTECH AI</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">MAXX-XMD Bot</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Media Hub</a></li>
+              </ul>
+            </div>
+            {/* Services */}
+            <div>
+              <h4 className="text-white font-bold mb-4">Services</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Web Design</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Bot Deployment</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">YouTube Boosting</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">TikTok Boosting</a></li>
+              </ul>
+            </div>
+            {/* Tools */}
+            <div>
+              <h4 className="text-white font-bold mb-4">Tools</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Pair Session</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">AI Assistant</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">GitHub</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">WhatsApp Group</a></li>
+              </ul>
+            </div>
+            {/* Company */}
+            <div>
+              <h4 className="text-white font-bold mb-4">Company</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-teal-400 transition-colors">About Us</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Contact Us</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          {/* Legal */}
+          <div className="mt-12 pt-8 border-t border-slate-800">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-4 text-sm">
+                <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" className="hover:text-white transition-colors">Terms</a>
+                <a href="#" className="hover:text-white transition-colors">Cookies</a>
+                <a href="#" className="hover:text-white transition-colors">Refund Policy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Bottom Bar */}
+        <div className="border-t border-slate-800 py-6">
+          <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center">
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
               <span className="text-lg font-bold text-white">Resulta Analytics</span>
             </div>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-4">
-              <p className="text-slate-400 text-sm">
-                © 2025 Resulta Analytics. Made by Carly Maxx. All rights reserved.
-              </p>
-              <div className="flex items-center gap-4 text-sm">
-                <a href="#" className="text-slate-400 hover:text-white transition-colors">Privacy Policy</a>
-                <a href="#" className="text-slate-400 hover:text-white transition-colors">Terms of Service</a>
-                <a href="#" className="text-slate-400 hover:text-white transition-colors">Sitemap</a>
-              </div>
-            </div>
-            <div className="mt-4 pt-4 border-t border-slate-800 text-center">
-              <p className="text-slate-500 text-xs">
-                Powered by <span className="text-teal-400 font-semibold">Vercel</span> • Built with Next.js
-              </p>
-            </div>
+            <p className="text-slate-400 text-sm">
+              © 2026 Resulta Analytics. Made by Carly Maxx. All rights reserved.
+            </p>
+            <p className="text-slate-500 text-sm">
+              Powered by <span className="text-teal-400 font-semibold">MAXX TECH</span>
+            </p>
           </div>
         </div>
       </footer>
