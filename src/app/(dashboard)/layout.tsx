@@ -21,7 +21,10 @@ import {
   BookOpen,
   Contact,
   Info,
-  Tag
+  Tag,
+  BellRing,
+  Calendar,
+  Activity
 } from "lucide-react";
 
 const navItems = [
@@ -32,9 +35,13 @@ const navItems = [
   { href: "/reports", label: "Reports", icon: GraduationCap },
   { href: "/classes", label: "Classes", icon: BookOpen },
   { href: "/students", label: "Students", icon: Users },
+  { href: "/attendance", label: "Attendance", icon: Calendar },
+  { href: "/notifications", label: "Notifications", icon: BellRing },
+  { href: "/activity", label: "Activity Log", icon: Activity },
   { href: "/about", label: "About", icon: Info },
   { href: "/pricing", label: "Pricing", icon: Tag },
   { href: "/contact", label: "Contact", icon: Contact },
+  { href: "/settings", label: "Settings", icon: Settings },
 ];
 
 export default function DashboardLayout({
