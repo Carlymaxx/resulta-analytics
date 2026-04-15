@@ -318,9 +318,21 @@ export default function Home() {
               </div>
               <span className="text-lg font-bold text-white">Resulta Analytics</span>
             </div>
-            <p className="text-slate-400 text-sm">
-              © 2025 Resulta Analytics. Made by Carly Maxx on Vercel. All rights reserved.
-            </p>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-4">
+              <p className="text-slate-400 text-sm">
+                © 2025 Resulta Analytics. Made by Carly Maxx. All rights reserved.
+              </p>
+              <div className="flex items-center gap-4 text-sm">
+                <a href="#" className="text-slate-400 hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" className="text-slate-400 hover:text-white transition-colors">Terms of Service</a>
+                <a href="#" className="text-slate-400 hover:text-white transition-colors">Sitemap</a>
+              </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-slate-800 text-center">
+              <p className="text-slate-500 text-xs">
+                Powered by <span className="text-teal-400 font-semibold">Vercel</span> • Built with Next.js
+              </p>
+            </div>
           </div>
         </div>
       </footer>
