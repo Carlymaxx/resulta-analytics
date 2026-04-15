@@ -221,6 +221,74 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="py-20 px-6 bg-slate-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">What Educators Say</h2>
+            <p className="text-xl text-slate-600">Trusted by schools around the world</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { quote: "Resulta Analytics helped us identify at-risk students 3 months earlier than before. Our intervention programs are now so much more effective!", author: "Mrs. Johnson", role: "Principal, Lincoln High", avatar: "MJ" },
+              { quote: "The predictive analytics are incredibly accurate. We've seen a 40% improvement in student outcomes since implementing the system.", author: "Mr. Smith", role: "Head of Department, Riverside Academy", avatar: "MS" },
+              { quote: "Parents love the transparency. They can now track their child's progress in real-time and we get fewer concerns about grades.", author: "Ms. Davis", role: "School Administrator, Valley School", avatar: "MD" },
+            ].map((testimonial, i) => (
+              <div key={i} className="bg-white p-8 rounded-2xl shadow-lg">
+                <div className="flex gap-1 mb-4">
+                  {[1,2,3,4,5].map((star) => (
+                    <svg key={star} className="w-5 h-5 text-amber-400 fill-amber-400" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-slate-600 mb-6 italic">"{testimonial.quote}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-semibold">
+                    {testimonial.avatar}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-slate-800">{testimonial.author}</div>
+                    <div className="text-sm text-slate-500">{testimonial.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
+            <p className="text-xl text-slate-600">Got questions? We've got answers.</p>
+          </div>
+          <div className="space-y-4">
+            {[
+              { q: "How do I get started?", a: "Sign up for a free trial, import your student data, and start analyzing within minutes. Our support team is here to help you every step of the way." },
+              { q: "Is my data secure?", a: "Absolutely. We use enterprise-grade encryption, are GDPR compliant, and never share your data with third parties. Your data is stored securely on our servers." },
+              { q: "Can I integrate with my existing systems?", a: "Yes! We integrate with most school management systems, SIS platforms, and can import data from Excel, CSV, or Google Sheets." },
+              { q: "Do you offer training and support?", a: "We provide comprehensive onboarding, video tutorials, documentation, and priority email support. Enterprise customers get dedicated support." },
+              { q: "What's the accuracy of your predictions?", a: "Our AI models achieve 95% accuracy in predicting student performance. This improves as you add more historical data." },
+            ].map((faq, i) => (
+              <details key={i} className="group bg-slate-50 rounded-xl p-6 cursor-pointer">
+                <summary className="flex items-center justify-between font-semibold text-slate-800">
+                  <span>{faq.q}</span>
+                  <span className="transition-transform group-open:rotate-180">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </summary>
+                <p className="text-slate-600 mt-4">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 px-6 bg-slate-900">
         <div className="max-w-4xl mx-auto text-center">
