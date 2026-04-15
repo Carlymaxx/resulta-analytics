@@ -251,7 +251,7 @@ export default function Home() {
               <span className="text-lg font-bold text-white">Resulta Analytics</span>
             </div>
             <p className="text-slate-400 text-sm">
-              © 2025 Resulta Analytics. All rights reserved.
+              © 2025 Resulta Analytics. Made by Carly Maxx on Vercel. All rights reserved.
             </p>
           </div>
         </div>
