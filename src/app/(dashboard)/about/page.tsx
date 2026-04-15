@@ -96,7 +96,7 @@ export default function AboutPage() {
             Seeing many students fall through the cracks due to lack of early intervention, she assembled a team of education experts and technologists to build a solution.
           </p>
           <p>
-            Today, we're proud to serve over 500 schools worldwide, helping educators identify at-risk students earlier and provide targeted support that makes a real difference.
+            Today, we&apos;re proud to serve over 500 schools worldwide, helping educators identify at-risk students earlier and provide targeted support that makes a real difference.
           </p>
         </div>
       </div>

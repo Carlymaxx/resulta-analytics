@@ -242,7 +242,7 @@ export default function Home() {
                     </svg>
                   ))}
                 </div>
-                <p className="text-slate-600 mb-6 italic">"{testimonial.quote}"</p>
+                <p className="text-slate-600 mb-6 italic">&quot;{testimonial.quote}&quot;</p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-semibold">
                     {testimonial.avatar}
@@ -263,7 +263,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
-            <p className="text-xl text-slate-600">Got questions? We've got answers.</p>
+            <p className="text-xl text-slate-600">Got questions? We&apos;ve got answers.</p>
           </div>
           <div className="space-y-4">
             {[
