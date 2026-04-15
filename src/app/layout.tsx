@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Resulta Analytics - Academic Results Analysis & Prediction System",
-  description: "Resulta Analytics is a comprehensive academic results analysis and prediction system for schools. Analyze student performance, predict future outcomes, and make data-driven decisions.",
+  description: "Resulta Analytics is a comprehensive academic results analysis and prediction system for schools.",
 };
 
 export default function RootLayout({
