@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import { 
   BarChart3, 
   TrendingUp, 
@@ -50,8 +51,19 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
+
+  const getInitials = (name: string) => {
+    return name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+  };
 
   return (
     <div className={darkMode ? 'dark' : ''}>
@@ -96,19 +108,20 @@ export default function DashboardLayout({
               </button>
               <div className="hidden md:flex items-center gap-3 px-4 py-2 bg-slate-100 dark:bg-slate-700 rounded-lg">
                 <div className="w-8 h-8 rounded-full bg-teal-600 flex items-center justify-center text-white font-semibold text-sm">
-                  TL
+                  {user ? getInitials(user.name) : "U"}
                 </div>
                 <div className="text-sm">
-                  <div className="font-medium text-slate-800 dark:text-white">Teacher Lenn</div>
-                  <div className="text-slate-500 dark:text-slate-400 text-xs">Administrator</div>
+                  <div className="font-medium text-slate-800 dark:text-white">{user?.name || "User"}</div>
+                  <div className="text-slate-500 dark:text-slate-400 text-xs capitalize">{user?.role || "Guest"}</div>
                 </div>
               </div>
-              <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
-                <Settings className="w-5 h-5 text-slate-600 dark:text-slate-300" />
-              </button>
-              <Link href="/" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-red-600">
+              <button 
+                onClick={handleLogout}
+                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-red-600"
+                title="Logout"
+              >
                 <LogOut className="w-5 h-5" />
-              </Link>
+              </button>
             </div>
           </div>
         </header>

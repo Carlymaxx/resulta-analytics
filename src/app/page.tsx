@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import { 
   BarChart3, 
@@ -15,7 +12,6 @@ import {
 } from "lucide-react";
 
 export default function Home() {
-  const [showLogin, setShowLogin] = useState(false);
 
   return (
     <main>
@@ -33,12 +29,12 @@ export default function Home() {
             <a href="#benefits" className="text-slate-600 hover:text-teal-600 transition-colors">Benefits</a>
             <a href="#about" className="text-slate-600 hover:text-teal-600 transition-colors">About</a>
           </nav>
-          <button 
-            onClick={() => setShowLogin(true)}
+          <Link 
+            href="/login"
             className="bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-700 transition-all hover:scale-105"
           >
             Get Started
-          </button>
+          </Link>
         </div>
       </header>
 
@@ -59,13 +55,13 @@ export default function Home() {
                 Transform academic data into actionable insights. Identify at-risk learners early and make data-driven decisions to improve educational outcomes.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button 
-                  onClick={() => setShowLogin(true)}
-                  className="inline-flex items-center justify-center gap-2 bg-teal-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-teal-700 transition-all hover:scale-105"
-                >
-                  Start Free Trial
-                  <ArrowRight className="w-5 h-5" />
-                </button>
+<Link 
+            href="/login"
+            className="inline-flex items-center justify-center gap-2 bg-teal-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-teal-700 transition-all hover:scale-105"
+          >
+            Start Free Trial
+            <ArrowRight className="w-5 h-5" />
+          </Link>
                 <button className="inline-flex items-center justify-center gap-2 bg-white text-teal-600 border-2 border-teal-600 px-8 py-4 rounded-xl font-semibold hover:bg-teal-50 transition-all">
                   Watch Demo
                 </button>
@@ -298,13 +294,13 @@ export default function Home() {
           <p className="text-xl text-slate-300 mb-10">
             Join hundreds of schools already using Resulta Analytics to improve educational outcomes.
           </p>
-          <button 
-            onClick={() => setShowLogin(true)}
+          <Link 
+            href="/login"
             className="inline-flex items-center gap-2 bg-teal-500 text-white px-10 py-4 rounded-xl font-semibold hover:bg-teal-400 transition-all hover:scale-105 text-lg"
           >
             Get Started Free
             <ArrowRight className="w-5 h-5" />
-          </button>
+          </Link>
         </div>
       </section>
 
@@ -340,50 +336,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-
-      {/* Login Modal */}
-      {showLogin && (
-        <div className="modal-overlay" onClick={() => setShowLogin(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-slate-800">Welcome Back</h2>
-              <button 
-                onClick={() => setShowLogin(false)}
-                className="text-slate-400 hover:text-slate-600 text-2xl"
-              >
-                ×
-              </button>
-            </div>
-            <form className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Email</label>
-                <input 
-                  type="email" 
-                  placeholder="teacher@school.edu"
-                  className="input-field"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Password</label>
-                <input 
-                  type="password" 
-                  placeholder="••••••••"
-                  className="input-field"
-                />
-              </div>
-              <button 
-                type="submit"
-                className="btn-primary w-full"
-              >
-                Sign In
-              </button>
-              <p className="text-center text-slate-500 text-sm">
-                Don&apos;t have an account? <span className="text-teal-600 font-medium cursor-pointer">Sign up</span>
-              </p>
-            </form>
-          </div>
-        </div>
-      )}
     </main>
   );
 }
