@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useAuth, EDUCATION_LEVELS, EducationLevel } from "@/context/AuthContext";
-import { GraduationCap, BookOpen, School, ArrowRight, Megaphone, CheckCircle2 } from "lucide-react";
+import { GraduationCap, BookOpen, School, ArrowRight, Megaphone, CheckCircle2, Lock } from "lucide-react";
 
 const LEVEL_META: Record<EducationLevel, { icon: typeof School; accent: string; badge: string; ring: string }> = {
   primary: { icon: BookOpen, accent: "bg-emerald-600", badge: "bg-emerald-100 text-emerald-700", ring: "ring-emerald-500" },
@@ -49,15 +49,14 @@ export default function PortalPage() {
             const meta = LEVEL_META[lvl.value];
             const Icon = meta.icon;
             const isMine = user?.level === lvl.value;
-            return (
-              <Link
-                key={lvl.value}
-                href={`/portal/${lvl.value}`}
-                className={`group bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-all ${isMine ? `ring-2 ${meta.ring}` : ""}`}
-              >
+            // A superadmin can access all areas; everyone else is locked to their own level.
+            const canAccess = user?.role === "superadmin" || isMine;
+
+            const cardInner = (
+              <>
                 <div className="flex items-start justify-between mb-4">
-                  <div className={`w-12 h-12 rounded-xl ${meta.accent} flex items-center justify-center`}>
-                    <Icon className="w-6 h-6 text-white" />
+                  <div className={`w-12 h-12 rounded-xl ${canAccess ? meta.accent : "bg-slate-300"} flex items-center justify-center`}>
+                    {canAccess ? <Icon className="w-6 h-6 text-white" /> : <Lock className="w-6 h-6 text-white" />}
                   </div>
                   {isMine && (
                     <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-teal-100 text-teal-700">
@@ -67,10 +66,34 @@ export default function PortalPage() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-800">{lvl.label}</h3>
                 <p className="text-sm text-slate-500 mt-1">{lvl.description}</p>
-                <div className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-teal-600 group-hover:gap-3 transition-all">
-                  Enter area <ArrowRight className="w-4 h-4" />
-                </div>
+                {canAccess ? (
+                  <div className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-teal-600 group-hover:gap-3 transition-all">
+                    Enter area <ArrowRight className="w-4 h-4" />
+                  </div>
+                ) : (
+                  <div className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-slate-400">
+                    <Lock className="w-4 h-4" /> Locked
+                  </div>
+                )}
+              </>
+            );
+
+            return canAccess ? (
+              <Link
+                key={lvl.value}
+                href={`/portal/${lvl.value}`}
+                className={`group bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-all ${isMine ? `ring-2 ${meta.ring}` : ""}`}
+              >
+                {cardInner}
               </Link>
+            ) : (
+              <div
+                key={lvl.value}
+                title="You can only access your own area"
+                className="bg-slate-50 rounded-2xl p-6 shadow-sm border border-slate-200 opacity-70 cursor-not-allowed"
+              >
+                {cardInner}
+              </div>
             );
           })}
         </div>

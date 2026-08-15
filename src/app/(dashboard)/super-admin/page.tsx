@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Shield, X, Plus, Trash2 } from "lucide-react";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth, getRegisteredUsers, RegisteredUser, EDUCATION_LEVELS } from "@/context/AuthContext";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -58,7 +58,9 @@ const tickets = [
   { id: "TKT005", school: "Thika Road Academy", subject: "Timetable generator crash", priority: "Medium", status: "In Progress", date: "2025-01-11" },
 ];
 
-const tabs = ["Schools", "Revenue", "Packages", "Support Tickets"];
+const tabs = ["Schools", "Registered Users", "Revenue", "Packages", "Support Tickets"];
+
+const levelLabel = (v?: string) => EDUCATION_LEVELS.find((l) => l.value === v)?.label || "—";
 
 export default function SuperAdminPage() {
   const { user } = useAuth();
@@ -66,6 +68,12 @@ export default function SuperAdminPage() {
   const [schools, setSchools] = useState<School[]>(initialSchools);
   const [showAddSchool, setShowAddSchool] = useState(false);
   const [schoolForm, setSchoolForm] = useState({ name: "", city: "", students: "", plan: "Free" });
+  const [registered, setRegistered] = useState<RegisteredUser[]>([]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRegistered(getRegisteredUsers());
+  }, []);
 
   if (user?.role !== "superadmin") {
     return (
@@ -123,9 +131,9 @@ export default function SuperAdminPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
           { label: "Total Schools", value: String(totalSchools), color: "text-teal-600", bg: "bg-teal-50" },
-          { label: "Active Schools", value: String(activeSchools), color: "text-green-600", bg: "bg-green-50" },
-          { label: "Suspended", value: String(suspendedSchools), color: "text-red-600", bg: "bg-red-50" },
-          { label: "Monthly Revenue", value: "KES 2.4M", color: "text-blue-600", bg: "bg-blue-50" },
+          { label: "Registered Users", value: String(registered.length), color: "text-green-600", bg: "bg-green-50" },
+          { label: "Suspended Schools", value: String(suspendedSchools), color: "text-red-600", bg: "bg-red-50" },
+          { label: "Active Schools", value: String(activeSchools), color: "text-blue-600", bg: "bg-blue-50" },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
             <div className={`w-10 h-10 rounded-lg ${s.bg} flex items-center justify-center mb-3`}>
@@ -196,6 +204,59 @@ export default function SuperAdminPage() {
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
                           </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "Registered Users" && (
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-sm text-slate-500">{registered.length} registered accounts (built-in + self sign-ups)</span>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                {[
+                  { label: "Primary", value: registered.filter(u => u.level === "primary").length },
+                  { label: "Junior", value: registered.filter(u => u.level === "junior").length },
+                  { label: "Secondary", value: registered.filter(u => u.level === "secondary").length },
+                  { label: "Self sign-ups", value: registered.filter(u => u.source === "signup").length },
+                ].map(s => (
+                  <div key={s.label} className="bg-slate-50 rounded-lg p-3 text-center">
+                    <div className="text-xs text-slate-500 mb-1">{s.label}</div>
+                    <div className="font-bold text-slate-800">{s.value}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-slate-50">
+                    <tr>
+                      {["Name", "Email", "Role", "Level", "School", "Source"].map(h => (
+                        <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {registered.length === 0 && (
+                      <tr><td colSpan={6} className="px-4 py-12 text-center text-slate-400">No registered users yet.</td></tr>
+                    )}
+                    {registered.map(u => (
+                      <tr key={u.id + u.email} className="hover:bg-slate-50">
+                        <td className="px-4 py-3 text-sm font-medium text-slate-800">{u.name}</td>
+                        <td className="px-4 py-3 text-sm text-slate-600">{u.email}</td>
+                        <td className="px-4 py-3">
+                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 capitalize">{u.role.replace("_", " ")}</span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-slate-600">{levelLabel(u.level)}</td>
+                        <td className="px-4 py-3 text-sm text-slate-600">{u.school || "—"}</td>
+                        <td className="px-4 py-3">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${u.source === "signup" ? "bg-teal-100 text-teal-700" : "bg-slate-100 text-slate-600"}`}>
+                            {u.source === "signup" ? "Sign-up" : "Built-in"}
+                          </span>
                         </td>
                       </tr>
                     ))}

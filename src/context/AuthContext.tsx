@@ -68,6 +68,34 @@ export const ALL_ROLES: { value: UserRole; label: string }[] = [
   { value: "security", label: "Security Officer" },
 ];
 
+export interface RegisteredUser {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  level?: EducationLevel;
+  school?: string;
+  source: "built-in" | "signup";
+}
+
+// Returns all accounts the platform knows about: built-in demo accounts + self-signups.
+export function getRegisteredUsers(): RegisteredUser[] {
+  const builtIn: RegisteredUser[] = MOCK_USERS.map((u) => ({
+    id: u.id, name: u.name, email: u.email, role: u.role, level: u.level, school: u.school, source: "built-in",
+  }));
+  if (typeof window === "undefined") return builtIn;
+  try {
+    const raw = localStorage.getItem("resulta_signups");
+    const signups: MockUser[] = raw ? JSON.parse(raw) : [];
+    const mapped: RegisteredUser[] = signups.map((u) => ({
+      id: u.id, name: u.name, email: u.email, role: u.role, level: u.level, school: u.school, source: "signup",
+    }));
+    return [...builtIn, ...mapped];
+  } catch {
+    return builtIn;
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
