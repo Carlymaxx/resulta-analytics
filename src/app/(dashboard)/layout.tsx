@@ -34,6 +34,7 @@ const navGroups = [
   {
     label: "Examinations",
     items: [
+      { href: "/marks", label: "Marks & Reports", icon: ClipboardList },
       { href: "/results", label: "Results", icon: FileText },
       { href: "/analytics", label: "Analytics", icon: TrendingUp },
       { href: "/predictions", label: "Predictions", icon: Brain },

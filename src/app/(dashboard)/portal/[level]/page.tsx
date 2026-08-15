@@ -4,14 +4,14 @@ import { use } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EDUCATION_LEVELS, EducationLevel } from "@/context/AuthContext";
-import { ArrowLeft, Users, UserCheck, FileText, TrendingUp } from "lucide-react";
+import { ArrowLeft, Users, UserCheck, FileText, TrendingUp, ClipboardList } from "lucide-react";
 
 const VALID: EducationLevel[] = ["primary", "junior", "secondary"];
 
 const QUICK_LINKS = [
   { href: "/students", label: "Students", icon: Users, desc: "Manage learners" },
   { href: "/teachers", label: "Teachers", icon: UserCheck, desc: "Manage staff" },
-  { href: "/results", label: "Results", icon: FileText, desc: "Enter & view results" },
+  { href: "/marks", label: "Marks & Reports", icon: ClipboardList, desc: "Enter marks, print reports & certificates" },
   { href: "/analytics", label: "Analytics", icon: TrendingUp, desc: "Performance trends" },
 ];
 
