@@ -8,7 +8,6 @@ import {
   Clock, 
   Send,
   MessageCircle,
-  Globe,
   ExternalLink
 } from "lucide-react";
 
@@ -22,10 +21,19 @@ const faqs = [
 ];
 
 const contactInfo = [
-  { icon: Mail, label: "Email", value: "support@resultaanalytics.com", desc: "We'll reply within 24 hours" },
-  { icon: Phone, label: "Phone", value: "+1 (555) 123-4567", desc: "Mon-Fri, 9am-6pm EST" },
-  { icon: MapPin, label: "Address", value: "123 Education Lane, Suite 100", desc: "New York, NY 10001" },
-  { icon: Clock, label: "Hours", value: "Monday - Friday", desc: "9:00 AM - 6:00 PM EST" },
+  { icon: Mail, label: "Email", value: "info@maxxtech.co.ke", desc: "We'll reply within 24 hours" },
+  { icon: Phone, label: "Phone", value: "+254 725 979 273", desc: "Mon-Fri, 8:00 AM - 6:00 PM" },
+  { icon: MapPin, label: "Address", value: "Ruiru, Kiambu County", desc: "Kenya" },
+  { icon: Clock, label: "Hours", value: "Mon-Fri: 8AM-6PM · Sat: 9AM-4PM", desc: "Sunday: Closed (24/7 Support Available)" },
+];
+
+const socialLinks = [
+  { label: "WhatsApp", href: "https://wa.me/254725979273" },
+  { label: "YouTube", href: "https://youtube.com/@MaxxTechxmd" },
+  { label: "TikTok", href: "https://tiktok.com/@squillahmaxx" },
+  { label: "Telegram", href: "https://t.me/maxxtechgram" },
+  { label: "X (Twitter)", href: "https://x.com/maxx1470" },
+  { label: "GitHub", href: "https://github.com/Carlymaxx" },
 ];
 
 export default function ContactPage() {
@@ -41,9 +49,9 @@ export default function ContactPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-3xl font-bold text-slate-800 dark:text-white mb-4">Contact Us</h1>
+        <h1 className="text-3xl font-bold text-slate-800 dark:text-white mb-4">Contact Maxx Tech</h1>
         <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Have questions? We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
+          Have a project in mind? Let&apos;s discuss how we can help bring your vision to life. Based in Ruiru, Kenya — serving clients worldwide.
         </p>
       </div>
 
@@ -144,20 +152,20 @@ export default function ContactPage() {
 
             {/* Social Links */}
             <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
-              <div className="font-medium text-slate-800 dark:text-white mb-4">Follow us on</div>
-              <div className="flex gap-3">
-                <a href="#" className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white hover:opacity-80 transition-opacity">
-                  <Globe className="w-5 h-5" />
-                </a>
-                <a href="#" className="w-10 h-10 bg-sky-500 rounded-lg flex items-center justify-center text-white hover:opacity-80 transition-opacity">
-                  <MessageCircle className="w-5 h-5" />
-                </a>
-                <a href="#" className="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center text-white hover:opacity-80 transition-opacity">
-                  <ExternalLink className="w-5 h-5" />
-                </a>
-                <a href="#" className="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center text-white hover:opacity-80 transition-opacity">
-                  <Globe className="w-5 h-5" />
-                </a>
+              <div className="font-medium text-slate-800 dark:text-white mb-4">Connect with us</div>
+              <div className="flex flex-wrap gap-2">
+                {socialLinks.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-700 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-teal-100 dark:hover:bg-teal-900 transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    {s.label}
+                  </a>
+                ))}
               </div>
             </div>
           </div>
