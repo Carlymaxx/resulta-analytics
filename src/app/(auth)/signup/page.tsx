@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { BarChart3, Eye, EyeOff, Loader2, Check } from "lucide-react";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth, EDUCATION_LEVELS, EducationLevel } from "@/context/AuthContext";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -14,6 +14,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("teacher");
+  const [level, setLevel] = useState<EducationLevel>("secondary");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
@@ -42,9 +43,9 @@ export default function SignupPage() {
       return;
     }
 
-    const result = await signup(name, email, password, role);
+    const result = await signup(name, email, password, role, level);
     if (result.success) {
-      router.push("/dashboard");
+      router.push("/portal");
     } else {
       setError(result.error || "Signup failed");
     }
@@ -107,6 +108,20 @@ export default function SignupPage() {
                 <option value="student">Student</option>
                 <option value="parent">Parent</option>
               </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Education Level</label>
+              <select
+                value={level}
+                onChange={(e) => setLevel(e.target.value as EducationLevel)}
+                className="input-field"
+              >
+                {EDUCATION_LEVELS.map((l) => (
+                  <option key={l.value} value={l.value}>{l.label}</option>
+                ))}
+              </select>
+              <p className="text-xs text-slate-400 mt-1">This determines the portal area you land in after signing in.</p>
             </div>
 
             <div>

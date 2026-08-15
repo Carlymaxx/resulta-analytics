@@ -1,37 +1,64 @@
 "use client";
 
 import { useState } from "react";
-import { UserCheck, Plus, Search, X, Eye, Phone, Mail, BookOpen } from "lucide-react";
+import { UserCheck, Plus, Search, X, Eye, Trash2, Phone, Mail, BookOpen } from "lucide-react";
 
-const mockTeachers = [
-  { id: 1, name: "Sarah Wanjiku", empId: "EMP001", subject: "Mathematics", classAssigned: "Form 2", email: "sarah.w@school.edu", phone: "0712-345-001", type: "Full-time", status: "Active", joined: "2019-03-12" },
-  { id: 2, name: "James Otieno", empId: "EMP002", subject: "English", classAssigned: "Form 3", email: "james.o@school.edu", phone: "0712-345-002", type: "Full-time", status: "Active", joined: "2020-01-08" },
-  { id: 3, name: "Grace Muthoni", empId: "EMP003", subject: "Biology", classAssigned: "Form 4", email: "grace.m@school.edu", phone: "0712-345-003", type: "Full-time", status: "Active", joined: "2018-09-01" },
-  { id: 4, name: "Peter Kamau", empId: "EMP004", subject: "Physics", classAssigned: "Form 3", email: "peter.k@school.edu", phone: "0712-345-004", type: "Full-time", status: "On Leave", joined: "2021-02-15" },
-  { id: 5, name: "Joyce Auma", empId: "EMP005", subject: "History", classAssigned: "Form 1", email: "joyce.a@school.edu", phone: "0712-345-005", type: "Part-time", status: "Active", joined: "2022-08-20" },
-  { id: 6, name: "David Kipchoge", empId: "EMP006", subject: "Geography", classAssigned: "Form 2", email: "david.k@school.edu", phone: "0712-345-006", type: "Full-time", status: "Active", joined: "2017-05-10" },
-  { id: 7, name: "Fatuma Hassan", empId: "EMP007", subject: "Kiswahili", classAssigned: "Form 4", email: "fatuma.h@school.edu", phone: "0712-345-007", type: "Full-time", status: "Active", joined: "2020-09-01" },
-  { id: 8, name: "Robert Njoroge", empId: "EMP008", subject: "Computer Studies", classAssigned: "Form 1", email: "robert.n@school.edu", phone: "0712-345-008", type: "Part-time", status: "Active", joined: "2023-01-16" },
-];
+type Teacher = {
+  id: number;
+  name: string;
+  empId: string;
+  subject: string;
+  classAssigned: string;
+  email: string;
+  phone: string;
+  type: string;
+  status: string;
+  joined: string;
+};
 
-type Teacher = typeof mockTeachers[0];
+// No pre-seeded teachers — add your own via the "Add Teacher" button.
+const initialTeachers: Teacher[] = [];
 
 export default function TeachersPage() {
+  const [teachers, setTeachers] = useState<Teacher[]>(initialTeachers);
   const [search, setSearch] = useState("");
   const [showAdd, setShowAdd] = useState(false);
   const [viewTeacher, setViewTeacher] = useState<Teacher | null>(null);
   const [form, setForm] = useState({ name: "", empId: "", email: "", phone: "", subject: "", classAssigned: "", type: "Full-time" });
 
-  const filtered = mockTeachers.filter(t =>
+  const filtered = teachers.filter(t =>
     t.name.toLowerCase().includes(search.toLowerCase()) ||
     t.empId.toLowerCase().includes(search.toLowerCase()) ||
     t.subject.toLowerCase().includes(search.toLowerCase())
   );
 
+  const total = teachers.length;
+  const fullTime = teachers.filter(t => t.type === "Full-time").length;
+  const partTime = teachers.filter(t => t.type === "Part-time").length;
+  const onLeave = teachers.filter(t => t.status === "On Leave").length;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.name.trim()) return;
+    const newTeacher: Teacher = {
+      id: Date.now(),
+      name: form.name,
+      empId: form.empId,
+      subject: form.subject,
+      classAssigned: form.classAssigned,
+      email: form.email,
+      phone: form.phone,
+      type: form.type,
+      status: "Active",
+      joined: new Date().toISOString().slice(0, 10),
+    };
+    setTeachers(prev => [newTeacher, ...prev]);
     setShowAdd(false);
     setForm({ name: "", empId: "", email: "", phone: "", subject: "", classAssigned: "", type: "Full-time" });
+  };
+
+  const handleDelete = (id: number) => {
+    setTeachers(prev => prev.filter(t => t.id !== id));
   };
 
   return (
@@ -49,10 +76,10 @@ export default function TeachersPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Total Teachers", value: "48", color: "text-teal-600", bg: "bg-teal-50" },
-          { label: "Full-time", value: "42", color: "text-blue-600", bg: "bg-blue-50" },
-          { label: "Part-time", value: "6", color: "text-purple-600", bg: "bg-purple-50" },
-          { label: "On Leave", value: "3", color: "text-amber-600", bg: "bg-amber-50" },
+          { label: "Total Teachers", value: String(total), color: "text-teal-600", bg: "bg-teal-50" },
+          { label: "Full-time", value: String(fullTime), color: "text-blue-600", bg: "bg-blue-50" },
+          { label: "Part-time", value: String(partTime), color: "text-purple-600", bg: "bg-purple-50" },
+          { label: "On Leave", value: String(onLeave), color: "text-amber-600", bg: "bg-amber-50" },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
             <div className={`w-10 h-10 rounded-lg ${s.bg} flex items-center justify-center mb-3`}>
@@ -89,6 +116,13 @@ export default function TeachersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
+              {filtered.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="px-4 py-12 text-center text-slate-400">
+                    No teachers yet. Click <span className="font-medium text-teal-600">Add Teacher</span> to create one.
+                  </td>
+                </tr>
+              )}
               {filtered.map(t => (
                 <tr key={t.id} className="hover:bg-slate-50 transition-colors">
                   <td className="px-4 py-3">
@@ -113,9 +147,14 @@ export default function TeachersPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <button onClick={() => setViewTeacher(t)} className="border border-slate-200 text-slate-700 px-3 py-1 rounded-lg hover:bg-slate-50 transition-colors text-xs font-medium flex items-center gap-1">
-                      <Eye className="w-3 h-3" /> View
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => setViewTeacher(t)} className="border border-slate-200 text-slate-700 px-3 py-1 rounded-lg hover:bg-slate-50 transition-colors text-xs font-medium flex items-center gap-1">
+                        <Eye className="w-3 h-3" /> View
+                      </button>
+                      <button onClick={() => handleDelete(t.id)} className="border border-slate-200 text-red-600 px-2 py-1 rounded-lg hover:bg-red-50 transition-colors text-xs font-medium flex items-center gap-1" title="Delete">
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -209,7 +248,7 @@ export default function TeachersPage() {
                   <div key={row.label} className="flex items-center gap-3 text-sm">
                     <row.icon className="w-4 h-4 text-slate-400" />
                     <span className="text-slate-500 w-20">{row.label}:</span>
-                    <span className="text-slate-800 font-medium">{row.value}</span>
+                    <span className="text-slate-800 font-medium">{row.value || "—"}</span>
                   </div>
                 ))}
               </div>

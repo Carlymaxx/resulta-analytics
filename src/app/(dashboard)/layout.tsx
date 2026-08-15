@@ -8,13 +8,14 @@ import {
   BarChart3, TrendingUp, Users, GraduationCap, FileText, Brain, Settings, LogOut,
   Menu, X, Moon, Sun, Bell, Search, BookOpen, Contact, Info, Tag, BellRing, Calendar,
   Activity, UserCheck, BookMarked, Clock, DollarSign, Wallet, CreditCard, Building2,
-  Bus, Package, Heart, Briefcase, MessageSquare, Monitor, ClipboardList, Award, Shield, Library
+  Bus, Package, Heart, Briefcase, MessageSquare, Monitor, ClipboardList, Award, Shield, Library, LayoutGrid
 } from "lucide-react";
 
 const navGroups = [
   {
     label: "Main",
     items: [
+      { href: "/portal", label: "Portal", icon: LayoutGrid },
       { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
       { href: "/activity", label: "Activity Log", icon: Activity },
     ]

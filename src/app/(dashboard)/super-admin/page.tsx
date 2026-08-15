@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Shield, X } from "lucide-react";
+import { Shield, X, Plus, Trash2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { Line } from "react-chartjs-2";
 import {
@@ -17,16 +17,18 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const schools = [
-  { id: 1, name: "Nairobi High School", city: "Nairobi", students: 680, plan: "Pro", status: "Active", joined: "2023-01-15" },
-  { id: 2, name: "Mombasa Academy", city: "Mombasa", students: 450, plan: "Starter", status: "Active", joined: "2023-04-20" },
-  { id: 3, name: "Kisumu Lakeside School", city: "Kisumu", students: 310, plan: "Starter", status: "Active", joined: "2023-07-01" },
-  { id: 4, name: "Nakuru Learning Center", city: "Nakuru", students: 220, plan: "Free", status: "Suspended", joined: "2023-09-10" },
-  { id: 5, name: "Eldoret International", city: "Eldoret", students: 520, plan: "Pro", status: "Active", joined: "2024-01-08" },
-  { id: 6, name: "Thika Road Academy", city: "Nairobi", students: 380, plan: "Starter", status: "Active", joined: "2024-03-22" },
-  { id: 7, name: "Nyeri Hills School", city: "Nyeri", students: 280, plan: "Free", status: "Active", joined: "2024-06-15" },
-  { id: 8, name: "Garissa Model School", city: "Garissa", students: 190, plan: "Starter", status: "Suspended", joined: "2024-08-30" },
-];
+type School = {
+  id: number;
+  name: string;
+  city: string;
+  students: number;
+  plan: string;
+  status: string;
+  joined: string;
+};
+
+// No pre-seeded schools — add your own via the "Add School" button.
+const initialSchools: School[] = [];
 
 const revenueData = {
   labels: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"],
@@ -61,9 +63,9 @@ const tabs = ["Schools", "Revenue", "Packages", "Support Tickets"];
 export default function SuperAdminPage() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("Schools");
-  const [schoolStatuses, setSchoolStatuses] = useState<Record<number, string>>(
-    Object.fromEntries(schools.map(s => [s.id, s.status]))
-  );
+  const [schools, setSchools] = useState<School[]>(initialSchools);
+  const [showAddSchool, setShowAddSchool] = useState(false);
+  const [schoolForm, setSchoolForm] = useState({ name: "", city: "", students: "", plan: "Free" });
 
   if (user?.role !== "superadmin") {
     return (
@@ -80,11 +82,35 @@ export default function SuperAdminPage() {
   }
 
   const toggleSchool = (id: number) => {
-    setSchoolStatuses(prev => ({
-      ...prev,
-      [id]: prev[id] === "Active" ? "Suspended" : "Active"
-    }));
+    setSchools(prev => prev.map(s =>
+      s.id === id ? { ...s, status: s.status === "Active" ? "Suspended" : "Active" } : s
+    ));
   };
+
+  const deleteSchool = (id: number) => {
+    setSchools(prev => prev.filter(s => s.id !== id));
+  };
+
+  const handleAddSchool = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!schoolForm.name.trim()) return;
+    const newSchool: School = {
+      id: Date.now(),
+      name: schoolForm.name,
+      city: schoolForm.city,
+      students: Number(schoolForm.students) || 0,
+      plan: schoolForm.plan,
+      status: "Active",
+      joined: new Date().toISOString().slice(0, 10),
+    };
+    setSchools(prev => [newSchool, ...prev]);
+    setSchoolForm({ name: "", city: "", students: "", plan: "Free" });
+    setShowAddSchool(false);
+  };
+
+  const totalSchools = schools.length;
+  const activeSchools = schools.filter(s => s.status === "Active").length;
+  const suspendedSchools = schools.filter(s => s.status === "Suspended").length;
 
   return (
     <div className="space-y-6">
@@ -96,9 +122,9 @@ export default function SuperAdminPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Total Schools", value: "48", color: "text-teal-600", bg: "bg-teal-50" },
-          { label: "Active Schools", value: "44", color: "text-green-600", bg: "bg-green-50" },
-          { label: "Suspended", value: "2", color: "text-red-600", bg: "bg-red-50" },
+          { label: "Total Schools", value: String(totalSchools), color: "text-teal-600", bg: "bg-teal-50" },
+          { label: "Active Schools", value: String(activeSchools), color: "text-green-600", bg: "bg-green-50" },
+          { label: "Suspended", value: String(suspendedSchools), color: "text-red-600", bg: "bg-red-50" },
           { label: "Monthly Revenue", value: "KES 2.4M", color: "text-blue-600", bg: "bg-blue-50" },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
@@ -125,19 +151,31 @@ export default function SuperAdminPage() {
         </div>
         <div className="p-6">
           {activeTab === "Schools" && (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-slate-50">
-                  <tr>
-                    {["School Name", "City", "Students", "Plan", "Status", "Joined", "Action"].map(h => (
-                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {schools.map(s => {
-                    const currentStatus = schoolStatuses[s.id] || s.status;
-                    return (
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-sm text-slate-500">{schools.length} schools</span>
+                <button onClick={() => setShowAddSchool(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
+                  <Plus className="w-4 h-4" /> Add School
+                </button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-slate-50">
+                    <tr>
+                      {["School Name", "City", "Students", "Plan", "Status", "Joined", "Action"].map(h => (
+                        <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {schools.length === 0 && (
+                      <tr>
+                        <td colSpan={7} className="px-4 py-12 text-center text-slate-400">
+                          No schools yet. Click <span className="font-medium text-teal-600">Add School</span> to create one.
+                        </td>
+                      </tr>
+                    )}
+                    {schools.map(s => (
                       <tr key={s.id} className="hover:bg-slate-50">
                         <td className="px-4 py-3 text-sm font-medium text-slate-800">{s.name}</td>
                         <td className="px-4 py-3 text-sm text-slate-600">{s.city}</td>
@@ -146,19 +184,24 @@ export default function SuperAdminPage() {
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${s.plan === "Pro" ? "bg-teal-100 text-teal-700" : s.plan === "Starter" ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"}`}>{s.plan}</span>
                         </td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${currentStatus === "Active" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>{currentStatus}</span>
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${s.status === "Active" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>{s.status}</span>
                         </td>
                         <td className="px-4 py-3 text-sm text-slate-600">{s.joined}</td>
                         <td className="px-4 py-3">
-                          <button onClick={() => toggleSchool(s.id)} className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${currentStatus === "Active" ? "bg-red-100 text-red-700 hover:bg-red-200" : "bg-green-100 text-green-700 hover:bg-green-200"}`}>
-                            {currentStatus === "Active" ? "Suspend" : "Activate"}
-                          </button>
+                          <div className="flex items-center gap-2">
+                            <button onClick={() => toggleSchool(s.id)} className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${s.status === "Active" ? "bg-red-100 text-red-700 hover:bg-red-200" : "bg-green-100 text-green-700 hover:bg-green-200"}`}>
+                              {s.status === "Active" ? "Suspend" : "Activate"}
+                            </button>
+                            <button onClick={() => deleteSchool(s.id)} className="px-2 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" title="Delete">
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
@@ -237,6 +280,44 @@ export default function SuperAdminPage() {
           )}
         </div>
       </div>
+
+      {/* Add School Modal */}
+      {showAddSchool && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg">
+            <div className="flex items-center justify-between p-6 border-b border-slate-200">
+              <h2 className="text-lg font-semibold text-slate-800">Add New School</h2>
+              <button onClick={() => setShowAddSchool(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5" /></button>
+            </div>
+            <form onSubmit={handleAddSchool} className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">School Name</label>
+                  <input value={schoolForm.name} onChange={e => setSchoolForm({ ...schoolForm, name: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="School name" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">City</label>
+                  <input value={schoolForm.city} onChange={e => setSchoolForm({ ...schoolForm, city: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="City" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Students</label>
+                  <input type="number" min="0" value={schoolForm.students} onChange={e => setSchoolForm({ ...schoolForm, students: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="0" />
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Plan</label>
+                  <select value={schoolForm.plan} onChange={e => setSchoolForm({ ...schoolForm, plan: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                    {["Free", "Starter", "Pro", "Enterprise"].map(p => <option key={p} value={p}>{p}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div className="flex gap-3 pt-2">
+                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex-1">Add School</button>
+                <button type="button" onClick={() => setShowAddSchool(false)} className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
