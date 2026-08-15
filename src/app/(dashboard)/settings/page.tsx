@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { 
   User, 
   Bell, 
@@ -12,9 +13,6 @@ import {
   Save,
   Upload,
   Camera,
-  Mail,
-  Phone,
-  Building,
   Key
 } from "lucide-react";
 
@@ -28,8 +26,16 @@ const tabs = [
 ];
 
 export default function SettingsPage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
   const [saved, setSaved] = useState(false);
+
+  const fullName = user?.name || "Maxx Tech";
+  const nameParts = fullName.split(" ");
+  const firstName = nameParts[0] || "Maxx";
+  const lastName = nameParts.slice(1).join(" ") || "Tech";
+  const initials = fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) || "MT";
+  const roleLabel = user?.role ? user.role.replace("_", " ") : "Administrator";
 
   const handleSave = () => {
     setSaved(true);
@@ -86,15 +92,15 @@ export default function SettingsPage() {
               <div className="flex items-center gap-6 mb-8">
                 <div className="relative">
                   <div className="w-24 h-24 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white text-3xl font-bold">
-                    TL
+                    {initials}
                   </div>
                   <button className="absolute bottom-0 right-0 w-8 h-8 bg-white dark:bg-slate-700 rounded-full border-2 border-slate-200 dark:border-slate-600 flex items-center justify-center">
                     <Camera className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                   </button>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-800 dark:text-white">Teacher Lenn</h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">Administrator</p>
+                  <h3 className="font-semibold text-slate-800 dark:text-white">{fullName}</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 capitalize">{roleLabel}</p>
                   <button className="text-sm text-teal-600 hover:underline mt-1">Change photo</button>
                 </div>
               </div>
@@ -102,23 +108,23 @@ export default function SettingsPage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">First Name</label>
-                  <input type="text" defaultValue="Teacher" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                  <input type="text" key={firstName} defaultValue={firstName} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Last Name</label>
-                  <input type="text" defaultValue="Lenn" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                  <input type="text" key={lastName} defaultValue={lastName} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
-                  <input type="email" defaultValue="teacher@school.edu" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                  <input type="email" key={user?.email} defaultValue={user?.email || "info@maxxtech.co.ke"} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone</label>
-                  <input type="tel" defaultValue="+1 (555) 123-4567" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                  <input type="tel" defaultValue="+254 725 979 273" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">School Name</label>
-                  <input type="text" defaultValue="Lincoln High School" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                  <input type="text" key={user?.school} defaultValue={user?.school || "Maxx Tech"} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Role</label>

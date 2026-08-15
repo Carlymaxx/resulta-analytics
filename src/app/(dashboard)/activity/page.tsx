@@ -18,16 +18,16 @@ import {
 } from "lucide-react";
 
 const activities = [
-  { id: 1, action: "Added new student", details: "John Smith added to Class 9-B", user: "Teacher Lenn", time: "2 minutes ago", icon: User, type: "create" },
-  { id: 2, action: "Updated results", details: "Mathematics scores for Class 10-A", user: "Teacher Lenn", time: "15 minutes ago", icon: FileText, type: "update" },
-  { id: 3, action: "Generated report", details: "Q1 2025 Performance Report", user: "Teacher Lenn", time: "1 hour ago", icon: FileText, type: "export" },
-  { id: 4, action: "Logged in", details: "Successful login from Chrome on Windows", user: "Teacher Lenn", time: "2 hours ago", icon: LogIn, type: "login" },
-  { id: 5, action: "Modified settings", details: "Updated notification preferences", user: "Teacher Lenn", time: "3 hours ago", icon: Settings, type: "update" },
+  { id: 1, action: "Added new student", details: "John Smith added to Class 9-B", user: "Maxx Tech", time: "2 minutes ago", icon: User, type: "create" },
+  { id: 2, action: "Updated results", details: "Mathematics scores for Class 10-A", user: "Maxx Tech", time: "15 minutes ago", icon: FileText, type: "update" },
+  { id: 3, action: "Generated report", details: "Q1 2025 Performance Report", user: "Maxx Tech", time: "1 hour ago", icon: FileText, type: "export" },
+  { id: 4, action: "Logged in", details: "Successful login from Chrome on Windows", user: "Maxx Tech", time: "2 hours ago", icon: LogIn, type: "login" },
+  { id: 5, action: "Modified settings", details: "Updated notification preferences", user: "Maxx Tech", time: "3 hours ago", icon: Settings, type: "update" },
   { id: 6, action: "Imported data", details: "45 student records from spreadsheet", user: "Admin", time: "Yesterday", icon: Upload, type: "import" },
-  { id: 7, action: "Deleted student", details: "Removed Michael Brown from system", user: "Teacher Lenn", time: "Yesterday", icon: Trash2, type: "delete" },
+  { id: 7, action: "Deleted student", details: "Removed Michael Brown from system", user: "Maxx Tech", time: "Yesterday", icon: Trash2, type: "delete" },
   { id: 8, action: "At-risk alert", details: "5 students flagged in Science", user: "System", time: "2 days ago", icon: AlertTriangle, type: "alert" },
   { id: 9, action: "Prediction completed", details: "Monthly performance predictions updated", user: "System", time: "3 days ago", icon: CheckCircle, type: "success" },
-  { id: 10, action: "Logged out", details: "Session ended", user: "Teacher Lenn", time: "3 days ago", icon: LogOut, type: "logout" },
+  { id: 10, action: "Logged out", details: "Session ended", user: "Maxx Tech", time: "3 days ago", icon: LogOut, type: "logout" },
 ];
 
 export default function ActivityLogPage() {
