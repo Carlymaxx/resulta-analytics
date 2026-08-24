@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookMarked, Plus, X } from "lucide-react";
+import { BookMarked, Plus, X, ChevronDown, CheckCircle } from "lucide-react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -12,28 +12,42 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useAuth } from "@/context/AuthContext";
+import { CLASSES_BY_LEVEL, LEVEL_LABELS, SUBJECTS_BY_LEVEL, ASSESSMENT_BY_LEVEL } from "@/lib/grading";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const subjects = [
-  { code: "MAT", name: "Mathematics", type: "Compulsory", teachers: 4, avgScore: 68, students: 480 },
-  { code: "ENG", name: "English", type: "Compulsory", teachers: 3, avgScore: 72, students: 480 },
-  { code: "KIS", name: "Kiswahili", type: "Compulsory", teachers: 3, avgScore: 74, students: 480 },
-  { code: "BIO", name: "Biology", type: "Compulsory", teachers: 3, avgScore: 65, students: 380 },
-  { code: "CHE", name: "Chemistry", type: "Compulsory", teachers: 2, avgScore: 61, students: 380 },
-  { code: "PHY", name: "Physics", type: "Compulsory", teachers: 2, avgScore: 63, students: 380 },
-  { code: "SCI", name: "Integrated Science", type: "Compulsory", teachers: 3, avgScore: 70, students: 420 },
-  { code: "HIS", name: "History", type: "Compulsory", teachers: 2, avgScore: 70, students: 480 },
-  { code: "GEO", name: "Geography", type: "Compulsory", teachers: 2, avgScore: 71, students: 480 },
-  { code: "CRE", name: "Christian Religious Education", type: "Optional", teachers: 2, avgScore: 78, students: 240 },
-  { code: "AGR", name: "Agriculture", type: "Optional", teachers: 2, avgScore: 73, students: 160 },
-  { code: "CAS", name: "Creative Arts and Sports", type: "Optional", teachers: 2, avgScore: 76, students: 200 },
-  { code: "PTS", name: "Pre-Technical Studies", type: "Optional", teachers: 2, avgScore: 69, students: 180 },
-  { code: "CS", name: "Computer Studies", type: "Optional", teachers: 2, avgScore: 76, students: 200 },
-  { code: "BS", name: "Business Studies", type: "Optional", teachers: 2, avgScore: 69, students: 180 },
-  { code: "ART", name: "Art & Design", type: "Optional", teachers: 1, avgScore: 80, students: 120 },
-  { code: "MUS", name: "Music", type: "Optional", teachers: 1, avgScore: 82, students: 100 },
-];
+// Subject metadata: maps subject name to code + type
+// Codes are level-agnostic labels; the same subject name across levels keeps its code
+const SUBJECT_META: Record<string, { code: string; type: "Compulsory" | "Optional" }> = {
+  Mathematics: { code: "MAT", type: "Compulsory" },
+  English: { code: "ENG", type: "Compulsory" },
+  Kiswahili: { code: "KIS", type: "Compulsory" },
+  Science: { code: "SCI", type: "Compulsory" },
+  "Integrated Science": { code: "ISCI", type: "Compulsory" },
+  "Social Studies": { code: "SST", type: "Compulsory" },
+  Biology: { code: "BIO", type: "Compulsory" },
+  Chemistry: { code: "CHE", type: "Compulsory" },
+  Physics: { code: "PHY", type: "Compulsory" },
+  History: { code: "HIS", type: "Compulsory" },
+  Geography: { code: "GEO", type: "Compulsory" },
+  CRE: { code: "CRE", type: "Optional" },
+  "Christian Religious Education": { code: "CRE", type: "Compulsory" },
+  Agriculture: { code: "AGR", type: "Optional" },
+  "Creative Arts and Sports": { code: "CAS", type: "Optional" },
+  "Pre-Technical Studies": { code: "PTS", type: "Optional" },
+  "Computer Studies": { code: "CS", type: "Optional" },
+  Commerce: { code: "COM", type: "Optional" },
+  Literature: { code: "LIT", type: "Optional" },
+  "Creative Arts": { code: "CAR", type: "Optional" },
+  "Pre-Primary Activities": { code: "PPA", type: "Optional" },
+  "Physical Education": { code: "PE", type: "Optional" },
+  "Religious Education": { code: "RE", type: "Compulsory" },
+  "Home Science": { code: "HS", type: "Optional" },
+  "Business Studies": { code: "BS", type: "Optional" },
+  "Art & Design": { code: "ART", type: "Optional" },
+  Music: { code: "MUS", type: "Optional" },
+};
 
 const colorMap: Record<string, string> = {
   MAT: "bg-blue-100 text-blue-700",
@@ -43,6 +57,7 @@ const colorMap: Record<string, string> = {
   CHE: "bg-purple-100 text-purple-700",
   PHY: "bg-indigo-100 text-indigo-700",
   SCI: "bg-cyan-100 text-cyan-700",
+  ISCI: "bg-cyan-100 text-cyan-700",
   HIS: "bg-amber-100 text-amber-700",
   GEO: "bg-orange-100 text-orange-700",
   CRE: "bg-rose-100 text-rose-700",
@@ -50,21 +65,48 @@ const colorMap: Record<string, string> = {
   CAS: "bg-fuchsia-100 text-fuchsia-700",
   PTS: "bg-yellow-100 text-yellow-700",
   CS: "bg-sky-100 text-sky-700",
+  COM: "bg-yellow-100 text-yellow-700",
+  LIT: "bg-pink-100 text-pink-700",
+  CAR: "bg-fuchsia-100 text-fuchsia-700",
+  PPA: "bg-lime-100 text-lime-700",
+  PE: "bg-green-100 text-green-700",
+  RE: "bg-rose-100 text-rose-700",
+  HS: "bg-orange-100 text-orange-700",
   BS: "bg-yellow-100 text-yellow-700",
   ART: "bg-pink-100 text-pink-700",
   MUS: "bg-violet-100 text-violet-700",
+  SST: "bg-amber-100 text-amber-700",
 };
 
 export default function SubjectsPage() {
+  const { currentLevel, setCurrentLevel } = useAuth();
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ name: "", code: "", type: "Compulsory" });
+  const [showLevelDropdown, setShowLevelDropdown] = useState(false);
+
+  const levelSubjects = SUBJECTS_BY_LEVEL[currentLevel] || SUBJECTS_BY_LEVEL.junior;
+  const levelLabels = LEVEL_LABELS[currentLevel];
+
+  // Build the subjects display array from level-specific list + metadata
+  const subjectsWithMeta = levelSubjects.map((name, idx) => {
+    const meta = SUBJECT_META[name] || { code: name.substring(0, 3).toUpperCase(), type: "Compulsory" as const };
+    return {
+      id: idx,
+      code: meta.code,
+      name,
+      type: meta.type,
+      teachers: 2,
+      avgScore: 65 + (idx % 5) * 3,
+      students: 120 + idx * 20,
+    };
+  });
 
   const chartData = {
-    labels: subjects.map(s => s.code),
+    labels: subjectsWithMeta.map(s => s.code),
     datasets: [
       {
         label: "Average Score (%)",
-        data: subjects.map(s => s.avgScore),
+        data: subjectsWithMeta.map(s => s.avgScore),
         backgroundColor: "rgba(20, 184, 166, 0.7)",
         borderColor: "rgb(20, 184, 166)",
         borderWidth: 1,
@@ -96,19 +138,52 @@ export default function SubjectsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Subjects</h1>
-          <p className="text-slate-500 text-sm mt-1">Manage school curriculum subjects</p>
+          <p className="text-slate-500 text-sm mt-1">{levelLabels.description} — {levelSubjects.length} subjects</p>
         </div>
-        <button onClick={() => setShowAdd(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
-          <Plus className="w-4 h-4" /> Add Subject
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowLevelDropdown(!showLevelDropdown)}
+              className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white text-sm hover:bg-slate-50 dark:hover:bg-slate-600 transition-all"
+            >
+              {levelLabels.short}
+              <ChevronDown className="w-4 h-4" />
+            </button>
+            {showLevelDropdown && (
+              <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 z-20">
+                <div className="py-1">
+                  {Object.entries(LEVEL_LABELS).map(([key, labels]) => (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        setCurrentLevel(key as any);
+                        setShowLevelDropdown(false);
+                      }}
+                      className={`w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-slate-50 dark:hover:bg-slate-700 ${
+                        currentLevel === key ? "bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300 font-medium" : "text-slate-700 dark:text-slate-300"
+                      }`}
+                    >
+                      {currentLevel === key && <CheckCircle className="w-4 h-4 text-teal-600 dark:text-teal-400" />}
+                      <span>{labels.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <button onClick={() => setShowAdd(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
+            <Plus className="w-4 h-4" /> Add Subject
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: "Total Subjects", value: "17", color: "text-teal-600", bg: "bg-teal-50" },
-          { label: "Compulsory", value: "9", color: "text-blue-600", bg: "bg-blue-50" },
-          { label: "Optional", value: "8", color: "text-purple-600", bg: "bg-purple-50" },
+          { label: "Total Subjects", value: subjectsWithMeta.length, color: "text-teal-600", bg: "bg-teal-50" },
+          { label: "Compulsory", value: subjectsWithMeta.filter(s => s.type === "Compulsory").length, color: "text-blue-600", bg: "bg-blue-50" },
+          { label: "Optional", value: subjectsWithMeta.filter(s => s.type === "Optional").length, color: "text-purple-600", bg: "bg-purple-50" },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
             <div className={`w-10 h-10 rounded-lg ${s.bg} flex items-center justify-center mb-3`}>
@@ -130,7 +205,7 @@ export default function SubjectsPage() {
 
       {/* Subject Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {subjects.map(s => (
+        {subjectsWithMeta.map(s => (
           <div key={s.code} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
             <div className="flex items-start justify-between mb-3">
               <span className={`px-2 py-1 rounded-lg text-xs font-bold ${colorMap[s.code]}`}>{s.code}</span>
