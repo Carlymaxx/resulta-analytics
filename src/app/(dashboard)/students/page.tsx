@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { CLASSES } from "@/lib/grading";
 import {
   Search,
   Plus,
@@ -38,7 +39,7 @@ type Student = {
 
 const initialStudents: Student[] = [];
 
-const classes = ["Form 1A", "Form 1B", "Form 2A", "Form 2B", "Form 3A", "Form 3B", "Form 4A", "Form 4B"];
+const classes = CLASSES;
 
 const emptyForm = {
   admNo: "",
@@ -46,7 +47,7 @@ const emptyForm = {
   lastName: "",
   gender: "Male",
   dob: "",
-  class: "Form 1A",
+  class: "Grade 7",
   guardianName: "",
   guardianPhone: "",
   address: "",

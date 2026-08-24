@@ -19,15 +19,18 @@ const subjects = [
   { code: "MAT", name: "Mathematics", type: "Compulsory", teachers: 4, avgScore: 68, students: 480 },
   { code: "ENG", name: "English", type: "Compulsory", teachers: 3, avgScore: 72, students: 480 },
   { code: "KIS", name: "Kiswahili", type: "Compulsory", teachers: 3, avgScore: 74, students: 480 },
-  { code: "BIO", name: "Biology", type: "Compulsory", teachers: 3, avgScore: 65, students: 480 },
+  { code: "BIO", name: "Biology", type: "Compulsory", teachers: 3, avgScore: 65, students: 380 },
   { code: "CHE", name: "Chemistry", type: "Compulsory", teachers: 2, avgScore: 61, students: 380 },
   { code: "PHY", name: "Physics", type: "Compulsory", teachers: 2, avgScore: 63, students: 380 },
+  { code: "SCI", name: "Integrated Science", type: "Compulsory", teachers: 3, avgScore: 70, students: 420 },
   { code: "HIS", name: "History", type: "Compulsory", teachers: 2, avgScore: 70, students: 480 },
   { code: "GEO", name: "Geography", type: "Compulsory", teachers: 2, avgScore: 71, students: 480 },
-  { code: "CRE", name: "CRE", type: "Optional", teachers: 2, avgScore: 78, students: 240 },
+  { code: "CRE", name: "Christian Religious Education", type: "Optional", teachers: 2, avgScore: 78, students: 240 },
+  { code: "AGR", name: "Agriculture", type: "Optional", teachers: 2, avgScore: 73, students: 160 },
+  { code: "CAS", name: "Creative Arts and Sports", type: "Optional", teachers: 2, avgScore: 76, students: 200 },
+  { code: "PTS", name: "Pre-Technical Studies", type: "Optional", teachers: 2, avgScore: 69, students: 180 },
   { code: "CS", name: "Computer Studies", type: "Optional", teachers: 2, avgScore: 76, students: 200 },
   { code: "BS", name: "Business Studies", type: "Optional", teachers: 2, avgScore: 69, students: 180 },
-  { code: "AGR", name: "Agriculture", type: "Optional", teachers: 2, avgScore: 73, students: 160 },
   { code: "ART", name: "Art & Design", type: "Optional", teachers: 1, avgScore: 80, students: 120 },
   { code: "MUS", name: "Music", type: "Optional", teachers: 1, avgScore: 82, students: 100 },
 ];
@@ -39,12 +42,15 @@ const colorMap: Record<string, string> = {
   BIO: "bg-emerald-100 text-emerald-700",
   CHE: "bg-purple-100 text-purple-700",
   PHY: "bg-indigo-100 text-indigo-700",
+  SCI: "bg-cyan-100 text-cyan-700",
   HIS: "bg-amber-100 text-amber-700",
   GEO: "bg-orange-100 text-orange-700",
   CRE: "bg-rose-100 text-rose-700",
-  CS: "bg-cyan-100 text-cyan-700",
-  BS: "bg-yellow-100 text-yellow-700",
   AGR: "bg-lime-100 text-lime-700",
+  CAS: "bg-fuchsia-100 text-fuchsia-700",
+  PTS: "bg-yellow-100 text-yellow-700",
+  CS: "bg-sky-100 text-sky-700",
+  BS: "bg-yellow-100 text-yellow-700",
   ART: "bg-pink-100 text-pink-700",
   MUS: "bg-violet-100 text-violet-700",
 };
@@ -100,9 +106,9 @@ export default function SubjectsPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: "Total Subjects", value: "14", color: "text-teal-600", bg: "bg-teal-50" },
-          { label: "Compulsory", value: "8", color: "text-blue-600", bg: "bg-blue-50" },
-          { label: "Optional", value: "6", color: "text-purple-600", bg: "bg-purple-50" },
+          { label: "Total Subjects", value: "17", color: "text-teal-600", bg: "bg-teal-50" },
+          { label: "Compulsory", value: "9", color: "text-blue-600", bg: "bg-blue-50" },
+          { label: "Optional", value: "8", color: "text-purple-600", bg: "bg-purple-50" },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
             <div className={`w-10 h-10 rounded-lg ${s.bg} flex items-center justify-center mb-3`}>

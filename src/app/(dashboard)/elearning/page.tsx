@@ -22,7 +22,7 @@ const assignments = [
 ];
 
 const notes = [
-  { title: "Form 3 Mathematics Notes - Term 2", subject: "Mathematics", uploadedBy: "Sarah Wanjiku", date: "Nov 25, 2025", size: "2.4 MB", type: "PDF" },
+  { title: "Grade 8 Mathematics Notes - Term 2", subject: "Mathematics", uploadedBy: "Sarah Wanjiku", date: "Nov 25, 2025", size: "2.4 MB", type: "PDF" },
   { title: "English Grammar Reference Guide", subject: "English", uploadedBy: "James Otieno", date: "Nov 20, 2025", size: "1.8 MB", type: "PDF" },
   { title: "Biology Diagrams - Chapter 5", subject: "Biology", uploadedBy: "Grace Muthoni", date: "Nov 18, 2025", size: "4.2 MB", type: "PDF" },
   { title: "Physics Formula Sheet", subject: "Physics", uploadedBy: "Peter Kamau", date: "Nov 15, 2025", size: "0.8 MB", type: "PDF" },

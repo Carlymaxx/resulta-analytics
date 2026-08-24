@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { Clock, Printer, RefreshCw } from "lucide-react";
+import { CLASSES } from "@/lib/grading";
 
-const classes = ["Form 1A", "Form 1B", "Form 2A", "Form 2B", "Form 3A", "Form 3B", "Form 4A", "Form 4B"];
+const classes = CLASSES;
 
 const periods = [
   { label: "Period 1", time: "8:00 – 8:40" },
@@ -23,48 +24,46 @@ type SlotKey = string;
 type SlotData = { subject: string; teacher: string };
 type TimetableData = Record<SlotKey, SlotData>;
 
-const form2ATimetable: TimetableData = {
+const grade7Timetable: TimetableData = {
   "Monday-0": { subject: "Mathematics", teacher: "S. Wanjiku" },
   "Monday-1": { subject: "English", teacher: "J. Otieno" },
-  "Monday-2": { subject: "Biology", teacher: "G. Muthoni" },
-  "Monday-4": { subject: "Physics", teacher: "P. Kamau" },
-  "Monday-5": { subject: "History", teacher: "J. Auma" },
-  "Monday-7": { subject: "Geography", teacher: "D. Kipchoge" },
-  "Monday-8": { subject: "Kiswahili", teacher: "F. Hassan" },
+  "Monday-2": { subject: "Integrated Science", teacher: "G. Muthoni" },
+  "Monday-4": { subject: "Social Studies", teacher: "P. Kamau" },
+  "Monday-5": { subject: "Kiswahili", teacher: "F. Hassan" },
+  "Monday-7": { subject: "Creative Arts and Sports", teacher: "D. Kipchoge" },
   "Tuesday-0": { subject: "English", teacher: "J. Otieno" },
   "Tuesday-1": { subject: "Mathematics", teacher: "S. Wanjiku" },
-  "Tuesday-2": { subject: "Chemistry", teacher: "G. Muthoni" },
+  "Tuesday-2": { subject: "Integrated Science", teacher: "G. Muthoni" },
   "Tuesday-4": { subject: "Kiswahili", teacher: "F. Hassan" },
-  "Tuesday-5": { subject: "Computer Studies", teacher: "R. Njoroge" },
-  "Tuesday-7": { subject: "Physics", teacher: "P. Kamau" },
-  "Tuesday-8": { subject: "Biology", teacher: "G. Muthoni" },
+  "Tuesday-5": { subject: "Pre-Technical Studies", teacher: "R. Njoroge" },
+  "Tuesday-7": { subject: "Agriculture", teacher: "P. Kamau" },
   "Wednesday-0": { subject: "Mathematics", teacher: "S. Wanjiku" },
-  "Wednesday-1": { subject: "Geography", teacher: "D. Kipchoge" },
+  "Wednesday-1": { subject: "Social Studies", teacher: "D. Kipchoge" },
   "Wednesday-2": { subject: "History", teacher: "J. Auma" },
   "Wednesday-4": { subject: "English", teacher: "J. Otieno" },
   "Wednesday-5": { subject: "Mathematics", teacher: "S. Wanjiku" },
   "Wednesday-7": { subject: "CRE", teacher: "J. Auma" },
-  "Wednesday-8": { subject: "Computer Studies", teacher: "R. Njoroge" },
-  "Thursday-0": { subject: "Biology", teacher: "G. Muthoni" },
-  "Thursday-1": { subject: "Chemistry", teacher: "G. Muthoni" },
-  "Thursday-2": { subject: "Physics", teacher: "P. Kamau" },
+  "Wednesday-8": { subject: "Pre-Technical Studies", teacher: "R. Njoroge" },
+  "Thursday-0": { subject: "Integrated Science", teacher: "G. Muthoni" },
+  "Thursday-1": { subject: "Agriculture", teacher: "G. Muthoni" },
+  "Thursday-2": { subject: "Social Studies", teacher: "P. Kamau" },
   "Thursday-4": { subject: "Mathematics", teacher: "S. Wanjiku" },
   "Thursday-5": { subject: "English", teacher: "J. Otieno" },
   "Thursday-7": { subject: "Kiswahili", teacher: "F. Hassan" },
   "Thursday-8": { subject: "History", teacher: "J. Auma" },
   "Friday-0": { subject: "Kiswahili", teacher: "F. Hassan" },
-  "Friday-1": { subject: "Biology", teacher: "G. Muthoni" },
+  "Friday-1": { subject: "Integrated Science", teacher: "G. Muthoni" },
   "Friday-2": { subject: "Mathematics", teacher: "S. Wanjiku" },
-  "Friday-4": { subject: "Geography", teacher: "D. Kipchoge" },
-  "Friday-5": { subject: "Computer Studies", teacher: "R. Njoroge" },
+  "Friday-4": { subject: "Social Studies", teacher: "D. Kipchoge" },
+  "Friday-5": { subject: "Pre-Technical Studies", teacher: "R. Njoroge" },
   "Friday-7": { subject: "English", teacher: "J. Otieno" },
-  "Friday-8": { subject: "Physics", teacher: "P. Kamau" },
+  "Friday-8": { subject: "Social Studies", teacher: "P. Kamau" },
 };
 
 export default function TimetablePage() {
-  const [selectedClass, setSelectedClass] = useState("Form 2A");
+  const [selectedClass, setSelectedClass] = useState("Grade 7");
 
-  const timetable = selectedClass === "Form 2A" ? form2ATimetable : {};
+  const timetable = selectedClass === "Grade 7" ? grade7Timetable : {};
 
   return (
     <div className="space-y-6">

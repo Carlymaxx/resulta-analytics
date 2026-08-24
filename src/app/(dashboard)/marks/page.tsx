@@ -8,10 +8,11 @@ import {
 import {
   StudentRecord, SubjectMark, loadRecords, saveRecords,
   totalScore, averageScore, meanGrade, getGrade, computePositions,
+  CLASSES, SUBJECTS_BY_LEVEL,
 } from "@/lib/grading";
 
-const DEFAULT_SUBJECTS = ["Mathematics", "English", "Kiswahili", "Science", "Social Studies"];
 const TERMS = ["Term 1", "Term 2", "Term 3"];
+const CLASS_OPTIONS = ["All Classes", ...CLASSES];
 
 type ViewDoc =
   | { kind: "report"; record: StudentRecord }
@@ -29,12 +30,15 @@ export default function MarksPage() {
   // form state
   const [name, setName] = useState("");
   const [admNo, setAdmNo] = useState("");
-  const [className, setClassName] = useState("");
+  const [className, setClassName] = useState("Grade 7");
   const [term, setTerm] = useState("Term 1");
   const [year, setYear] = useState(String(new Date().getFullYear()));
+  const levelKey = user?.level || "secondary";
+  const levelSubjects = SUBJECTS_BY_LEVEL[levelKey] || SUBJECTS_BY_LEVEL.secondary;
   const [marks, setMarks] = useState<SubjectMark[]>(
-    DEFAULT_SUBJECTS.map((s) => ({ subject: s, score: 0 }))
+    levelSubjects.map((s) => ({ subject: s, score: 0 }))
   );
+  const [selectedClass, setSelectedClass] = useState<string>("All Classes");
 
   useEffect(() => {
     setRecords(loadRecords());
@@ -62,10 +66,14 @@ export default function MarksPage() {
   const classSize = (r: StudentRecord) =>
     records.filter((x) => x.className === r.className && x.term === r.term && x.year === r.year).length;
 
+  const filteredRecords = selectedClass === "All Classes"
+    ? records
+    : records.filter((r) => r.className === selectedClass);
+
   const resetForm = () => {
-    setName(""); setAdmNo(""); setClassName(""); setTerm("Term 1");
+    setName(""); setAdmNo(""); setClassName("Grade 7"); setTerm("Term 1");
     setYear(String(new Date().getFullYear()));
-    setMarks(DEFAULT_SUBJECTS.map((s) => ({ subject: s, score: 0 })));
+    setMarks(levelSubjects.map((s) => ({ subject: s, score: 0 })));
   };
 
   const handleAddSubjectRow = () => setMarks((m) => [...m, { subject: "", score: 0 }]);
@@ -113,22 +121,36 @@ export default function MarksPage() {
         </button>
       </div>
 
+      {/* Class Filter */}
+      <div className="flex items-center gap-3 no-print">
+        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Filter by Class:</label>
+        <select
+          value={selectedClass}
+          onChange={(e) => setSelectedClass(e.target.value)}
+          className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+        >
+          {CLASS_OPTIONS.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+      </div>
+
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 no-print">
         {[
-          { label: "Records", value: String(records.length), icon: ClipboardList },
-          { label: "Classes", value: String(new Set(records.map((r) => r.className)).size), icon: FileText },
+          { label: "Records", value: String(filteredRecords.length), icon: ClipboardList },
+          { label: "Classes", value: String(new Set(filteredRecords.map((r) => r.className)).size), icon: FileText },
           {
             label: "Avg Score",
-            value: records.length
-              ? `${(records.reduce((a, r) => a + averageScore(r.marks), 0) / records.length).toFixed(1)}%`
+            value: filteredRecords.length
+              ? `${(filteredRecords.reduce((a, r) => a + averageScore(r.marks), 0) / filteredRecords.length).toFixed(1)}%`
               : "—",
             icon: FileText,
           },
           {
             label: "Top Score",
-            value: records.length
-              ? `${Math.max(...records.map((r) => averageScore(r.marks))).toFixed(1)}%`
+            value: filteredRecords.length
+              ? `${Math.max(...filteredRecords.map((r) => averageScore(r.marks))).toFixed(1)}%`
               : "—",
             icon: Award,
           },
@@ -155,14 +177,14 @@ export default function MarksPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
-              {records.length === 0 && (
+              {filteredRecords.length === 0 && (
                 <tr>
                   <td colSpan={9} className="py-12 text-center text-slate-400">
                     No marks yet. Click <span className="font-medium text-teal-600">Enter Marks</span> to add a student&apos;s results.
                   </td>
                 </tr>
               )}
-              {records.map((r) => {
+              {filteredRecords.map((r) => {
                 const avg = averageScore(r.marks);
                 const mg = meanGrade(r.marks);
                 return (
@@ -220,7 +242,11 @@ export default function MarksPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Class</label>
-                  <input value={className} onChange={(e) => setClassName(e.target.value)} placeholder="e.g. Form 2 / Grade 6" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                  <select value={className} onChange={(e) => setClassName(e.target.value)} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    {CLASSES.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>

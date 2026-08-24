@@ -15,14 +15,14 @@ const allergyColors: Record<string, string> = {
 };
 
 const healthRecords = [
-  { id: 1, name: "Alice Wanjiru", class: "Form 3A", bloodGroup: "A+", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-10" },
-  { id: 2, name: "Brian Otieno", class: "Form 2B", bloodGroup: "O+", allergies: ["Penicillin"], conditions: "Mild asthma", lastCheckup: "2025-01-08" },
-  { id: 3, name: "Christine Mwangi", class: "Form 4A", bloodGroup: "B+", allergies: ["Peanuts"], conditions: "None", lastCheckup: "2025-01-05" },
-  { id: 4, name: "Dennis Kamau", class: "Form 1A", bloodGroup: "AB+", allergies: ["Dust", "Pollen"], conditions: "Allergic rhinitis", lastCheckup: "2025-01-12" },
-  { id: 5, name: "Esther Njeri", class: "Form 3B", bloodGroup: "A-", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-07" },
-  { id: 6, name: "Frank Odhiambo", class: "Form 2A", bloodGroup: "O-", allergies: ["Latex"], conditions: "Eczema", lastCheckup: "2024-12-20" },
-  { id: 7, name: "Gloria Adhiambo", class: "Form 1B", bloodGroup: "B-", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-14" },
-  { id: 8, name: "Hassan Abdi", class: "Form 4B", bloodGroup: "A+", allergies: ["Shellfish"], conditions: "None", lastCheckup: "2025-01-09" },
+  { id: 1, name: "Alice Wanjiru", class: "Grade 8", bloodGroup: "A+", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-10" },
+  { id: 2, name: "Brian Otieno", class: "Grade 7", bloodGroup: "O+", allergies: ["Penicillin"], conditions: "Mild asthma", lastCheckup: "2025-01-08" },
+  { id: 3, name: "Christine Mwangi", class: "Grade 9", bloodGroup: "B+", allergies: ["Peanuts"], conditions: "None", lastCheckup: "2025-01-05" },
+  { id: 4, name: "Dennis Kamau", class: "Grade 7", bloodGroup: "AB+", allergies: ["Dust", "Pollen"], conditions: "Allergic rhinitis", lastCheckup: "2025-01-12" },
+  { id: 5, name: "Esther Njeri", class: "Grade 8", bloodGroup: "A-", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-07" },
+  { id: 6, name: "Frank Odhiambo", class: "Grade 7", bloodGroup: "O-", allergies: ["Latex"], conditions: "Eczema", lastCheckup: "2024-12-20" },
+  { id: 7, name: "Gloria Adhiambo", class: "Grade 8", bloodGroup: "B-", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-14" },
+  { id: 8, name: "Hassan Abdi", class: "Grade 9", bloodGroup: "A+", allergies: ["Shellfish"], conditions: "None", lastCheckup: "2025-01-09" },
 ];
 
 const clinicVisits = [

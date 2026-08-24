@@ -18,6 +18,31 @@ export type StudentRecord = {
 
 export type GradeInfo = { grade: string; points: number; remark: string };
 
+// Available classes for Junior School (Grades 7–9 only)
+export const CLASSES: string[] = ["Grade 7", "Grade 8", "Grade 9"];
+
+// Subjects per education level.
+// Junior School replaces standalone "Science" with "Integrated Science" and
+// adds Agriculture, Creative Arts and Sports, Pre-Technical Studies, and
+// Christian Religious Education.
+export const SUBJECTS_BY_LEVEL: Record<string, string[]> = {
+  primary: [
+    "Mathematics", "English", "Kiswahili", "Science", "Social Studies",
+  ],
+  junior: [
+    "Mathematics", "English", "Kiswahili", "Integrated Science", "Social Studies",
+    "Agriculture", "Creative Arts and Sports", "Pre-Technical Studies",
+    "Christian Religious Education",
+  ],
+  secondary: [
+    "Mathematics", "English", "Kiswahili", "Biology", "Chemistry", "Physics",
+    "History", "Geography", "CRE", "Computer Studies",
+  ],
+  other: [
+    "Mathematics", "English", "Kiswahili", "Science", "Social Studies",
+  ],
+};
+
 // KCSE-style 12-point grading (works well for secondary; reasonable for all levels)
 export function getGrade(score: number): GradeInfo {
   if (score >= 80) return { grade: "A", points: 12, remark: "Excellent" };

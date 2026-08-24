@@ -14,16 +14,16 @@ export default function CommunicationPage() {
   const [showCompose, setShowCompose] = useState(false);
 
   const messages = [
-    { from: "Dr. Mary Wanjiku", role: "Principal", preview: "Please ensure all Form 4 teachers submit their...", time: "10:23 AM", unread: true, full: "Please ensure all Form 4 teachers submit their mid-term assessment reports by Friday. This is critical for the Board meeting next Monday." },
+    { from: "Dr. Mary Wanjiku", role: "Principal", preview: "Please ensure all Grade 9 teachers submit their...", time: "10:23 AM", unread: true, full: "Please ensure all Grade 9 teachers submit their mid-term assessment reports by Friday. This is critical for the Board meeting next Monday." },
     { from: "James Otieno", role: "Accountant", preview: "The fee payment deadline has been extended to...", time: "9:45 AM", unread: true, full: "The fee payment deadline has been extended to January 15th. Please communicate this to all parents and guardians." },
-    { from: "Sarah Wanjiku", role: "Teacher", preview: "I wanted to flag that 3 students in Form 2A...", time: "Yesterday", unread: false, full: "I wanted to flag that 3 students in Form 2A have been consistently absent on Mondays. We may need to follow up with their parents." },
+    { from: "Sarah Wanjiku", role: "Teacher", preview: "I wanted to flag that 3 students in Grade 8...", time: "Yesterday", unread: false, full: "I wanted to flag that 3 students in Grade 8 have been consistently absent on Mondays. We may need to follow up with their parents." },
     { from: "Transport Manager", role: "Transport", preview: "Route Kikuyu will be running 20 minutes late...", time: "Yesterday", unread: false, full: "Route Kikuyu will be running 20 minutes late this week due to road construction at Uthiru junction. Please inform affected students and parents." },
     { from: "Head Librarian", role: "Library", preview: "Reminder: 12 students have overdue books...", time: "2 days ago", unread: false, full: "Reminder: 12 students have overdue library books. Fines are accumulating daily. Please help us communicate this to the students listed in the attached report." },
-    { from: "Nurse Alice", role: "Medical", preview: "We have a confirmed case of flu in Form 1B...", time: "2 days ago", unread: false, full: "We have a confirmed case of flu in Form 1B. Precautionary measures have been taken. Please ensure the classroom is sanitized and parents are informed." },
+    { from: "Nurse Alice", role: "Medical", preview: "We have a confirmed case of flu in Grade 7...", time: "2 days ago", unread: false, full: "We have a confirmed case of flu in Grade 7. Precautionary measures have been taken. Please ensure the classroom is sanitized and parents are informed." },
   ];
 
   const notices = [
-    { title: "End of Term Examination Schedule", date: "Dec 1, 2025", category: "Academic", content: "The Form 4 final examinations are scheduled for December 8-19. Timetables are available at the administration office." },
+    { title: "End of Term Examination Schedule", date: "Dec 1, 2025", category: "Academic", content: "The Grade 9 final examinations are scheduled for December 8-19. Timetables are available at the administration office." },
     { title: "Sports Day 2025", date: "Nov 25, 2025", category: "Sports", content: "Annual Sports Day will be held on December 5th. All students are encouraged to participate in at least one event." },
     { title: "School Fee Reminder", date: "Nov 20, 2025", category: "Finance", content: "Term 2 school fees are due by December 31st. Late payment attracts a 5% fine." },
     { title: "Parent-Teacher Conference", date: "Nov 15, 2025", category: "Administrative", content: "The annual Parent-Teacher Conference is scheduled for November 28th from 9 AM to 4 PM." },
@@ -38,9 +38,9 @@ export default function CommunicationPage() {
 
   const smsSentHistory = [
     { recipient: "All Parents", message: "School fees reminder: Please ensure...", sent: "Nov 28, 2025", count: 480, status: "Delivered" },
-    { recipient: "Form 4 Parents", message: "KCSE mock results are ready for collection...", sent: "Nov 20, 2025", count: 120, status: "Delivered" },
+    { recipient: "Grade 9 Parents", message: "Mid-term results are ready for collection...", sent: "Nov 20, 2025", count: 120, status: "Delivered" },
     { recipient: "All Students", message: "Reminder: Sports Day is tomorrow...", sent: "Dec 4, 2025", count: 550, status: "Delivered" },
-    { recipient: "Form 1 Parents", message: `Welcome to ${schoolName}. Your ward has been...`, sent: "Sep 3, 2025", count: 145, status: "Delivered" },
+    { recipient: "Grade 7 Parents", message: `Welcome to ${schoolName}. Your ward has been...`, sent: "Sep 3, 2025", count: 145, status: "Delivered" },
   ];
 
   const stats = [
@@ -164,8 +164,8 @@ export default function CommunicationPage() {
                   <select value={smsRecipient} onChange={e => setSmsRecipient(e.target.value)} className="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white text-sm outline-none focus:border-teal-500">
                     <option>All Students</option>
                     <option>All Parents</option>
-                    <option>Form 4 Parents</option>
-                    <option>Form 1 Parents</option>
+                    <option>Grade 9 Parents</option>
+                    <option>Grade 7 Parents</option>
                     <option>All Staff</option>
                   </select>
                 </div>

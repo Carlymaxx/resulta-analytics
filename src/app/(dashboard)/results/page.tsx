@@ -16,18 +16,18 @@ import {
 } from "lucide-react";
 
 const mockStudents = [
-  { id: 1, name: "Alex Johnson", class: "10-A", math: 78, english: 85, science: 72, history: 88, total: 323, avg: 80.75 },
-  { id: 2, name: "Maria Garcia", class: "10-A", math: 92, english: 88, science: 85, history: 90, total: 355, avg: 88.75 },
-  { id: 3, name: "James Wilson", class: "10-B", math: 65, english: 72, science: 58, history: 70, total: 265, avg: 66.25 },
-  { id: 4, name: "Sarah Lee", class: "9-A", math: 88, english: 91, science: 84, history: 86, total: 349, avg: 87.25 },
-  { id: 5, name: "David Brown", class: "10-A", math: 55, english: 62, science: 48, history: 58, total: 223, avg: 55.75 },
-  { id: 6, name: "Emily Chen", class: "9-B", math: 81, english: 86, science: 79, history: 83, total: 329, avg: 82.25 },
-  { id: 7, name: "Michael Park", class: "11-A", math: 94, english: 90, science: 91, history: 87, total: 362, avg: 90.5 },
-  { id: 8, name: "Lisa Thompson", class: "10-C", math: 70, english: 75, science: 68, history: 72, total: 285, avg: 71.25 },
+  { id: 1, name: "Alex Johnson", class: "Grade 9", math: 78, english: 85, science: 72, history: 88, total: 323, avg: 80.75 },
+  { id: 2, name: "Maria Garcia", class: "Grade 9", math: 92, english: 88, science: 85, history: 90, total: 355, avg: 88.75 },
+  { id: 3, name: "James Wilson", class: "Grade 8", math: 65, english: 72, science: 58, history: 70, total: 265, avg: 66.25 },
+  { id: 4, name: "Sarah Lee", class: "Grade 8", math: 88, english: 91, science: 84, history: 86, total: 349, avg: 87.25 },
+  { id: 5, name: "David Brown", class: "Grade 9", math: 55, english: 62, science: 48, history: 58, total: 223, avg: 55.75 },
+  { id: 6, name: "Emily Chen", class: "Grade 7", math: 81, english: 86, science: 79, history: 83, total: 329, avg: 82.25 },
+  { id: 7, name: "Michael Park", class: "Grade 8", math: 94, english: 90, science: 91, history: 87, total: 362, avg: 90.5 },
+  { id: 8, name: "Lisa Thompson", class: "Grade 7", math: 70, english: 75, science: 68, history: 72, total: 285, avg: 71.25 },
 ];
 
-const classes = ["All Classes", "10-A", "10-B", "10-C", "9-A", "9-B", "11-A"];
-const subjects = ["Math", "English", "Science", "History", "Geography", "Physics"];
+const classes = ["All Classes", "Grade 7", "Grade 8", "Grade 9"];
+const subjects = ["Math", "English", "Integrated Science", "History", "Creative Arts and Sports", "Pre-Technical Studies"];
 
 export default function ResultsPage() {
   const { user } = useAuth();
@@ -116,10 +116,10 @@ export default function ResultsPage() {
               <tr>
                 <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600">Student</th>
                 <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Class</th>
-                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Math</th>
-                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">English</th>
-                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Science</th>
-                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">History</th>
+                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Math</th>
+                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">English</th>
+                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Integrated Science</th>
+                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">History</th>
                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Average</th>
                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Actions</th>
               </tr>

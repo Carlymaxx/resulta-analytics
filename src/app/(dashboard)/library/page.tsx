@@ -4,10 +4,10 @@ import { useState } from "react";
 import { Library, Plus, X, AlertTriangle } from "lucide-react";
 
 const books = [
-  { id: 1, title: "Advanced Mathematics Form 3", author: "K. M. Njagi", isbn: "978-9966-25-001-1", category: "Textbook", copies: 30, available: 22 },
+  { id: 1, title: "Advanced Mathematics Grade 8", author: "K. M. Njagi", isbn: "978-9966-25-001-1", category: "Textbook", copies: 30, available: 22 },
   { id: 2, title: "English Grammar in Use", author: "Raymond Murphy", isbn: "978-0-521-18906-4", category: "Reference", copies: 15, available: 10 },
   { id: 3, title: "Biology — A New Approach", author: "G. Opaa", isbn: "978-9966-25-002-2", category: "Textbook", copies: 25, available: 18 },
-  { id: 4, title: "Chemistry Form 4", author: "S. M. Mwangi", isbn: "978-9966-25-003-3", category: "Textbook", copies: 20, available: 14 },
+  { id: 4, title: "Chemistry Grade 8", author: "S. M. Mwangi", isbn: "978-9966-25-003-3", category: "Textbook", copies: 20, available: 14 },
   { id: 5, title: "Things Fall Apart", author: "Chinua Achebe", isbn: "978-0-385-47454-2", category: "Literature", copies: 40, available: 35 },
   { id: 6, title: "The River and The Source", author: "Margaret Ogola", isbn: "978-9966-888-01-9", category: "Literature", copies: 35, available: 28 },
   { id: 7, title: "Kenya History & Government", author: "P. Nthiwa", isbn: "978-9966-25-004-4", category: "Textbook", copies: 18, available: 12 },
@@ -15,12 +15,12 @@ const books = [
 ];
 
 const borrowed = [
-  { id: 1, student: "Alice Wanjiru", class: "Form 3A", book: "Advanced Mathematics Form 3", borrowDate: "2025-01-05", dueDate: "2025-01-19", returned: false, daysOverdue: 0 },
-  { id: 2, student: "Brian Otieno", class: "Form 2B", book: "English Grammar in Use", borrowDate: "2024-12-20", dueDate: "2025-01-03", returned: false, daysOverdue: 12 },
-  { id: 3, student: "Christine Mwangi", class: "Form 4A", book: "Things Fall Apart", borrowDate: "2025-01-08", dueDate: "2025-01-22", returned: false, daysOverdue: 0 },
-  { id: 4, student: "Dennis Kamau", class: "Form 1A", book: "Kenya History & Government", borrowDate: "2024-12-18", dueDate: "2025-01-01", returned: false, daysOverdue: 14 },
-  { id: 5, student: "Esther Njeri", class: "Form 3B", book: "Biology — A New Approach", borrowDate: "2025-01-10", dueDate: "2025-01-24", returned: false, daysOverdue: 0 },
-  { id: 6, student: "Frank Odhiambo", class: "Form 2A", book: "Chemistry Form 4", borrowDate: "2024-12-22", dueDate: "2025-01-05", returned: false, daysOverdue: 10 },
+  { id: 1, student: "Alice Wanjiru", class: "Grade 8", book: "Advanced Mathematics Grade 8", borrowDate: "2025-01-05", dueDate: "2025-01-19", returned: false, daysOverdue: 0 },
+  { id: 2, student: "Brian Otieno", class: "Grade 7", book: "English Grammar in Use", borrowDate: "2024-12-20", dueDate: "2025-01-03", returned: false, daysOverdue: 12 },
+  { id: 3, student: "Christine Mwangi", class: "Grade 9", book: "Things Fall Apart", borrowDate: "2025-01-08", dueDate: "2025-01-22", returned: false, daysOverdue: 0 },
+  { id: 4, student: "Dennis Kamau", class: "Grade 7", book: "Kenya History & Government", borrowDate: "2024-12-18", dueDate: "2025-01-01", returned: false, daysOverdue: 14 },
+  { id: 5, student: "Esther Njeri", class: "Grade 8", book: "Biology — A New Approach", borrowDate: "2025-01-10", dueDate: "2025-01-24", returned: false, daysOverdue: 0 },
+  { id: 6, student: "Frank Odhiambo", class: "Grade 7", book: "Chemistry Grade 8", borrowDate: "2024-12-22", dueDate: "2025-01-05", returned: false, daysOverdue: 10 },
 ];
 
 const tabs = ["Books", "Borrowed", "Returns"];

@@ -27,7 +27,7 @@ const reportTypes = [
 
 const generatedReports = [
   { id: 1, name: "Q1 2025 Performance Report", type: "Performance Report", date: "2025-04-10", status: "Ready", size: "2.4 MB" },
-  { id: 2, name: "Class 10-A Mid-Term Report", type: "Class Report", date: "2025-04-08", status: "Ready", size: "1.8 MB" },
+  { id: 2, name: "Grade 9 Mid-Term Report", type: "Class Report", date: "2025-04-08", status: "Ready", size: "1.8 MB" },
   { id: 3, name: "At-Risk Students - April", type: "At-Risk Report", date: "2025-04-05", status: "Ready", size: "856 KB" },
   { id: 4, name: "Subject Analysis - Mathematics", type: "Subject Report", date: "2025-04-01", status: "Ready", size: "1.2 MB" },
   { id: 5, name: "Annual Trend Analysis 2024", type: "Trend Report", date: "2025-03-28", status: "Ready", size: "3.1 MB" },
@@ -93,15 +93,15 @@ export default function ReportsPage() {
             </select>
           </div>
           
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Class</label>
-            <select className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white">
-              <option value="">All Classes</option>
-              <option value="10-A">Class 10-A</option>
-              <option value="10-B">Class 10-B</option>
-              <option value="11-A">Class 11-A</option>
-            </select>
-          </div>
+           <div>
+             <label className="block text-sm font-medium text-slate-700 mb-2">Class</label>
+             <select className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white">
+               <option value="">All Classes</option>
+               <option value="Grade 7">Grade 7</option>
+               <option value="Grade 8">Grade 8</option>
+               <option value="Grade 9">Grade 9</option>
+             </select>
+           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">Format</label>

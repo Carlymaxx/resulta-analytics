@@ -55,23 +55,23 @@ const monthlyData = {
 };
 
 const subjectComparison = {
-  labels: ['Math', 'English', 'Science', 'History', 'Geography', 'Physics', 'Chemistry', 'Biology'],
+  labels: ['Math', 'English', 'Integrated Science', 'History', 'Geography', 'CRE', 'Agriculture', 'Pre-Technical Studies'],
   datasets: [
     {
-      label: 'Class 10-A',
-      data: [78, 85, 72, 88, 76, 73, 80, 82],
+      label: 'Grade 9',
+      data: [78, 85, 72, 88, 76, 80, 73, 79],
       backgroundColor: '#0D9488',
       borderRadius: 4,
     },
     {
-      label: 'Class 10-B',
-      data: [72, 80, 68, 82, 71, 69, 75, 78],
+      label: 'Grade 8',
+      data: [72, 80, 68, 82, 71, 75, 69, 74],
       backgroundColor: '#14B8A6',
       borderRadius: 4,
     },
     {
       label: 'School Avg',
-      data: [75, 82, 70, 85, 74, 71, 77, 80],
+      data: [75, 82, 70, 85, 74, 77, 71, 76],
       backgroundColor: '#E2E8F0',
       borderRadius: 4,
     },
@@ -103,20 +103,20 @@ const performanceByTerm = {
 };
 
 const topPerformers = [
-  { rank: 1, name: "Michael Park", class: "11-A", avg: 94.5, trend: "up" },
-  { rank: 2, name: "Emma Wilson", class: "10-A", avg: 92.8, trend: "up" },
-  { rank: 3, name: "David Chen", class: "12-B", avg: 91.5, trend: "same" },
-  { rank: 4, name: "Sarah Johnson", class: "9-A", avg: 90.2, trend: "up" },
-  { rank: 5, name: "James Lee", class: "11-B", avg: 89.8, trend: "down" },
+  { rank: 1, name: "Michael Park", class: "Grade 9", avg: 94.5, trend: "up" },
+  { rank: 2, name: "Emma Wilson", class: "Grade 9", avg: 92.8, trend: "up" },
+  { rank: 3, name: "David Chen", class: "Grade 8", avg: 91.5, trend: "same" },
+  { rank: 4, name: "Sarah Johnson", class: "Grade 7", avg: 90.2, trend: "up" },
+  { rank: 5, name: "James Lee", class: "Grade 8", avg: 89.8, trend: "down" },
 ];
 
 const subjectTrends = [
   { subject: "Mathematics", current: 78, previous: 72, change: "+6", positive: true },
   { subject: "English", current: 82, previous: 80, change: "+2", positive: true },
-  { subject: "Science", current: 71, previous: 75, change: "-4", positive: false },
+  { subject: "Integrated Science", current: 71, previous: 75, change: "-4", positive: false },
   { subject: "History", current: 85, previous: 83, change: "+2", positive: true },
-  { subject: "Geography", current: 76, previous: 74, change: "+2", positive: true },
-  { subject: "Physics", current: 73, previous: 70, change: "+3", positive: true },
+  { subject: "Social Studies", current: 76, previous: 74, change: "+2", positive: true },
+  { subject: "Pre-Technical Studies", current: 73, previous: 70, change: "+3", positive: true },
 ];
 
 export default function AnalyticsPage() {
@@ -143,16 +143,16 @@ export default function AnalyticsPage() {
             <option value="term">This Term</option>
             <option value="year">This Year</option>
           </select>
-          <select
-            value={selectedClass}
-            onChange={(e) => setSelectedClass(e.target.value)}
-            className="px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
-          >
-            <option value="all">All Classes</option>
-            <option value="10-A">Class 10-A</option>
-            <option value="10-B">Class 10-B</option>
-            <option value="11-A">Class 11-A</option>
-          </select>
+            <select
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+            >
+              <option value="all">All Classes</option>
+              <option value="Grade 9">Grade 9</option>
+              <option value="Grade 8">Grade 8</option>
+              <option value="Grade 7">Grade 7</option>
+            </select>
           <button className="inline-flex items-center gap-2 px-4 py-2.5 border border-slate-200 rounded-lg hover:bg-slate-50">
             <Download className="w-4 h-4" />
             Export

@@ -2,14 +2,15 @@
 
 import { useState } from "react";
 import { ClipboardList, Zap, CheckCircle, Database, Plus, X, AlertTriangle } from "lucide-react";
+import { CLASSES } from "@/lib/grading";
 
 const exams = [
-  { title: "Mathematics Mid-Term Exam", subject: "Mathematics", class: "Form 3", date: "Dec 10, 2025", duration: 90, questions: 40, status: "Upcoming" },
-  { title: "English Comprehension Test", subject: "English", class: "Form 2", date: "Dec 5, 2025", duration: 60, questions: 30, status: "Active" },
-  { title: "Biology End of Term", subject: "Biology", class: "Form 4", date: "Dec 12, 2025", duration: 120, questions: 50, status: "Upcoming" },
-  { title: "Physics Quiz - Forces", subject: "Physics", class: "Form 3", date: "Nov 28, 2025", duration: 45, questions: 20, status: "Active" },
-  { title: "History CAT 2", subject: "History", class: "Form 1", date: "Nov 20, 2025", duration: 60, questions: 25, status: "Completed" },
-  { title: "Geography Term Test", subject: "Geography", class: "Form 2", date: "Nov 15, 2025", duration: 60, questions: 30, status: "Completed" },
+  { title: "Mathematics Mid-Term Exam", subject: "Mathematics", class: "Grade 9", date: "Dec 10, 2025", duration: 90, questions: 40, status: "Upcoming" },
+  { title: "English Comprehension Test", subject: "English", class: "Grade 8", date: "Dec 5, 2025", duration: 60, questions: 30, status: "Active" },
+  { title: "Integrated Science End of Term", subject: "Integrated Science", class: "Grade 9", date: "Dec 12, 2025", duration: 120, questions: 50, status: "Upcoming" },
+  { title: "Pre-Technical Studies Quiz", subject: "Pre-Technical Studies", class: "Grade 8", date: "Nov 28, 2025", duration: 45, questions: 20, status: "Active" },
+  { title: "CRE CAT 2", subject: "CRE", class: "Grade 7", date: "Nov 20, 2025", duration: 60, questions: 25, status: "Completed" },
+  { title: "Social Studies Term Test", subject: "Social Studies", class: "Grade 8", date: "Nov 15, 2025", duration: 60, questions: 30, status: "Completed" },
 ];
 
 const questionBank = [
@@ -21,8 +22,8 @@ const questionBank = [
 ];
 
 const completedResults = [
-  { exam: "History CAT 2", class: "Form 1", students: 45, avg: 72, highest: 96, lowest: 38, date: "Nov 20, 2025" },
-  { exam: "Geography Term Test", class: "Form 2", students: 52, avg: 68, highest: 92, lowest: 42, date: "Nov 15, 2025" },
+  { exam: "CRE CAT 2", class: "Grade 7", students: 45, avg: 72, highest: 96, lowest: 38, date: "Nov 20, 2025" },
+  { exam: "Social Studies Term Test", class: "Grade 8", students: 52, avg: 68, highest: 92, lowest: 42, date: "Nov 15, 2025" },
 ];
 
 const stats = [
@@ -196,7 +197,7 @@ export default function CBTPage() {
                     </select>
                   ) : type === "select-class" ? (
                     <select className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-                      {["Form 1A", "Form 1B", "Form 2A", "Form 2B", "Form 3A", "Form 4A"].map(c => <option key={c}>{c}</option>)}
+                       {CLASSES.map(c => <option key={c}>{c}</option>)}
                     </select>
                   ) : type === "textarea" ? (
                     <textarea rows={3} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none" />

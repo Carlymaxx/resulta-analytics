@@ -37,14 +37,14 @@ ChartJS.register(
 );
 
 const predictedStudents = [
-  { id: 1, name: "Alex Johnson", class: "10-A", current: 45, predicted: 52, risk: "High", confidence: 85, trend: "down" },
-  { id: 2, name: "Maria Garcia", class: "10-A", current: 52, predicted: 58, risk: "High", confidence: 78, trend: "down" },
-  { id: 3, name: "James Wilson", class: "10-B", current: 58, predicted: 72, risk: "Medium", confidence: 82, trend: "up" },
-  { id: 4, name: "Sarah Lee", class: "9-A", current: 61, predicted: 75, risk: "Medium", confidence: 88, trend: "up" },
-  { id: 5, name: "David Brown", class: "11-B", current: 55, predicted: 61, risk: "High", confidence: 75, trend: "down" },
-  { id: 6, name: "Emily Chen", class: "9-B", current: 82, predicted: 86, risk: "Low", confidence: 92, trend: "up" },
-  { id: 7, name: "Michael Park", class: "11-A", current: 90, predicted: 92, risk: "Low", confidence: 95, trend: "up" },
-  { id: 8, name: "Lisa Thompson", class: "10-C", current: 71, predicted: 74, risk: "Low", confidence: 80, trend: "up" },
+  { id: 1, name: "Alex Johnson", class: "Grade 9", current: 45, predicted: 52, risk: "High", confidence: 85, trend: "down" },
+  { id: 2, name: "Maria Garcia", class: "Grade 9", current: 52, predicted: 58, risk: "High", confidence: 78, trend: "down" },
+  { id: 3, name: "James Wilson", class: "Grade 8", current: 58, predicted: 72, risk: "Medium", confidence: 82, trend: "up" },
+  { id: 4, name: "Sarah Lee", class: "Grade 8", current: 61, predicted: 75, risk: "Medium", confidence: 88, trend: "up" },
+  { id: 5, name: "David Brown", class: "Grade 9", current: 55, predicted: 61, risk: "High", confidence: 75, trend: "down" },
+  { id: 6, name: "Emily Chen", class: "Grade 7", current: 82, predicted: 86, risk: "Low", confidence: 92, trend: "up" },
+  { id: 7, name: "Michael Park", class: "Grade 8", current: 90, predicted: 92, risk: "Low", confidence: 95, trend: "up" },
+  { id: 8, name: "Lisa Thompson", class: "Grade 7", current: 71, predicted: 74, risk: "Low", confidence: 80, trend: "up" },
 ];
 
 const predictionChartData = {

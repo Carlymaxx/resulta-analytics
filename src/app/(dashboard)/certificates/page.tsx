@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { CLASSES } from "@/lib/grading";
 import { Award, X, Printer, Download } from "lucide-react";
 
 const certTypes = [
@@ -12,12 +13,12 @@ const certTypes = [
 ];
 
 const history = [
-  { id: "CERT001", student: "John Mwangi", class: "Form 4B", type: "Leaving Certificate", date: "2025-01-10", issuedBy: "Dr. Mary Wanjiku" },
-  { id: "CERT002", student: "Grace Kamau", class: "Form 4A", type: "Achievement Certificate", date: "2025-01-10", issuedBy: "Dr. Mary Wanjiku" },
-  { id: "CERT003", student: "Peter Otieno", class: "Form 3B", type: "Character Certificate", date: "2025-01-08", issuedBy: "Dr. Mary Wanjiku" },
-  { id: "CERT004", student: "Alice Njeri", class: "Form 4B", type: "Leaving Certificate", date: "2024-12-20", issuedBy: "Dr. Mary Wanjiku" },
-  { id: "CERT005", student: "Brian Auma", class: "Form 2A", type: "Completion Certificate", date: "2024-12-18", issuedBy: "Dr. Mary Wanjiku" },
-  { id: "CERT006", student: "Linda Odhiambo", class: "Form 4A", type: "Achievement Certificate", date: "2024-12-15", issuedBy: "Dr. Mary Wanjiku" },
+  { id: "CERT001", student: "John Mwangi", class: "Grade 9", type: "Leaving Certificate", date: "2025-01-10", issuedBy: "Dr. Mary Wanjiku" },
+  { id: "CERT002", student: "Grace Kamau", class: "Grade 9", type: "Achievement Certificate", date: "2025-01-10", issuedBy: "Dr. Mary Wanjiku" },
+  { id: "CERT003", student: "Peter Otieno", class: "Grade 8", type: "Character Certificate", date: "2025-01-08", issuedBy: "Dr. Mary Wanjiku" },
+  { id: "CERT004", student: "Alice Njeri", class: "Grade 9", type: "Leaving Certificate", date: "2024-12-20", issuedBy: "Dr. Mary Wanjiku" },
+  { id: "CERT005", student: "Brian Auma", class: "Grade 7", type: "Completion Certificate", date: "2024-12-18", issuedBy: "Dr. Mary Wanjiku" },
+  { id: "CERT006", student: "Linda Odhiambo", class: "Grade 9", type: "Achievement Certificate", date: "2024-12-15", issuedBy: "Dr. Mary Wanjiku" },
 ];
 
 const templates = [
@@ -42,7 +43,7 @@ export default function CertificatesPage() {
   const [activeTab, setActiveTab] = useState("Generate");
   const [selectedType, setSelectedType] = useState("leaving");
   const [studentName, setStudentName] = useState("");
-  const [studentClass, setStudentClass] = useState("Form 4A");
+  const [studentClass, setStudentClass] = useState("Grade 9");
   const [showPreview, setShowPreview] = useState(false);
 
   const handlePreview = (e: React.FormEvent) => {
@@ -120,7 +121,7 @@ export default function CertificatesPage() {
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Class</label>
                   <select value={studentClass} onChange={e => setStudentClass(e.target.value)} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
-                    {["Form 1A", "Form 1B", "Form 2A", "Form 2B", "Form 3A", "Form 3B", "Form 4A", "Form 4B"].map(c => <option key={c}>{c}</option>)}
+                     {CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <button type="submit" className="bg-teal-600 text-white px-6 py-2.5 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">

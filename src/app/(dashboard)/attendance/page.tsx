@@ -16,12 +16,12 @@ import {
 } from "lucide-react";
 
 const attendanceData = [
-  { id: 1, name: "Alex Johnson", class: "10-A", present: 18, absent: 2, late: 1, percentage: 90, trend: "up" },
-  { id: 2, name: "Maria Garcia", class: "10-A", present: 20, absent: 0, late: 1, percentage: 95, trend: "up" },
-  { id: 3, name: "James Wilson", class: "10-B", present: 15, absent: 4, late: 2, percentage: 71, trend: "down" },
-  { id: 4, name: "Sarah Lee", class: "9-A", present: 19, absent: 1, late: 0, percentage: 95, trend: "same" },
-  { id: 5, name: "David Brown", class: "10-A", present: 14, absent: 5, late: 2, percentage: 67, trend: "down" },
-  { id: 6, name: "Emily Chen", class: "9-B", present: 20, absent: 0, late: 0, percentage: 100, trend: "up" },
+  { id: 1, name: "Alex Johnson", class: "Grade 9", present: 18, absent: 2, late: 1, percentage: 90, trend: "up" },
+  { id: 2, name: "Maria Garcia", class: "Grade 9", present: 20, absent: 0, late: 1, percentage: 95, trend: "up" },
+  { id: 3, name: "James Wilson", class: "Grade 8", present: 15, absent: 4, late: 2, percentage: 71, trend: "down" },
+  { id: 4, name: "Sarah Lee", class: "Grade 8", present: 19, absent: 1, late: 0, percentage: 95, trend: "same" },
+  { id: 5, name: "David Brown", class: "Grade 9", present: 14, absent: 5, late: 2, percentage: 67, trend: "down" },
+  { id: 6, name: "Emily Chen", class: "Grade 7", present: 20, absent: 0, late: 0, percentage: 100, trend: "up" },
 ];
 
 const dailyAttendance = [
@@ -163,10 +163,9 @@ export default function AttendancePage() {
             className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white"
           >
             <option value="all">All Classes</option>
-            <option value="10-A">Class 10-A</option>
-            <option value="10-B">Class 10-B</option>
-            <option value="9-A">Class 9-A</option>
-            <option value="9-B">Class 9-B</option>
+            <option value="Grade 7">Grade 7</option>
+            <option value="Grade 8">Grade 8</option>
+            <option value="Grade 9">Grade 9</option>
           </select>
         </div>
       </div>

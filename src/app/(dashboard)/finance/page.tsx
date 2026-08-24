@@ -26,16 +26,16 @@ const feeStructure = [
 ];
 
 const payments = [
-  { id: "REC001", student: "Alice Wanjiru", class: "Form 3A", amount: 15000, date: "2025-01-08", method: "M-Pesa", receipt: "MP240108001", status: "Confirmed" },
-  { id: "REC002", student: "Brian Otieno", class: "Form 2B", amount: 8000, date: "2025-01-09", method: "Cash", receipt: "CSH240109001", status: "Confirmed" },
-  { id: "REC003", student: "Christine Mwangi", class: "Form 4A", amount: 15000, date: "2025-01-10", method: "M-Pesa", receipt: "MP240110001", status: "Confirmed" },
-  { id: "REC004", student: "Dennis Kamau", class: "Form 1A", amount: 3000, date: "2025-01-10", method: "M-Pesa", receipt: "MP240110002", status: "Pending" },
-  { id: "REC005", student: "Esther Njeri", class: "Form 3B", amount: 15000, date: "2025-01-11", method: "Cash", receipt: "CSH240111001", status: "Confirmed" },
-  { id: "REC006", student: "Frank Odhiambo", class: "Form 2A", amount: 1500, date: "2025-01-11", method: "M-Pesa", receipt: "MP240111001", status: "Confirmed" },
-  { id: "REC007", student: "Gloria Adhiambo", class: "Form 1B", amount: 15000, date: "2025-01-12", method: "M-Pesa", receipt: "MP240112001", status: "Confirmed" },
-  { id: "REC008", student: "Hassan Abdi", class: "Form 4B", amount: 8000, date: "2025-01-12", method: "Cash", receipt: "CSH240112001", status: "Confirmed" },
-  { id: "REC009", student: "Irene Wambua", class: "Form 3A", amount: 500, date: "2025-01-13", method: "M-Pesa", receipt: "MP240113001", status: "Confirmed" },
-  { id: "REC010", student: "John Muthoni", class: "Form 2B", amount: 15000, date: "2025-01-14", method: "Cash", receipt: "CSH240114001", status: "Pending" },
+  { id: "REC001", student: "Alice Wanjiru", class: "Grade 9", amount: 15000, date: "2025-01-08", method: "M-Pesa", receipt: "MP240108001", status: "Confirmed" },
+  { id: "REC002", student: "Brian Otieno", class: "Grade 8", amount: 8000, date: "2025-01-09", method: "Cash", receipt: "CSH240109001", status: "Confirmed" },
+  { id: "REC003", student: "Christine Mwangi", class: "Grade 9", amount: 15000, date: "2025-01-10", method: "M-Pesa", receipt: "MP240110001", status: "Confirmed" },
+  { id: "REC004", student: "Dennis Kamau", class: "Grade 7", amount: 3000, date: "2025-01-10", method: "M-Pesa", receipt: "MP240110002", status: "Pending" },
+  { id: "REC005", student: "Esther Njeri", class: "Grade 8", amount: 15000, date: "2025-01-11", method: "Cash", receipt: "CSH240111001", status: "Confirmed" },
+  { id: "REC006", student: "Frank Odhiambo", class: "Grade 7", amount: 1500, date: "2025-01-11", method: "M-Pesa", receipt: "MP240111001", status: "Confirmed" },
+  { id: "REC007", student: "Gloria Adhiambo", class: "Grade 8", amount: 15000, date: "2025-01-12", method: "M-Pesa", receipt: "MP240112001", status: "Confirmed" },
+  { id: "REC008", student: "Hassan Abdi", class: "Grade 9", amount: 8000, date: "2025-01-12", method: "Cash", receipt: "CSH240112001", status: "Confirmed" },
+  { id: "REC009", student: "Irene Wambua", class: "Grade 7", amount: 500, date: "2025-01-13", method: "M-Pesa", receipt: "MP240113001", status: "Confirmed" },
+  { id: "REC010", student: "John Muthoni", class: "Grade 8", amount: 15000, date: "2025-01-14", method: "Cash", receipt: "CSH240114001", status: "Pending" },
 ];
 
 const tabs = ["Fee Structure", "Payments", "Invoices", "Expenses"];

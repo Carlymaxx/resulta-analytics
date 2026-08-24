@@ -1,30 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { 
-  Plus, 
-  Search, 
-  Edit2, 
-  Trash2, 
+import {
+  Plus,
+  Search,
+  Edit2,
+  Trash2,
   Users,
   BookOpen,
   MoreVertical,
   CheckCircle,
   X
 } from "lucide-react";
+import { CLASSES } from "@/lib/grading";
 
 const mockClasses = [
-  { id: 1, name: "Class 10-A", students: 42, subjects: 8, avgScore: 78.5, status: "Active" },
-  { id: 2, name: "Class 10-B", students: 38, subjects: 8, avgScore: 72.3, status: "Active" },
-  { id: 3, name: "Class 9-A", students: 45, subjects: 7, avgScore: 81.2, status: "Active" },
-  { id: 4, name: "Class 9-B", students: 40, subjects: 7, avgScore: 75.8, status: "Active" },
-  { id: 5, name: "Class 11-A", students: 35, subjects: 10, avgScore: 82.1, status: "Active" },
-  { id: 6, name: "Class 11-B", students: 32, subjects: 10, avgScore: 79.4, status: "Active" },
+  { id: 1, name: "Grade 9", students: 42, subjects: 9, avgScore: 78.5, status: "Active" },
+  { id: 2, name: "Grade 8", students: 38, subjects: 9, avgScore: 72.3, status: "Active" },
+  { id: 3, name: "Grade 7", students: 45, subjects: 9, avgScore: 81.2, status: "Active" },
 ];
 
 const subjectsList = [
-  "Mathematics", "English", "Science", "History", "Geography", 
-  "Physics", "Chemistry", "Biology", "Computer Science", "Physical Education"
+  "Mathematics", "English", "Integrated Science", "Creative Arts and Sports", "Pre-Technical Studies",
+  "Agriculture", "Christian Religious Education", "Kiswahili", "Social Studies", "Computer Studies"
 ];
 
 export default function ClassesPage() {
@@ -62,7 +60,7 @@ export default function ClassesPage() {
             </div>
             <span className="text-slate-500 dark:text-slate-400">Total Classes</span>
           </div>
-          <div className="text-2xl font-bold text-slate-800 dark:text-white">6</div>
+          <div className="text-2xl font-bold text-slate-800 dark:text-white">{mockClasses.length}</div>
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-3 mb-3">
@@ -71,7 +69,7 @@ export default function ClassesPage() {
             </div>
             <span className="text-slate-500 dark:text-slate-400">Total Students</span>
           </div>
-          <div className="text-2xl font-bold text-slate-800 dark:text-white">232</div>
+          <div className="text-2xl font-bold text-slate-800 dark:text-white">{mockClasses.reduce((a, c) => a + c.students, 0)}</div>
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-3 mb-3">
@@ -80,7 +78,7 @@ export default function ClassesPage() {
             </div>
             <span className="text-slate-500 dark:text-slate-400">Subjects</span>
           </div>
-          <div className="text-2xl font-bold text-slate-800 dark:text-white">10</div>
+          <div className="text-2xl font-bold text-slate-800 dark:text-white">{mockClasses[0]?.subjects || 9}</div>
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-3 mb-3">
@@ -89,7 +87,7 @@ export default function ClassesPage() {
             </div>
             <span className="text-slate-500 dark:text-slate-400">Active Classes</span>
           </div>
-          <div className="text-2xl font-bold text-slate-800 dark:text-white">6</div>
+          <div className="text-2xl font-bold text-slate-800 dark:text-white">{mockClasses.length}</div>
         </div>
       </div>
 
@@ -163,11 +161,11 @@ export default function ClassesPage() {
             <form className="p-6 space-y-6">
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class Name</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g., Class 10-A"
-                  className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
+                   <input
+                   type="text" 
+                   placeholder="e.g., Grade 7"
+                   className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class Teacher</label>
