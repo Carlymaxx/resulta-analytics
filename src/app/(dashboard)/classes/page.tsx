@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Plus,
   Search,
@@ -10,27 +11,41 @@ import {
   BookOpen,
   MoreVertical,
   CheckCircle,
-  X
+  X,
+  ChevronDown,
 } from "lucide-react";
-import { CLASSES } from "@/lib/grading";
+import { CLASSES_BY_LEVEL, LEVEL_LABELS, SUBJECTS_BY_LEVEL } from "@/lib/grading";
+import { useAuth } from "@/context/AuthContext";
 
-const mockClasses = [
-  { id: 1, name: "Grade 9", students: 42, subjects: 9, avgScore: 78.5, status: "Active" },
-  { id: 2, name: "Grade 8", students: 38, subjects: 9, avgScore: 72.3, status: "Active" },
-  { id: 3, name: "Grade 7", students: 45, subjects: 9, avgScore: 81.2, status: "Active" },
-];
-
-const subjectsList = [
-  "Mathematics", "English", "Integrated Science", "Creative Arts and Sports", "Pre-Technical Studies",
-  "Agriculture", "Christian Religious Education", "Kiswahili", "Social Studies", "Computer Studies"
-];
+const LEVEL_DROPDOWN = [
+  { value: "primary", label: "Primary" },
+  { value: "junior", label: "Junior School" },
+  { value: "secondary", label: "Secondary" },
+  { value: "other", label: "Other" },
+] as const;
 
 export default function ClassesPage() {
+  const { currentLevel, setCurrentLevel } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedClass, setSelectedClass] = useState<number | null>(null);
+  const [showLevelDropdown, setShowLevelDropdown] = useState(false);
 
-  const filteredClasses = mockClasses.filter(c => 
+  const levelClasses = CLASSES_BY_LEVEL[currentLevel] || [];
+  const levelSubjects = SUBJECTS_BY_LEVEL[currentLevel] || [];
+  const levelLabels = LEVEL_LABELS[currentLevel];
+
+  // Generate deterministic mock stats per class so totals stay consistent when switching levels
+  const mockClasses = levelClasses.map((name, idx) => ({
+    id: idx + 1,
+    name,
+    students: 35 + (idx * 7) + (currentLevel === "primary" ? 10 : currentLevel === "secondary" ? 25 : 0),
+    subjects: levelSubjects.length,
+    avgScore: 68 + idx * 3.5 + (currentLevel === "secondary" ? 5 : currentLevel === "junior" ? 8 : 0),
+    status: "Active",
+  }));
+
+  const filteredClasses = mockClasses.filter((c) =>
     c.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -40,15 +55,50 @@ export default function ClassesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Class Management</h1>
-          <p className="text-slate-500 dark:text-slate-400">Manage classes and enroll students</p>
+          <p className="text-slate-500 dark:text-slate-400">{levelLabels.description}</p>
         </div>
-        <button 
-          onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center gap-2 bg-teal-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-teal-700 transition-all"
-        >
-          <Plus className="w-5 h-5" />
-          Add Class
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowLevelDropdown(!showLevelDropdown)}
+              className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white text-sm hover:bg-slate-50 dark:hover:bg-slate-600 transition-all"
+            >
+              {levelLabels.short}
+              <ChevronDown className="w-4 h-4" />
+            </button>
+            {showLevelDropdown && (
+              <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 z-20">
+                <div className="py-1">
+                  {LEVEL_DROPDOWN.map((lvl) => (
+                    <button
+                      key={lvl.value}
+                      onClick={() => {
+                        setCurrentLevel(lvl.value);
+                        setShowLevelDropdown(false);
+                      }}
+                      className={`w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-slate-50 dark:hover:bg-slate-700 ${
+                        currentLevel === lvl.value
+                          ? "bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300 font-medium"
+                          : "text-slate-700 dark:text-slate-300"
+                      }`}
+                    >
+                      {currentLevel === lvl.value && <CheckCircle className="w-4 h-4 text-teal-600 dark:text-teal-400" />}
+                      <span>{lvl.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="inline-flex items-center gap-2 bg-teal-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-teal-700 transition-all"
+          >
+            <Plus className="w-5 h-5" />
+            Add Class
+          </button>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -71,15 +121,15 @@ export default function ClassesPage() {
           </div>
           <div className="text-2xl font-bold text-slate-800 dark:text-white">{mockClasses.reduce((a, c) => a + c.students, 0)}</div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-              <BookOpen className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                <BookOpen className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+              </div>
+              <span className="text-slate-500 dark:text-slate-400">Subjects per Class</span>
             </div>
-            <span className="text-slate-500 dark:text-slate-400">Subjects</span>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{mockClasses[0]?.subjects || 9}</div>
           </div>
-          <div className="text-2xl font-bold text-slate-800 dark:text-white">{mockClasses[0]?.subjects || 9}</div>
-        </div>
         <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
@@ -162,10 +212,10 @@ export default function ClassesPage() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class Name</label>
                    <input
-                   type="text" 
-                   placeholder="e.g., Grade 7"
-                   className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
-                 />
+                    type="text" 
+                    placeholder={levelClasses[0] || "e.g., Grade 7"}
+                    className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class Teacher</label>
@@ -179,7 +229,7 @@ export default function ClassesPage() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Subjects</label>
                 <div className="grid grid-cols-2 gap-2">
-                  {subjectsList.map(subject => (
+                   {levelSubjects.map(subject => (
                     <label key={subject} className="flex items-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700">
                       <input type="checkbox" className="rounded text-teal-600" />
                       <span className="text-sm text-slate-700 dark:text-slate-300">{subject}</span>

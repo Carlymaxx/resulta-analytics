@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { CLASSES } from "@/lib/grading";
+import { CLASSES_BY_LEVEL, SUBJECTS_BY_LEVEL, LEVEL_LABELS } from "@/lib/grading";
 import { UserCheck, Plus, Search, X, Eye, Trash2, Phone, Mail, BookOpen } from "lucide-react";
 
 type Teacher = {
@@ -22,8 +22,10 @@ type Teacher = {
 const initialTeachers: Teacher[] = [];
 
 export default function TeachersPage() {
-  const { user } = useAuth();
+  const { user, currentLevel } = useAuth();
   const schoolName = user?.school || "My School";
+  const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
+  const levelSubjects = SUBJECTS_BY_LEVEL[currentLevel] || SUBJECTS_BY_LEVEL.junior;
   const [teachers, setTeachers] = useState<Teacher[]>(initialTeachers);
   const [search, setSearch] = useState("");
   const [showAdd, setShowAdd] = useState(false);
@@ -202,7 +204,7 @@ export default function TeachersPage() {
                   <label className="block text-sm font-medium text-slate-700 mb-1">Class Assigned</label>
                   <select value={form.classAssigned} onChange={e => setForm({ ...form, classAssigned: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
                     <option value="">Select class</option>
-                    {CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
+                     {levelClasses.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div className="col-span-2">

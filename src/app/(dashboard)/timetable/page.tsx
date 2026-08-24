@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { Clock, Printer, RefreshCw } from "lucide-react";
-import { CLASSES } from "@/lib/grading";
-
-const classes = CLASSES;
+import { useAuth } from "@/context/AuthContext";
+import { CLASSES_BY_LEVEL, SUBJECTS_BY_LEVEL } from "@/lib/grading";
 
 const periods = [
   { label: "Period 1", time: "8:00 – 8:40" },
@@ -61,9 +60,11 @@ const grade7Timetable: TimetableData = {
 };
 
 export default function TimetablePage() {
-  const [selectedClass, setSelectedClass] = useState("Grade 7");
+  const { currentLevel } = useAuth();
+  const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
+  const [selectedClass, setSelectedClass] = useState(levelClasses[0] || "Grade 7");
 
-  const timetable = selectedClass === "Grade 7" ? grade7Timetable : {};
+  const timetable = grade7Timetable;
 
   return (
     <div className="space-y-6">
@@ -78,7 +79,7 @@ export default function TimetablePage() {
             onChange={e => setSelectedClass(e.target.value)}
             className="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500 text-slate-700"
           >
-            {classes.map(c => <option key={c} value={c}>{c}</option>)}
+            {levelClasses.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
           <button className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
             <RefreshCw className="w-4 h-4" /> Generate Timetable

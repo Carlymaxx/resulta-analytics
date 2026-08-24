@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth, EDUCATION_LEVELS, EducationLevel } from "@/context/AuthContext";
+import { LEVEL_LABELS } from "@/lib/grading";
 import { GraduationCap, BookOpen, School, ArrowRight, Megaphone, CheckCircle2, Lock, ChevronDown } from "lucide-react";
 
 const LEVEL_META: Record<EducationLevel, { icon: typeof School; accent: string; badge: string; ring: string }> = {
@@ -15,7 +16,7 @@ const LEVEL_META: Record<EducationLevel, { icon: typeof School; accent: string; 
 
 export default function PortalPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, currentLevel, setCurrentLevel } = useAuth();
   const [showSwitcher, setShowSwitcher] = useState(false);
 
   const today = new Date().toLocaleDateString("en-US", {
@@ -53,23 +54,25 @@ export default function PortalPage() {
                 <div className="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 z-20">
                   <div className="py-1">
                     {EDUCATION_LEVELS.map((lvl) => {
-                      const isMine = user?.level === lvl.value;
+                      const isCurrent = currentLevel === lvl.value;
+                      const labels = LEVEL_LABELS[lvl.value];
                       return (
                         <button
                           key={lvl.value}
                           onClick={() => {
+                            setCurrentLevel(lvl.value);
                             router.push(`/portal/${lvl.value}`);
                             setShowSwitcher(false);
                           }}
                           className={`w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-700 ${
-                            isMine ? "bg-teal-50 dark:bg-teal-900/20" : ""
+                            isCurrent ? "bg-teal-50 dark:bg-teal-900/20" : ""
                           }`}
                         >
                           <div className="flex-1">
-                            <div className={`font-medium ${isMine ? "text-teal-700 dark:text-teal-300" : "text-slate-800 dark:text-white"}`}>{lvl.label}</div>
-                            <div className="text-xs text-slate-500 dark:text-slate-400">{lvl.description}</div>
+                            <div className={`font-medium ${isCurrent ? "text-teal-700 dark:text-teal-300" : "text-slate-800 dark:text-white"}`}>{labels.label}</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400">{labels.description}</div>
                           </div>
-                           {isMine && <CheckCircle2 className="w-4 h-4 text-teal-600 dark:text-teal-400 flex-shrink-0 mt-0.5" />}
+                          {isCurrent && <CheckCircle2 className="w-4 h-4 text-teal-600 dark:text-teal-400 flex-shrink-0 mt-0.5" />}
                         </button>
                       );
                     })}
@@ -92,7 +95,8 @@ export default function PortalPage() {
           {EDUCATION_LEVELS.map((lvl) => {
             const meta = LEVEL_META[lvl.value];
             const Icon = meta.icon;
-            const isMine = user?.level === lvl.value;
+            const labels = LEVEL_LABELS[lvl.value];
+            const isCurrent = currentLevel === lvl.value;
             const canAccess = !!user;
 
             const cardInner = (
@@ -101,16 +105,16 @@ export default function PortalPage() {
                   <div className={`w-12 h-12 rounded-xl ${canAccess ? meta.accent : "bg-slate-300"} flex items-center justify-center`}>
                     {canAccess ? <Icon className="w-6 h-6 text-white" /> : <Lock className="w-6 h-6 text-white" />}
                   </div>
-                  {isMine && (
+                  {isCurrent && (
                     <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-teal-100 text-teal-700">
-                      <CheckCircle2 className="w-3.5 h-3.5" /> Your area
+                      <CheckCircle2 className="w-3.5 h-3.5" /> Current area
                     </span>
                   )}
                 </div>
-                <h3 className="text-lg font-bold text-slate-800">{lvl.label}</h3>
-                <p className="text-sm text-slate-500 mt-1">{lvl.description}</p>
+                <h3 className="text-lg font-bold text-slate-800">{labels.label}</h3>
+                <p className="text-sm text-slate-500 mt-1">{labels.description}</p>
                 {canAccess ? (
-                  <div className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-teal-600 group-hover:gap-3 transition-all">
+                  <div className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-teal-600">
                     Enter area <ArrowRight className="w-4 h-4" />
                   </div>
                 ) : (
@@ -121,11 +125,16 @@ export default function PortalPage() {
               </>
             );
 
+            const handleClick = () => {
+              setCurrentLevel(lvl.value);
+            };
+
             return canAccess ? (
               <Link
                 key={lvl.value}
                 href={`/portal/${lvl.value}`}
-                className={`group bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-all ${isMine ? `ring-2 ${meta.ring}` : ""}`}
+                onClick={handleClick}
+                className={`group bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-all ${isCurrent ? `ring-2 ${meta.ring}` : ""}`}
               >
                 {cardInner}
               </Link>

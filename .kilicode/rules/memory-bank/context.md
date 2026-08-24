@@ -6,7 +6,7 @@
 
 The application has been reconfigured to use Grade 7, Grade 8, and Grade 9 as the only available classes. All Form 1-4 class references have been replaced. The marks and subjects systems now reflect the CBC Junior School curriculum with Integrated Science replacing standalone Science, and additional subjects (Agriculture, Creative Arts and Sports, Pre-Technical Studies, Christian Religious Education) added.
 
-School information fields (P.O. Box, School Motto, School Address, School Phone, School Badge) are now configurable on both the signup/registration page and the settings profile page, and are used dynamically in report cards and certificates.
+School information fields (P.O. Box, School Motto, School Address, School Phone, School Badge) are now configurable on both the signup/registration page and the settings profile page, and are used dynamically in report cards and certificates. Users can now switch between education areas using the dropdown in the portal header.
 
 ## Recently Completed
 
@@ -25,6 +25,10 @@ School information fields (P.O. Box, School Motto, School Address, School Phone,
 - [x] Updated `src/app/(auth)/signup/page.tsx`: Added form fields for School Address, P.O. Box, School Motto, School Phone; passes to signup function
 - [x] Updated `src/app/(dashboard)/settings/page.tsx`: Added school info fields to profile tab; `handleSave` persists all new fields to localStorage
 - [x] Updated `src/app/(dashboard)/marks/page.tsx`: `ReportCard` and `Certificate` components now use dynamic school info from user context (address, PO box, motto, phone, badge) instead of hardcoded values
+- [x] Changed secondary level description from "Form 1 - Form 4" to "Grade 10 - Grade 12" for CBC consistency
+- [x] Added "Switch Area" dropdown to portal header for quick navigation between education levels
+- [x] Changed portal `canAccess` logic to allow all authenticated users to access all education levels (not just their registered level)
+- [x] Improved classes page card UI: larger stat numbers, formatted average score
 - [x] Verified typecheck, lint, and build pass cleanly
 
 ## Current Structure
@@ -37,6 +41,8 @@ School information fields (P.O. Box, School Motto, School Address, School Phone,
 | `src/app/(dashboard)/students/page.tsx` | Student management with Grade 7-9 classes | ✅ Updated |
 | `src/app/(dashboard)/certificates/page.tsx` | Certificate generation with Grade 7-9 classes | ✅ Updated |
 | `src/app/(dashboard)/classes/page.tsx` | Class management with Grade 7-9 | ✅ Updated |
+| `src/app/(dashboard)/portal/page.tsx` | Portal with area switcher dropdown | ✅ Updated |
+| `src/app/(dashboard)/portal/[level]/page.tsx` | Portal level access page | ✅ Updated |
 | `src/app/(dashboard)/timetable/page.tsx` | Timetable with Grade 7 classes | ✅ Updated |
 | `src/app/(dashboard)/cbt/page.tsx` | CBT exams with Grade 7-9 classes | ✅ Updated |
 | `src/app/(dashboard)/teachers/page.tsx` | Teacher management with Grade 7-9 classes | ✅ Updated |
@@ -69,3 +75,4 @@ School information fields (address, PO box, motto, phone, badge) are now configu
 |------|---------|
 | 2026-08-24 | Reconfigured for Grade 7-9: added CLASSES & SUBJECTS_BY_LEVEL constants, added 5 new subjects, removed Science from Junior School, added per-class marks filtering, replaced all Form 1A/1B/etc. with Grade 7-9 across all pages |
 | 2026-08-24 | Added school information fields (P.O. Box, School Motto, School Address, School Phone) to signup and settings pages; updated AuthContext, ReportCard, and Certificate to use dynamic school info |
+| 2026-08-24 | Added Switch Area dropdown to portal, allowed all authenticated users to access all education levels, updated secondary description from "Form 1 - Form 4" to "Grade 10 - Grade 12", improved class card UI |

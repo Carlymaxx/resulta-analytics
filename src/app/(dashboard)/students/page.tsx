@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { CLASSES } from "@/lib/grading";
+import { CLASSES_BY_LEVEL, LEVEL_LABELS } from "@/lib/grading";
 import {
   Search,
   Plus,
@@ -39,15 +39,13 @@ type Student = {
 
 const initialStudents: Student[] = [];
 
-const classes = CLASSES;
-
 const emptyForm = {
   admNo: "",
   firstName: "",
   lastName: "",
   gender: "Male",
   dob: "",
-  class: "Grade 7",
+  class: "",
   guardianName: "",
   guardianPhone: "",
   address: "",
@@ -56,8 +54,9 @@ const emptyForm = {
 };
 
 export default function StudentsPage() {
-  const { user } = useAuth();
+  const { user, currentLevel } = useAuth();
   const schoolName = user?.school || "My School";
+  const classes = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
   const [students, setStudents] = useState<Student[]>(initialStudents);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClass, setSelectedClass] = useState("All Classes");
@@ -129,7 +128,7 @@ export default function StudentsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Student Management</h1>
-          <p className="text-slate-500 dark:text-slate-400">Manage student records for {schoolName}</p>
+          <p className="text-slate-500 dark:text-slate-400">{LEVEL_LABELS[currentLevel]?.description || "Manage student records"}</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}

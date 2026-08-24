@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { CLASSES } from "@/lib/grading";
+import { CLASSES_BY_LEVEL, LEVEL_LABELS } from "@/lib/grading";
 import { Award, X, Printer, Download } from "lucide-react";
 
 const certTypes = [
@@ -38,12 +38,13 @@ const certBodyText: Record<string, string> = {
 };
 
 export default function CertificatesPage() {
-  const { user } = useAuth();
+  const { user, currentLevel } = useAuth();
   const schoolName = user?.school || "School";
+  const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
   const [activeTab, setActiveTab] = useState("Generate");
   const [selectedType, setSelectedType] = useState("leaving");
   const [studentName, setStudentName] = useState("");
-  const [studentClass, setStudentClass] = useState("Grade 9");
+  const [studentClass, setStudentClass] = useState(levelClasses[levelClasses.length - 1] || "Grade 9");
   const [showPreview, setShowPreview] = useState(false);
 
   const handlePreview = (e: React.FormEvent) => {
@@ -121,7 +122,7 @@ export default function CertificatesPage() {
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Class</label>
                   <select value={studentClass} onChange={e => setStudentClass(e.target.value)} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
-                     {CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
+                      {levelClasses.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <button type="submit" className="bg-teal-600 text-white px-6 py-2.5 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
@@ -203,8 +204,8 @@ export default function CertificatesPage() {
                       <Award className="w-8 h-8 text-white" />
                     </div>
                   </div>
-                  <div className="text-2xl font-bold text-teal-700 mb-1 uppercase tracking-widest">{schoolName}</div>
-                  <div className="text-xs text-slate-500 mb-6 uppercase tracking-wider">P.O. Box 1234, Nairobi, Kenya</div>
+                   <div className="text-2xl font-bold text-teal-700 mb-1 uppercase tracking-widest">{schoolName}</div>
+                   {(user?.schoolBox || user?.schoolAddress) && <div className="text-xs text-slate-500 mb-6 uppercase tracking-wider">{user.schoolBox || user.schoolAddress}</div>}
 
                   <div className="text-xs text-slate-500 uppercase tracking-widest mb-2">This is to Certify That</div>
                   <div className="text-3xl font-bold text-slate-800 border-b-2 border-teal-300 pb-2 mb-4 px-8">{studentName}</div>

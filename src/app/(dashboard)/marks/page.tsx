@@ -8,11 +8,10 @@ import {
 import {
   StudentRecord, SubjectMark, loadRecords, saveRecords,
   totalScore, averageScore, meanGrade, getGrade, computePositions,
-  CLASSES, SUBJECTS_BY_LEVEL,
+  CLASSES_BY_LEVEL, SUBJECTS_BY_LEVEL, ASSESSMENT_BY_LEVEL,
 } from "@/lib/grading";
 
 const TERMS = ["Term 1", "Term 2", "Term 3"];
-const CLASS_OPTIONS = ["All Classes", ...CLASSES];
 
 type ViewDoc =
   | { kind: "report"; record: StudentRecord }
@@ -20,7 +19,7 @@ type ViewDoc =
   | null;
 
 export default function MarksPage() {
-  const { user } = useAuth();
+  const { user, currentLevel } = useAuth();
   const schoolName = user?.school || "School";
   const [records, setRecords] = useState<StudentRecord[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -30,15 +29,17 @@ export default function MarksPage() {
   // form state
   const [name, setName] = useState("");
   const [admNo, setAdmNo] = useState("");
-  const [className, setClassName] = useState("Grade 7");
+  const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
+  const [className, setClassName] = useState(levelClasses[0] || "Grade 7");
   const [term, setTerm] = useState("Term 1");
   const [year, setYear] = useState(String(new Date().getFullYear()));
-  const levelKey = user?.level || "secondary";
-  const levelSubjects = SUBJECTS_BY_LEVEL[levelKey] || SUBJECTS_BY_LEVEL.secondary;
+  const levelSubjects = SUBJECTS_BY_LEVEL[currentLevel] || SUBJECTS_BY_LEVEL.junior;
   const [marks, setMarks] = useState<SubjectMark[]>(
     levelSubjects.map((s) => ({ subject: s, score: 0 }))
   );
   const [selectedClass, setSelectedClass] = useState<string>("All Classes");
+
+  const CLASS_OPTIONS = ["All Classes", ...levelClasses];
 
   useEffect(() => {
     setRecords(loadRecords());
@@ -71,7 +72,7 @@ export default function MarksPage() {
     : records.filter((r) => r.className === selectedClass);
 
   const resetForm = () => {
-    setName(""); setAdmNo(""); setClassName("Grade 7"); setTerm("Term 1");
+    setName(""); setAdmNo(""); setClassName(levelClasses[0] || "Grade 7"); setTerm("Term 1");
     setYear(String(new Date().getFullYear()));
     setMarks(levelSubjects.map((s) => ({ subject: s, score: 0 })));
   };
@@ -91,7 +92,7 @@ export default function MarksPage() {
       admNo: admNo.trim() || "—",
       className: className.trim() || "—",
       term, year,
-      level: user?.level || "secondary",
+      level: currentLevel,
       marks: cleanMarks,
     };
     setRecords((prev) => [rec, ...prev]);
@@ -243,7 +244,7 @@ export default function MarksPage() {
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Class</label>
                   <select value={className} onChange={(e) => setClassName(e.target.value)} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
-                    {CLASSES.map((c) => (
+                    {levelClasses.map((c) => (
                       <option key={c} value={c}>{c}</option>
                     ))}
                   </select>
@@ -349,12 +350,12 @@ function ReportCard({ record, position, classSize, user }: { record: StudentReco
   const schoolContact = [schoolBox || schoolAddress, schoolPhone].filter(Boolean).join(" · ");
   return (
     <div className="print-area bg-white text-slate-900 rounded-lg p-8 shadow-2xl">
-       <div className="text-center border-b-2 border-teal-600 pb-4 mb-6">
-         <h1 className="text-2xl font-bold text-teal-700">{schoolName}</h1>
-         {schoolContact && <p className="text-sm text-slate-500">{schoolContact}</p>}
-         {schoolMotto && <p className="text-xs italic text-slate-400 mt-1">{schoolMotto}</p>}
-         <h2 className="mt-3 text-lg font-semibold uppercase tracking-wide">Termly Report Card</h2>
-       </div>
+    <div className="text-center border-b-2 border-teal-600 pb-4 mb-6">
+          <h1 className="text-2xl font-bold text-teal-700">{schoolName}</h1>
+          {schoolContact && <p className="text-sm text-slate-500">{schoolContact}</p>}
+          {schoolMotto && <p className="text-xs italic text-slate-400 mt-1">{schoolMotto}</p>}
+          <h2 className="mt-3 text-lg font-semibold uppercase tracking-wide">{ASSESSMENT_BY_LEVEL[record.level || "junior"]} — Termly Report Card</h2>
+        </div>
 
       <div className="grid grid-cols-2 gap-2 text-sm mb-6">
         <div><span className="text-slate-500">Name:</span> <span className="font-semibold">{record.name}</span></div>

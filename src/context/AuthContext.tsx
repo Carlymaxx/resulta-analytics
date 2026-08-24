@@ -31,6 +31,8 @@ interface User {
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
+  currentLevel: EducationLevel;
+  setCurrentLevel: (level: EducationLevel) => void;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   signup: (name: string, email: string, password: string, role: string, level: EducationLevel, school: string, schoolBadge: string, schoolAddress?: string, schoolBox?: string, schoolMotto?: string, schoolPhone?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
@@ -111,14 +113,26 @@ export function getRegisteredUsers(): RegisteredUser[] {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentLevel, setCurrentLevelState] = useState<EducationLevel>("junior");
 
   useEffect(() => {
     const storedUser = localStorage.getItem("resulta_user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    const storedLevel = localStorage.getItem("resulta_current_level") as EducationLevel;
+    if (storedLevel) {
+      setCurrentLevelState(storedLevel);
+    } else if (JSON.parse(storedUser || "{}")?.level) {
+      setCurrentLevelState(JSON.parse(storedUser || "{}").level);
+    }
     setIsLoading(false);
   }, []);
+
+  const setCurrentLevel = (level: EducationLevel) => {
+    setCurrentLevelState(level);
+    localStorage.setItem("resulta_current_level", level);
+  };
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
@@ -172,7 +186,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, signup, logout }}>
+     <AuthContext.Provider value={{ user, isLoading, currentLevel, setCurrentLevel, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

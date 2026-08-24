@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { ClipboardList, Zap, CheckCircle, Database, Plus, X, AlertTriangle } from "lucide-react";
-import { CLASSES } from "@/lib/grading";
+import { useAuth } from "@/context/AuthContext";
+import { CLASSES_BY_LEVEL } from "@/lib/grading";
 
 const exams = [
   { title: "Mathematics Mid-Term Exam", subject: "Mathematics", class: "Grade 9", date: "Dec 10, 2025", duration: 90, questions: 40, status: "Upcoming" },
@@ -34,6 +35,8 @@ const stats = [
 ];
 
 export default function CBTPage() {
+  const { currentLevel } = useAuth();
+  const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
   const [activeTab, setActiveTab] = useState("exams");
   const [showModal, setShowModal] = useState(false);
   const [expandedSubject, setExpandedSubject] = useState<string | null>(null);
@@ -197,7 +200,7 @@ export default function CBTPage() {
                     </select>
                   ) : type === "select-class" ? (
                     <select className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-                       {CLASSES.map(c => <option key={c}>{c}</option>)}
+                        {levelClasses.map(c => <option key={c}>{c}</option>)}
                     </select>
                   ) : type === "textarea" ? (
                     <textarea rows={3} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none" />

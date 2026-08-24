@@ -3,7 +3,8 @@
 import { use } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useAuth, EDUCATION_LEVELS, EducationLevel } from "@/context/AuthContext";
+import { useAuth, EducationLevel } from "@/context/AuthContext";
+import { LEVEL_LABELS } from "@/lib/grading";
 import { ArrowLeft, Users, UserCheck, ClipboardList, TrendingUp, Lock, Award } from "lucide-react";
 
 const VALID: EducationLevel[] = ["primary", "junior", "secondary", "other"];
@@ -32,7 +33,7 @@ export default function PortalLevelPage({ params }: { params: Promise<{ level: s
   }
 
   const lvl = level as EducationLevel;
-  const meta = EDUCATION_LEVELS.find((l) => l.value === lvl)!;
+  const meta = LEVEL_LABELS[lvl];
   const canAccess = !!user;
 
   if (!canAccess) {

@@ -18,8 +18,32 @@ export type StudentRecord = {
 
 export type GradeInfo = { grade: string; points: number; remark: string };
 
-// Available classes for Junior School (Grades 7–9 only)
-export const CLASSES: string[] = ["Grade 7", "Grade 8", "Grade 9"];
+// Classes per education level
+export const CLASSES_BY_LEVEL: Record<string, string[]> = {
+  primary: ["Std 1", "Std 2", "Std 3", "Std 4", "Std 5", "Std 6"],
+  junior: ["Grade 7", "Grade 8", "Grade 9"],
+  secondary: ["Form 1", "Form 2", "Form 3", "Form 4"],
+  other: ["Year 1", "Year 2", "Year 3"],
+};
+
+// Backwards-compatible: defaults to Junior School classes
+export const CLASSES: string[] = CLASSES_BY_LEVEL.junior;
+
+// Assessment name per level
+export const ASSESSMENT_BY_LEVEL: Record<string, string> = {
+  primary: "KPSEA",
+  junior: "KJSEA",
+  secondary: "KCSE",
+  other: "OTHER",
+};
+
+// Level display labels
+export const LEVEL_LABELS: Record<string, { label: string; description: string; short: string }> = {
+  primary: { label: "Primary Schools", description: "Lower & Upper Primary (CBC)", short: "CBC Primary" },
+  junior: { label: "Junior School / KNEC Students", description: "Junior Secondary (CBC)", short: "Junior" },
+  secondary: { label: "Secondary Schools (KCSE)", description: "Form 1 - Form 4", short: "KCSE" },
+  other: { label: "Other Educational Institution", description: "Custom curriculum", short: "Other" },
+};
 
 // Subjects per education level.
 // Junior School replaces standalone "Science" with "Integrated Science" and
@@ -28,6 +52,8 @@ export const CLASSES: string[] = ["Grade 7", "Grade 8", "Grade 9"];
 export const SUBJECTS_BY_LEVEL: Record<string, string[]> = {
   primary: [
     "Mathematics", "English", "Kiswahili", "Science", "Social Studies",
+    "Creative Arts", "Pre-Primary Activities", "Physical Education",
+    "Religious Education", "Home Science",
   ],
   junior: [
     "Mathematics", "English", "Kiswahili", "Integrated Science", "Social Studies",
@@ -37,6 +63,7 @@ export const SUBJECTS_BY_LEVEL: Record<string, string[]> = {
   secondary: [
     "Mathematics", "English", "Kiswahili", "Biology", "Chemistry", "Physics",
     "History", "Geography", "CRE", "Computer Studies",
+    "Commerce", "Literature",
   ],
   other: [
     "Mathematics", "English", "Kiswahili", "Science", "Social Studies",
