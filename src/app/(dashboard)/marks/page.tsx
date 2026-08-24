@@ -12,7 +12,6 @@ import {
 
 const DEFAULT_SUBJECTS = ["Mathematics", "English", "Kiswahili", "Science", "Social Studies"];
 const TERMS = ["Term 1", "Term 2", "Term 3"];
-const SCHOOL_NAME = "Maxx Tech Academy";
 
 type ViewDoc =
   | { kind: "report"; record: StudentRecord }
@@ -21,6 +20,7 @@ type ViewDoc =
 
 export default function MarksPage() {
   const { user } = useAuth();
+  const schoolName = user?.school || "School";
   const [records, setRecords] = useState<StudentRecord[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
@@ -300,9 +300,9 @@ export default function MarksPage() {
             </div>
 
             {viewDoc.kind === "report" ? (
-              <ReportCard record={viewDoc.record} position={positions[viewDoc.record.id]} classSize={classSize(viewDoc.record)} />
+              <ReportCard record={viewDoc.record} position={positions[viewDoc.record.id]} classSize={classSize(viewDoc.record)} schoolName={schoolName} />
             ) : (
-              <Certificate record={viewDoc.record} />
+              <Certificate record={viewDoc.record} schoolName={schoolName} />
             )}
           </div>
         </div>
@@ -311,14 +311,14 @@ export default function MarksPage() {
   );
 }
 
-function ReportCard({ record, position, classSize }: { record: StudentRecord; position: number; classSize: number }) {
+function ReportCard({ record, position, classSize, schoolName }: { record: StudentRecord; position: number; classSize: number; schoolName: string }) {
   const total = totalScore(record.marks);
   const avg = averageScore(record.marks);
   const mg = meanGrade(record.marks);
   return (
     <div className="print-area bg-white text-slate-900 rounded-lg p-8 shadow-2xl">
       <div className="text-center border-b-2 border-teal-600 pb-4 mb-6">
-        <h1 className="text-2xl font-bold text-teal-700">{SCHOOL_NAME}</h1>
+        <h1 className="text-2xl font-bold text-teal-700">{schoolName}</h1>
         <p className="text-sm text-slate-500">P.O. Box, Ruiru, Kiambu County, Kenya · +254 725 979 273</p>
         <h2 className="mt-3 text-lg font-semibold uppercase tracking-wide">Termly Report Card</h2>
       </div>
@@ -374,13 +374,13 @@ function ReportCard({ record, position, classSize }: { record: StudentRecord; po
   );
 }
 
-function Certificate({ record }: { record: StudentRecord }) {
+function Certificate({ record, schoolName }: { record: StudentRecord; schoolName: string }) {
   const avg = averageScore(record.marks);
   const mg = meanGrade(record.marks);
   return (
     <div className="print-area bg-white text-slate-900 rounded-lg p-10 shadow-2xl">
       <div className="border-8 border-double border-teal-600 p-10 text-center">
-        <p className="uppercase tracking-[0.3em] text-teal-700 text-sm font-semibold">{SCHOOL_NAME}</p>
+        <p className="uppercase tracking-[0.3em] text-teal-700 text-sm font-semibold">{schoolName}</p>
         <h1 className="text-4xl font-bold mt-6 mb-2" style={{ fontFamily: "'DM Sans', serif" }}>Certificate of Achievement</h1>
         <p className="text-slate-500 mb-8">This certificate is proudly presented to</p>
         <p className="text-3xl font-bold text-teal-700 mb-2">{record.name}</p>

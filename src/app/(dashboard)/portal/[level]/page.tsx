@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { useAuth, EDUCATION_LEVELS, EducationLevel } from "@/context/AuthContext";
 import { ArrowLeft, Users, UserCheck, ClipboardList, TrendingUp, Lock, Award } from "lucide-react";
 
-const VALID: EducationLevel[] = ["primary", "junior", "secondary"];
+const VALID: EducationLevel[] = ["primary", "junior", "secondary", "other"];
 
 const QUICK_LINKS = [
   { href: "/students", label: "Students", icon: Users, desc: "Manage learners" },
@@ -20,6 +20,7 @@ const ASSESSMENTS: Record<EducationLevel, { code: string; name: string }[]> = {
   primary: [{ code: "KPSEA", name: "Kenya Primary School Education Assessment" }],
   junior: [{ code: "KJSEA", name: "Kenya Junior School Education Assessment" }],
   secondary: [{ code: "KCSE", name: "Kenya Certificate of Secondary Education" }],
+  other: [{ code: "OTHER", name: "Other Assessment" }],
 };
 
 export default function PortalLevelPage({ params }: { params: Promise<{ level: string }> }) {

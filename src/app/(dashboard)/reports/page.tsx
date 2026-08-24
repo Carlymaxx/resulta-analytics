@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { 
   FileText, 
   Download, 
@@ -33,6 +34,8 @@ const generatedReports = [
 ];
 
 export default function ReportsPage() {
+  const { user } = useAuth();
+  const schoolName = user?.school || "Resulta Analytics";
   const [selectedReport, setSelectedReport] = useState<string | null>(null);
   const [dateRange, setDateRange] = useState("month");
   const [reportFormat, setReportFormat] = useState("pdf");
@@ -155,7 +158,7 @@ export default function ReportsPage() {
                     <BarChart3 className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <div className="text-xl font-bold text-slate-800">Resulta Analytics</div>
+                    <div className="text-xl font-bold text-slate-800">{schoolName}</div>
                     <div className="text-sm text-slate-500">Academic Results Analysis System</div>
                   </div>
                 </div>
@@ -235,7 +238,7 @@ export default function ReportsPage() {
               {/* Report Footer */}
               <div className="mt-8 pt-6 border-t border-slate-200 text-center text-sm text-slate-500">
                 <p>Generated on {new Date().toLocaleDateString()} | Page 1 of 1</p>
-                <p className="mt-1">Resulta Analytics - Confidential Report</p>
+                <p className="mt-1">{schoolName} - Confidential Report</p>
               </div>
             </div>
           </div>

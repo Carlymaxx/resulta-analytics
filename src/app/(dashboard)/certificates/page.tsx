@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { Award, X, Printer, Download } from "lucide-react";
 
 const certTypes = [
@@ -36,6 +37,8 @@ const certBodyText: Record<string, string> = {
 };
 
 export default function CertificatesPage() {
+  const { user } = useAuth();
+  const schoolName = user?.school || "School";
   const [activeTab, setActiveTab] = useState("Generate");
   const [selectedType, setSelectedType] = useState("leaving");
   const [studentName, setStudentName] = useState("");
@@ -199,7 +202,7 @@ export default function CertificatesPage() {
                       <Award className="w-8 h-8 text-white" />
                     </div>
                   </div>
-                  <div className="text-2xl font-bold text-teal-700 mb-1 uppercase tracking-widest">MAXX High School</div>
+                  <div className="text-2xl font-bold text-teal-700 mb-1 uppercase tracking-widest">{schoolName}</div>
                   <div className="text-xs text-slate-500 mb-6 uppercase tracking-wider">P.O. Box 1234, Nairobi, Kenya</div>
 
                   <div className="text-xs text-slate-500 uppercase tracking-widest mb-2">This is to Certify That</div>

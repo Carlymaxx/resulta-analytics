@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { BarChart3, Eye, EyeOff, Loader2, Check } from "lucide-react";
+import { BarChart3, Eye, EyeOff, Loader2, Check, Upload } from "lucide-react";
 import { useAuth, EDUCATION_LEVELS, EducationLevel } from "@/context/AuthContext";
 
 export default function SignupPage() {
@@ -15,6 +15,8 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("teacher");
   const [level, setLevel] = useState<EducationLevel>("secondary");
+  const [school, setSchool] = useState("");
+  const [schoolBadge, setSchoolBadge] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
@@ -28,7 +30,7 @@ export default function SignupPage() {
     e.preventDefault();
     setError("");
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword || !school) {
       setError("Please fill in all fields");
       return;
     }
@@ -43,7 +45,7 @@ export default function SignupPage() {
       return;
     }
 
-    const result = await signup(name, email, password, role, level);
+    const result = await signup(name, email, password, role, level, school, schoolBadge);
     if (result.success) {
       router.push("/portal");
     } else {
@@ -97,6 +99,47 @@ export default function SignupPage() {
             </div>
 
             <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">School Name</label>
+              <input
+                type="text"
+                value={school}
+                onChange={(e) => setSchool(e.target.value)}
+                placeholder="e.g. Nairobi High School"
+                className="input-field"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Site / Level</label>
+              <select
+                value={level}
+                onChange={(e) => setLevel(e.target.value as EducationLevel)}
+                className="input-field"
+              >
+                {EDUCATION_LEVELS.map((l) => (
+                  <option key={l.value} value={l.value}>{l.label}</option>
+                ))}
+              </select>
+              <p className="text-xs text-slate-400 mt-1">This determines the portal area you land in after signing in.</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">School Badge URL <span className="text-slate-400 font-normal">(optional)</span></label>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={schoolBadge}
+                  onChange={(e) => setSchoolBadge(e.target.value)}
+                  placeholder="https://example.com/badge.png"
+                  className="input-field pr-10"
+                />
+                <Upload className="w-5 h-5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2" />
+              </div>
+              <p className="text-xs text-slate-400 mt-1">Paste a link to your school badge or logo image.</p>
+            </div>
+
+            <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">Role</label>
               <select
                 value={role}
@@ -108,20 +151,6 @@ export default function SignupPage() {
                 <option value="student">Student</option>
                 <option value="parent">Parent</option>
               </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Education Level</label>
-              <select
-                value={level}
-                onChange={(e) => setLevel(e.target.value as EducationLevel)}
-                className="input-field"
-              >
-                {EDUCATION_LEVELS.map((l) => (
-                  <option key={l.value} value={l.value}>{l.label}</option>
-                ))}
-              </select>
-              <p className="text-xs text-slate-400 mt-1">This determines the portal area you land in after signing in.</p>
             </div>
 
             <div>

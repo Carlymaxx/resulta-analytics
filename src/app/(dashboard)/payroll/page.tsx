@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { Users, DollarSign, CheckCircle, Clock, X, Eye } from "lucide-react";
 
 const payrollData = [
@@ -22,6 +23,8 @@ const stats = [
 ];
 
 export default function PayrollPage() {
+  const { user } = useAuth();
+  const schoolName = user?.school || "My School";
   const [activeTab, setActiveTab] = useState("payroll");
   const [selectedEmployee, setSelectedEmployee] = useState<typeof payrollData[0] | null>(null);
 
@@ -148,7 +151,7 @@ export default function PayrollPage() {
             </div>
             <div className="p-6 space-y-4">
               <div className="text-center border-b border-slate-200 pb-4">
-                <div className="text-sm font-semibold text-teal-700">MAXX School Management System</div>
+                <div className="text-sm font-semibold text-teal-700">{schoolName}</div>
                 <div className="text-xs text-slate-500">Payslip for {new Date().toLocaleString("default", { month: "long", year: "numeric" })}</div>
               </div>
               <div className="space-y-2 text-sm">

@@ -29,17 +29,30 @@ export default function SettingsPage() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
   const [saved, setSaved] = useState(false);
+  const [schoolName, setSchoolName] = useState(user?.school || "");
+  const [schoolBadge, setSchoolBadge] = useState(user?.schoolBadge || "");
 
-  const fullName = user?.name || "Maxx Tech";
+  const fullName = user?.name || "User";
   const nameParts = fullName.split(" ");
-  const firstName = nameParts[0] || "Maxx";
-  const lastName = nameParts.slice(1).join(" ") || "Tech";
+  const firstName = nameParts[0] || "User";
+  const lastName = nameParts.slice(1).join(" ") || "";
   const initials = fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) || "MT";
   const roleLabel = user?.role ? user.role.replace("_", " ") : "Administrator";
 
   const handleSave = () => {
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+    const updatedUser = { ...user, school: schoolName, schoolBadge };
+    localStorage.setItem("resulta_user", JSON.stringify(updatedUser));
+    const storedSignups = localStorage.getItem("resulta_signups");
+    if (storedSignups) {
+      const signups = JSON.parse(storedSignups);
+      const idx = signups.findIndex((u: any) => u.id === user?.id);
+      if (idx >= 0) {
+        signups[idx] = { ...signups[idx], school: schoolName, schoolBadge };
+        localStorage.setItem("resulta_signups", JSON.stringify(signups));
+      }
+    }
   };
 
   return (
@@ -124,7 +137,17 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">School Name</label>
-                  <input type="text" key={user?.school} defaultValue={user?.school || "Maxx Tech"} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                  <input type="text" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">School Badge URL</label>
+                  <input type="text" value={schoolBadge} onChange={(e) => setSchoolBadge(e.target.value)} placeholder="https://example.com/badge.png" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                  {schoolBadge && (
+                    <div className="mt-3 flex items-center gap-3">
+                      <img src={schoolBadge} alt="School badge" className="w-10 h-10 rounded-full object-cover border border-slate-200" onError={(e) => (e.target as HTMLImageElement).style.display = "none"} />
+                      <span className="text-xs text-slate-500">Badge preview</span>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Role</label>
