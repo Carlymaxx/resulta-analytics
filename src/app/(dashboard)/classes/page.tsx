@@ -122,18 +122,18 @@ export default function ClassesPage() {
             </div>
             
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-slate-500 dark:text-slate-400 text-sm">Students</span>
-                <span className="font-semibold text-slate-800 dark:text-white">{cls.students}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-500 dark:text-slate-400 text-sm">Subjects</span>
-                <span className="font-semibold text-slate-800 dark:text-white">{cls.subjects}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-500 dark:text-slate-400 text-sm">Average Score</span>
-                <span className="font-semibold text-teal-600">{cls.avgScore}%</span>
-              </div>
+          <div className="flex items-center justify-between">
+               <span className="text-slate-500 dark:text-slate-400 text-sm">Students</span>
+               <span className="text-2xl font-bold text-slate-800 dark:text-white">{cls.students}</span>
+             </div>
+             <div className="flex items-center justify-between">
+               <span className="text-slate-500 dark:text-slate-400 text-sm">Subjects</span>
+               <span className="text-2xl font-bold text-slate-800 dark:text-white">{cls.subjects}</span>
+             </div>
+             <div className="flex items-center justify-between">
+               <span className="text-slate-500 dark:text-slate-400 text-sm">Average Score</span>
+               <span className="text-xl font-bold text-teal-600">{cls.avgScore.toFixed(1)}%</span>
+             </div>
             </div>
 
             <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex gap-2">

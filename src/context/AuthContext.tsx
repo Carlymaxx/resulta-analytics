@@ -8,7 +8,7 @@ export type EducationLevel = "primary" | "junior" | "secondary" | "other";
 export const EDUCATION_LEVELS: { value: EducationLevel; label: string; description: string }[] = [
   { value: "primary", label: "Primary Schools", description: "Lower & Upper Primary (CBC)" },
   { value: "junior", label: "Junior School / KNEC Students", description: "Junior Secondary (CBC)" },
-  { value: "secondary", label: "Secondary Schools (KCSE)", description: "Form 1 - Form 4" },
+   { value: "secondary", label: "Secondary Schools (KCSE)", description: "Grade 10 - Grade 12" },
   { value: "other", label: "Other", description: "Other educational institution" },
 ];
 
