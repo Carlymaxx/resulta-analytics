@@ -28,7 +28,9 @@ export default function ClassesPage() {
   const { currentLevel, setCurrentLevel } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedClass, setSelectedClass] = useState<number | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedClass, setSelectedClass] = useState<any>(null);
   const [showLevelDropdown, setShowLevelDropdown] = useState(false);
 
   const levelClasses = CLASSES_BY_LEVEL[currentLevel] || [];
@@ -187,10 +189,10 @@ export default function ClassesPage() {
             </div>
 
             <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex gap-2">
-              <button className="flex-1 px-4 py-2 text-sm font-medium text-teal-600 border border-teal-600 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900">
+              <button onClick={() => { setSelectedClass(cls); setShowDetailsModal(true); }} className="flex-1 px-4 py-2 text-sm font-medium text-teal-600 border border-teal-600 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900">
                 View Details
               </button>
-              <button className="p-2 text-slate-400 hover:text-slate-600 border border-slate-200 rounded-lg">
+              <button onClick={() => { setSelectedClass({...cls}); setShowEditModal(true); }} className="p-2 text-slate-400 hover:text-slate-600 border border-slate-200 rounded-lg">
                 <Edit2 className="w-4 h-4" />
               </button>
             </div>
@@ -253,6 +255,124 @@ export default function ClassesPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Class Modal */}
+      {showEditModal && selectedClass && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+              <h2 className="text-xl font-bold text-slate-800 dark:text-white">Edit Class: {selectedClass.name}</h2>
+              <button onClick={() => setShowEditModal(false)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
+                <X className="w-5 h-5 text-slate-500" />
+              </button>
+            </div>
+            <form className="p-6 space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class Name</label>
+                <input
+                  type="text"
+                  value={selectedClass.name}
+                  onChange={e => setSelectedClass({ ...selectedClass, name: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class Teacher</label>
+                <select className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
+                  <option value="">Select Teacher</option>
+                  <option value="1">Mrs. Johnson</option>
+                  <option value="2">Mr. Smith</option>
+                  <option value="3">Ms. Davis</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Subjects</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {levelSubjects.map(subject => (
+                    <label key={subject} className="flex items-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700">
+                      <input type="checkbox" defaultChecked className="rounded text-teal-600" />
+                      <span className="text-sm text-slate-700 dark:text-slate-300">{subject}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="flex justify-end gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowEditModal(false)}
+                  className="px-6 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowEditModal(false)}
+                  className="px-6 py-2.5 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* View Details Modal */}
+      {showDetailsModal && selectedClass && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+              <h2 className="text-xl font-bold text-slate-800 dark:text-white">Class Details: {selectedClass.name}</h2>
+              <button onClick={() => setShowDetailsModal(false)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
+                <X className="w-5 h-5 text-slate-500" />
+              </button>
+            </div>
+            <div className="p-6 space-y-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-4 text-center">
+                  <div className="text-3xl font-bold text-slate-800 dark:text-white">{selectedClass.students}</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Students</div>
+                </div>
+                <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-4 text-center">
+                  <div className="text-3xl font-bold text-slate-800 dark:text-white">{selectedClass.subjects}</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Subjects</div>
+                </div>
+                <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-4 text-center">
+                  <div className="text-3xl font-bold text-teal-600">{selectedClass.avgScore.toFixed(1)}%</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Average Score</div>
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-800 dark:text-white mb-3">Class Subject List</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {levelSubjects.map(subject => (
+                    <div key={subject} className="flex items-center gap-2 p-2 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                      <span className="text-sm text-slate-700 dark:text-slate-300">{subject}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-800 dark:text-white mb-3">Quick Actions</h3>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => { setShowDetailsModal(false); setShowEditModal(true); }}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-all"
+                  >
+                    <Edit2 className="w-4 h-4" /> Edit Class
+                  </button>
+                  <button
+                    onClick={() => setShowDetailsModal(false)}
+                    className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-all"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
