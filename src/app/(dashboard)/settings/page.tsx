@@ -31,6 +31,10 @@ export default function SettingsPage() {
   const [saved, setSaved] = useState(false);
   const [schoolName, setSchoolName] = useState(user?.school || "");
   const [schoolBadge, setSchoolBadge] = useState(user?.schoolBadge || "");
+  const [schoolAddress, setSchoolAddress] = useState(user?.schoolAddress || "");
+  const [schoolBox, setSchoolBox] = useState(user?.schoolBox || "");
+  const [schoolMotto, setSchoolMotto] = useState(user?.schoolMotto || "");
+  const [schoolPhone, setSchoolPhone] = useState(user?.schoolPhone || "");
 
   const fullName = user?.name || "User";
   const nameParts = fullName.split(" ");
@@ -42,14 +46,14 @@ export default function SettingsPage() {
   const handleSave = () => {
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
-    const updatedUser = { ...user, school: schoolName, schoolBadge };
+    const updatedUser = { ...user, school: schoolName, schoolBadge, schoolAddress, schoolBox, schoolMotto, schoolPhone };
     localStorage.setItem("resulta_user", JSON.stringify(updatedUser));
     const storedSignups = localStorage.getItem("resulta_signups");
     if (storedSignups) {
       const signups = JSON.parse(storedSignups);
       const idx = signups.findIndex((u: any) => u.id === user?.id);
       if (idx >= 0) {
-        signups[idx] = { ...signups[idx], school: schoolName, schoolBadge };
+        signups[idx] = { ...signups[idx], school: schoolName, schoolBadge, schoolAddress, schoolBox, schoolMotto, schoolPhone };
         localStorage.setItem("resulta_signups", JSON.stringify(signups));
       }
     }
@@ -139,16 +143,32 @@ export default function SettingsPage() {
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">School Name</label>
                   <input type="text" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">School Badge URL</label>
-                  <input type="text" value={schoolBadge} onChange={(e) => setSchoolBadge(e.target.value)} placeholder="https://example.com/badge.png" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                  {schoolBadge && (
-                    <div className="mt-3 flex items-center gap-3">
-                      <img src={schoolBadge} alt="School badge" className="w-10 h-10 rounded-full object-cover border border-slate-200" onError={(e) => (e.target as HTMLImageElement).style.display = "none"} />
-                      <span className="text-xs text-slate-500">Badge preview</span>
-                    </div>
-                  )}
-                </div>
+                 <div>
+                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">School Badge URL</label>
+                   <input type="text" value={schoolBadge} onChange={(e) => setSchoolBadge(e.target.value)} placeholder="https://example.com/badge.png" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                   {schoolBadge && (
+                     <div className="mt-3 flex items-center gap-3">
+                       <img src={schoolBadge} alt="School badge" className="w-10 h-10 rounded-full object-cover border border-slate-200" onError={(e) => (e.target as HTMLImageElement).style.display = "none"} />
+                       <span className="text-xs text-slate-500">Badge preview</span>
+                     </div>
+                   )}
+                 </div>
+                 <div>
+                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">School Address</label>
+                   <input type="text" value={schoolAddress} onChange={(e) => setSchoolAddress(e.target.value)} placeholder="e.g. 123 Education Street, Nairobi, Kenya" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                 </div>
+                 <div>
+                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">P.O. Box</label>
+                   <input type="text" value={schoolBox} onChange={(e) => setSchoolBox(e.target.value)} placeholder="e.g. P.O. Box 123-00100, Nairobi" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                 </div>
+                 <div>
+                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">School Motto</label>
+                   <input type="text" value={schoolMotto} onChange={(e) => setSchoolMotto(e.target.value)} placeholder="e.g. Education for Excellence" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                 </div>
+                 <div>
+                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">School Phone</label>
+                   <input type="tel" value={schoolPhone} onChange={(e) => setSchoolPhone(e.target.value)} placeholder="e.g. +254 700 000 000" className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Role</label>
                   <select className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">

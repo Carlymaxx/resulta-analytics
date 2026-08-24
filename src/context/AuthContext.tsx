@@ -22,13 +22,17 @@ interface User {
   school?: string;
   level?: EducationLevel;
   schoolBadge?: string;
+  schoolAddress?: string;
+  schoolBox?: string;
+  schoolMotto?: string;
+  schoolPhone?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
-  signup: (name: string, email: string, password: string, role: string, level: EducationLevel, school: string, schoolBadge: string) => Promise<{ success: boolean; error?: string }>;
+  signup: (name: string, email: string, password: string, role: string, level: EducationLevel, school: string, schoolBadge: string, schoolAddress?: string, schoolBox?: string, schoolMotto?: string, schoolPhone?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
 }
 
@@ -43,11 +47,15 @@ interface MockUser {
   school?: string;
   level?: EducationLevel;
   schoolBadge?: string;
+  schoolAddress?: string;
+  schoolBox?: string;
+  schoolMotto?: string;
+  schoolPhone?: string;
 }
 
 const MOCK_USERS: MockUser[] = [
   { id: "0", email: "superadmin@msms.com", password: "super123", name: "Super Admin", role: "superadmin" },
-  { id: "1", email: "admin@school.edu", password: "admin123", name: "Admin User", role: "admin", school: "Nairobi High School", level: "secondary", schoolBadge: "" },
+  { id: "1", email: "admin@school.edu", password: "admin123", name: "Admin User", role: "admin", school: "Nairobi High School", level: "secondary", schoolBadge: "", schoolAddress: "P.O. Box 123-00100, Nairobi, Kenya", schoolBox: "P.O. Box 123-00100", schoolMotto: "Education for Excellence", schoolPhone: "+254 700 000 000" },
   { id: "3", email: "student@school.edu", password: "student123", name: "Student John", role: "student", school: "Nairobi High School", level: "secondary", schoolBadge: "" },
   { id: "4", email: "principal@school.edu", password: "principal123", name: "Dr. Mary Wanjiku", role: "principal", school: "Nairobi High School", level: "secondary", schoolBadge: "" },
   { id: "5", email: "accountant@school.edu", password: "account123", name: "James Otieno", role: "accountant", school: "Nairobi High School", level: "secondary", schoolBadge: "" },
@@ -117,7 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await new Promise(resolve => setTimeout(resolve, 800));
     const foundUser = MOCK_USERS.find(u => u.email === email && u.password === password);
     if (foundUser) {
-      const userData = { id: foundUser.id, email: foundUser.email, name: foundUser.name, role: foundUser.role, school: foundUser.school, level: foundUser.level, schoolBadge: foundUser.schoolBadge };
+       const userData = { id: foundUser.id, email: foundUser.email, name: foundUser.name, role: foundUser.role, school: foundUser.school, level: foundUser.level, schoolBadge: foundUser.schoolBadge, schoolAddress: foundUser.schoolAddress, schoolBox: foundUser.schoolBox, schoolMotto: foundUser.schoolMotto, schoolPhone: foundUser.schoolPhone };
       setUser(userData);
       localStorage.setItem("resulta_user", JSON.stringify(userData));
       setIsLoading(false);
@@ -128,7 +136,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const signups: MockUser[] = JSON.parse(storedUsers);
       const signedUpUser = signups.find(u => u.email === email && u.password === password);
       if (signedUpUser) {
-        const userData = { id: signedUpUser.id, email: signedUpUser.email, name: signedUpUser.name, role: signedUpUser.role, school: signedUpUser.school, level: signedUpUser.level, schoolBadge: signedUpUser.schoolBadge };
+         const userData = { id: signedUpUser.id, email: signedUpUser.email, name: signedUpUser.name, role: signedUpUser.role, school: signedUpUser.school, level: signedUpUser.level, schoolBadge: signedUpUser.schoolBadge, schoolAddress: signedUpUser.schoolAddress, schoolBox: signedUpUser.schoolBox, schoolMotto: signedUpUser.schoolMotto, schoolPhone: signedUpUser.schoolPhone };
         setUser(userData);
         localStorage.setItem("resulta_user", JSON.stringify(userData));
         setIsLoading(false);
@@ -139,7 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { success: false, error: "Invalid email or password" };
   };
 
-  const signup = async (name: string, email: string, password: string, role: string, level: EducationLevel, school: string, schoolBadge: string) => {
+  const signup = async (name: string, email: string, password: string, role: string, level: EducationLevel, school: string, schoolBadge: string, schoolAddress?: string, schoolBox?: string, schoolMotto?: string, schoolPhone?: string) => {
     setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 800));
     const storedUsers = localStorage.getItem("resulta_signups");
@@ -148,10 +156,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false);
       return { success: false, error: "Email already registered" };
     }
-    const newUser: MockUser = { id: Date.now().toString(), email, password, name, role: role as UserRole, level, school, schoolBadge };
+    const newUser: MockUser = { id: Date.now().toString(), email, password, name, role: role as UserRole, level, school, schoolBadge, schoolAddress, schoolBox, schoolMotto, schoolPhone };
     existingUsers.push(newUser);
     localStorage.setItem("resulta_signups", JSON.stringify(existingUsers));
-    const userData = { id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role, level: newUser.level, school: newUser.school, schoolBadge: newUser.schoolBadge };
+    const userData = { id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role, level: newUser.level, school: newUser.school, schoolBadge: newUser.schoolBadge, schoolAddress: newUser.schoolAddress, schoolBox: newUser.schoolBox, schoolMotto: newUser.schoolMotto, schoolPhone: newUser.schoolPhone };
     setUser(userData);
     localStorage.setItem("resulta_user", JSON.stringify(userData));
     setIsLoading(false);

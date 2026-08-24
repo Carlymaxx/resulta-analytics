@@ -326,9 +326,9 @@ export default function MarksPage() {
             </div>
 
             {viewDoc.kind === "report" ? (
-              <ReportCard record={viewDoc.record} position={positions[viewDoc.record.id]} classSize={classSize(viewDoc.record)} schoolName={schoolName} />
+               <ReportCard record={viewDoc.record} position={positions[viewDoc.record.id]} classSize={classSize(viewDoc.record)} user={user} />
             ) : (
-              <Certificate record={viewDoc.record} schoolName={schoolName} />
+               <Certificate record={viewDoc.record} user={user} />
             )}
           </div>
         </div>
@@ -337,17 +337,24 @@ export default function MarksPage() {
   );
 }
 
-function ReportCard({ record, position, classSize, schoolName }: { record: StudentRecord; position: number; classSize: number; schoolName: string }) {
+function ReportCard({ record, position, classSize, user }: { record: StudentRecord; position: number; classSize: number; user: any }) {
   const total = totalScore(record.marks);
   const avg = averageScore(record.marks);
   const mg = meanGrade(record.marks);
+  const schoolName = user?.school || "School";
+  const schoolAddress = user?.schoolAddress || "";
+  const schoolBox = user?.schoolBox || "";
+  const schoolMotto = user?.schoolMotto || "";
+  const schoolPhone = user?.schoolPhone || "";
+  const schoolContact = [schoolBox || schoolAddress, schoolPhone].filter(Boolean).join(" · ");
   return (
     <div className="print-area bg-white text-slate-900 rounded-lg p-8 shadow-2xl">
-      <div className="text-center border-b-2 border-teal-600 pb-4 mb-6">
-        <h1 className="text-2xl font-bold text-teal-700">{schoolName}</h1>
-        <p className="text-sm text-slate-500">P.O. Box, Ruiru, Kiambu County, Kenya · +254 725 979 273</p>
-        <h2 className="mt-3 text-lg font-semibold uppercase tracking-wide">Termly Report Card</h2>
-      </div>
+       <div className="text-center border-b-2 border-teal-600 pb-4 mb-6">
+         <h1 className="text-2xl font-bold text-teal-700">{schoolName}</h1>
+         {schoolContact && <p className="text-sm text-slate-500">{schoolContact}</p>}
+         {schoolMotto && <p className="text-xs italic text-slate-400 mt-1">{schoolMotto}</p>}
+         <h2 className="mt-3 text-lg font-semibold uppercase tracking-wide">Termly Report Card</h2>
+       </div>
 
       <div className="grid grid-cols-2 gap-2 text-sm mb-6">
         <div><span className="text-slate-500">Name:</span> <span className="font-semibold">{record.name}</span></div>
@@ -400,13 +407,20 @@ function ReportCard({ record, position, classSize, schoolName }: { record: Stude
   );
 }
 
-function Certificate({ record, schoolName }: { record: StudentRecord; schoolName: string }) {
+function Certificate({ record, user }: { record: StudentRecord; user: any }) {
   const avg = averageScore(record.marks);
   const mg = meanGrade(record.marks);
+  const schoolName = user?.school || "School";
+  const schoolBadge = user?.schoolBadge;
+  const schoolMotto = user?.schoolMotto;
   return (
     <div className="print-area bg-white text-slate-900 rounded-lg p-10 shadow-2xl">
       <div className="border-8 border-double border-teal-600 p-10 text-center">
+        {schoolBadge && (
+          <img src={schoolBadge} alt="School badge" className="w-20 h-20 mx-auto rounded-full object-cover mb-4" onError={(e) => (e.target as HTMLImageElement).style.display = "none"} />
+        )}
         <p className="uppercase tracking-[0.3em] text-teal-700 text-sm font-semibold">{schoolName}</p>
+        {schoolMotto && <p className="text-xs italic text-slate-400 mt-1">{schoolMotto}</p>}
         <h1 className="text-4xl font-bold mt-6 mb-2" style={{ fontFamily: "'DM Sans', serif" }}>Certificate of Achievement</h1>
         <p className="text-slate-500 mb-8">This certificate is proudly presented to</p>
         <p className="text-3xl font-bold text-teal-700 mb-2">{record.name}</p>
