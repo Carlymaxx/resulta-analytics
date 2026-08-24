@@ -33,7 +33,7 @@ export default function PortalLevelPage({ params }: { params: Promise<{ level: s
 
   const lvl = level as EducationLevel;
   const meta = EDUCATION_LEVELS.find((l) => l.value === lvl)!;
-  const canAccess = user?.role === "superadmin" || user?.level === lvl;
+  const canAccess = !!user;
 
   if (!canAccess) {
     return (

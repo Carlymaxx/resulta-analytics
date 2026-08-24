@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth, EDUCATION_LEVELS, EducationLevel } from "@/context/AuthContext";
-import { GraduationCap, BookOpen, School, ArrowRight, Megaphone, CheckCircle2, Lock } from "lucide-react";
+import { GraduationCap, BookOpen, School, ArrowRight, Megaphone, CheckCircle2, Lock, ChevronDown } from "lucide-react";
 
 const LEVEL_META: Record<EducationLevel, { icon: typeof School; accent: string; badge: string; ring: string }> = {
   primary: { icon: BookOpen, accent: "bg-emerald-600", badge: "bg-emerald-100 text-emerald-700", ring: "ring-emerald-500" },
@@ -12,7 +14,9 @@ const LEVEL_META: Record<EducationLevel, { icon: typeof School; accent: string; 
 };
 
 export default function PortalPage() {
+  const router = useRouter();
   const { user } = useAuth();
+  const [showSwitcher, setShowSwitcher] = useState(false);
 
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
@@ -35,8 +39,47 @@ export default function PortalPage() {
               {user?.role && <span className="capitalize"> ({user.role.replace("_", " ")})</span>}
             </p>
           </div>
-          <div className="w-16 h-16 rounded-2xl bg-white/15 flex items-center justify-center">
-            <GraduationCap className="w-9 h-9 text-white" />
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setShowSwitcher(!showSwitcher)}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-medium transition-all"
+              >
+                Switch Area
+                <ChevronDown className={`w-4 h-4 transition-transform ${showSwitcher ? "rotate-180" : ""}`} />
+              </button>
+              {showSwitcher && (
+                <div className="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 z-20">
+                  <div className="py-1">
+                    {EDUCATION_LEVELS.map((lvl) => {
+                      const isMine = user?.level === lvl.value;
+                      return (
+                        <button
+                          key={lvl.value}
+                          onClick={() => {
+                            router.push(`/portal/${lvl.value}`);
+                            setShowSwitcher(false);
+                          }}
+                          className={`w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-700 ${
+                            isMine ? "bg-teal-50 dark:bg-teal-900/20" : ""
+                          }`}
+                        >
+                          <div className="flex-1">
+                            <div className={`font-medium ${isMine ? "text-teal-700 dark:text-teal-300" : "text-slate-800 dark:text-white"}`}>{lvl.label}</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400">{lvl.description}</div>
+                          </div>
+                           {isMine && <CheckCircle2 className="w-4 h-4 text-teal-600 dark:text-teal-400 flex-shrink-0 mt-0.5" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="w-16 h-16 rounded-2xl bg-white/15 flex items-center justify-center">
+              <GraduationCap className="w-9 h-9 text-white" />
+            </div>
           </div>
         </div>
       </div>
@@ -50,8 +93,7 @@ export default function PortalPage() {
             const meta = LEVEL_META[lvl.value];
             const Icon = meta.icon;
             const isMine = user?.level === lvl.value;
-            // A superadmin can access all areas; everyone else is locked to their own level.
-            const canAccess = user?.role === "superadmin" || isMine;
+            const canAccess = !!user;
 
             const cardInner = (
               <>
