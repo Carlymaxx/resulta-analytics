@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import {
   Search,
   Plus,
@@ -12,40 +13,50 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-  Mail,
-  Phone,
   Calendar,
-  MapPin
+  MapPin,
+  UserCheck,
+  FileText
 } from "lucide-react";
 
 type Student = {
   id: number;
-  name: string;
-  email: string;
-  phone: string;
-  class: string;
+  admNo: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
   dob: string;
+  class: string;
+  guardianName: string;
+  guardianPhone: string;
   address: string;
+  status: "Active" | "Transferred" | "Graduated";
+  joined: string;
   avgScore: number;
   attendance: number;
 };
 
-// No pre-seeded students — add your own via the "Add Student" button.
 const initialStudents: Student[] = [];
 
-const classes = ["All Classes", "10-A", "10-B", "9-A", "9-B", "11-A", "11-B"];
+const classes = ["Form 1A", "Form 1B", "Form 2A", "Form 2B", "Form 3A", "Form 3B", "Form 4A", "Form 4B"];
 
 const emptyForm = {
+  admNo: "",
   firstName: "",
   lastName: "",
-  email: "",
-  phone: "",
-  class: "10-A",
+  gender: "Male",
   dob: "",
+  class: "Form 1A",
+  guardianName: "",
+  guardianPhone: "",
   address: "",
+  status: "Active" as Student["status"],
+  joined: new Date().toISOString().slice(0, 10),
 };
 
 export default function StudentsPage() {
+  const { user } = useAuth();
+  const schoolName = user?.school || "My School";
   const [students, setStudents] = useState<Student[]>(initialStudents);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClass, setSelectedClass] = useState("All Classes");
@@ -53,10 +64,10 @@ export default function StudentsPage() {
   const [showViewModal, setShowViewModal] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [form, setForm] = useState(emptyForm);
-  const itemsPerPage = 5;
+  const itemsPerPage = 8;
 
   const filteredStudents = students.filter(student => {
-    const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = `${student.firstName} ${student.lastName} ${student.admNo}`.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesClass = selectedClass === "All Classes" || student.class === selectedClass;
     return matchesSearch && matchesClass;
   });
@@ -84,15 +95,20 @@ export default function StudentsPage() {
   const handleAddStudent = (e: React.FormEvent) => {
     e.preventDefault();
     const name = `${form.firstName} ${form.lastName}`.trim();
-    if (!name) return;
+    if (!name || !form.admNo.trim()) return;
     const newStudent: Student = {
       id: Date.now(),
-      name,
-      email: form.email,
-      phone: form.phone,
-      class: form.class,
+      admNo: form.admNo.trim(),
+      firstName: form.firstName.trim(),
+      lastName: form.lastName.trim(),
+      gender: form.gender,
       dob: form.dob,
-      address: form.address,
+      class: form.class,
+      guardianName: form.guardianName.trim(),
+      guardianPhone: form.guardianPhone.trim(),
+      address: form.address.trim(),
+      status: form.status,
+      joined: form.joined,
       avgScore: 0,
       attendance: 0,
     };
@@ -112,7 +128,7 @@ export default function StudentsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Student Management</h1>
-          <p className="text-slate-500 dark:text-slate-400">Manage student records and profiles</p>
+          <p className="text-slate-500 dark:text-slate-400">Manage student records for {schoolName}</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
@@ -124,14 +140,14 @@ export default function StudentsPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="text-sm text-slate-500 dark:text-slate-400">Total Students</div>
           <div className="text-2xl font-bold text-slate-800 dark:text-white">{students.length}</div>
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
-          <div className="text-sm text-slate-500 dark:text-slate-400">Classes</div>
-          <div className="text-2xl font-bold text-slate-800 dark:text-white">{new Set(students.map(s => s.class)).size}</div>
+          <div className="text-sm text-slate-500 dark:text-slate-400">Active</div>
+          <div className="text-2xl font-bold text-green-600">{students.filter(s => s.status === "Active").length}</div>
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="text-sm text-slate-500 dark:text-slate-400">Avg Attendance</div>
@@ -154,7 +170,7 @@ export default function StudentsPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
               type="text"
-              placeholder="Search students..."
+              placeholder="Search by name or admission number..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -166,6 +182,7 @@ export default function StudentsPage() {
               onChange={(e) => setSelectedClass(e.target.value)}
               className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
+              <option value="All Classes">All Classes</option>
               {classes.map(c => (
                 <option key={c} value={c}>{c}</option>
               ))}
@@ -189,8 +206,10 @@ export default function StudentsPage() {
             <thead className="bg-slate-50 dark:bg-slate-700">
               <tr>
                 <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600 dark:text-slate-300">Student</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Adm No</th>
                 <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Class</th>
-                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Avg Score</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Gender</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Guardian</th>
                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Attendance</th>
                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Actions</th>
               </tr>
@@ -198,7 +217,7 @@ export default function StudentsPage() {
             <tbody>
               {paginatedStudents.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="py-12 text-center text-slate-400 dark:text-slate-500">
+                  <td colSpan={7} className="py-12 text-center text-slate-400 dark:text-slate-500">
                     No students yet. Click <span className="font-medium text-teal-600">Add Student</span> to create one.
                   </td>
                 </tr>
@@ -208,15 +227,18 @@ export default function StudentsPage() {
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-900 flex items-center justify-center text-teal-600 dark:text-teal-400 font-semibold">
-                        {student.name.charAt(0)}
+                        {student.firstName.charAt(0)}
                       </div>
-                      <span className="font-medium text-slate-800 dark:text-white">{student.name}</span>
+                      <div>
+                        <span className="font-medium text-slate-800 dark:text-white">{student.firstName} {student.lastName}</span>
+                        <div className="text-xs text-slate-400">{student.joined}</div>
+                      </div>
                     </div>
                   </td>
-                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400">{student.class}</td>
-                  <td className={`py-4 px-4 text-center font-mono font-semibold ${getScoreColor(student.avgScore)}`}>
-                    {student.avgScore}%
-                  </td>
+                  <td className="py-4 px-4 text-sm text-slate-600 dark:text-slate-400 font-mono">{student.admNo}</td>
+                  <td className="py-4 px-4 text-sm text-slate-600 dark:text-slate-400">{student.class}</td>
+                  <td className="py-4 px-4 text-sm text-slate-600 dark:text-slate-400">{student.gender}</td>
+                  <td className="py-4 px-4 text-sm text-slate-600 dark:text-slate-400">{student.guardianName}</td>
                   <td className="py-4 px-4">
                     <div className="flex items-center justify-center gap-2">
                       <div className="w-16 h-2 bg-slate-200 dark:bg-slate-600 rounded-full overflow-hidden">
@@ -307,41 +329,66 @@ export default function StudentsPage() {
             <form className="p-6 space-y-4" onSubmit={handleAddStudent}>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Admission Number</label>
+                  <input type="text" required value={form.admNo} onChange={(e) => setForm({ ...form, admNo: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="e.g. ADM001" />
+                </div>
+                <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">First Name</label>
                   <input type="text" required value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                 </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Last Name</label>
-                  <input type="text" value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
-                  <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                  <input type="text" required value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone</label>
-                  <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class</label>
-                  <select value={form.class} onChange={(e) => setForm({ ...form, class: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
-                    {classes.filter(c => c !== "All Classes").map(c => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Gender</label>
+                  <select value={form.gender} onChange={(e) => setForm({ ...form, gender: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <option>Male</option>
+                    <option>Female</option>
                   </select>
                 </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Date of Birth</label>
                   <input type="date" value={form.dob} onChange={(e) => setForm({ ...form, dob: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class</label>
+                  <select value={form.class} onChange={(e) => setForm({ ...form, class: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    {classes.map(c => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Guardian / Parent Name</label>
+                <input type="text" required value={form.guardianName} onChange={(e) => setForm({ ...form, guardianName: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Full name of parent or guardian" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Guardian Phone</label>
+                <input type="tel" required value={form.guardianPhone} onChange={(e) => setForm({ ...form, guardianPhone: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="07XX-XXX-XXX" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Address</label>
-                <input type="text" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                <input type="text" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Residential address" />
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Status</label>
+                  <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value as Student["status"] })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <option>Active</option>
+                    <option>Transferred</option>
+                    <option>Graduated</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Registration Date</label>
+                  <input type="date" value={form.joined} onChange={(e) => setForm({ ...form, joined: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                </div>
               </div>
               <div className="flex justify-end gap-3 pt-4">
                 <button type="button" onClick={() => setShowAddModal(false)} className="px-6 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">Cancel</button>
@@ -365,27 +412,32 @@ export default function StudentsPage() {
             <div className="p-6">
               <div className="flex items-center gap-6 mb-6">
                 <div className="w-20 h-20 rounded-full bg-teal-100 dark:bg-teal-900 flex items-center justify-center text-teal-600 dark:text-teal-400 text-2xl font-bold">
-                  {selectedStudent.name.charAt(0)}
+                  {selectedStudent.firstName.charAt(0)}
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-slate-800 dark:text-white">{selectedStudent.name}</h3>
-                  <p className="text-slate-500 dark:text-slate-400">{selectedStudent.class}</p>
+                  <h3 className="text-2xl font-bold text-slate-800 dark:text-white">{selectedStudent.firstName} {selectedStudent.lastName}</h3>
+                  <p className="text-slate-500 dark:text-slate-400">{selectedStudent.class} · {selectedStudent.gender}</p>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${
+                    selectedStudent.status === "Active" ? "bg-green-100 text-green-700" :
+                    selectedStudent.status === "Transferred" ? "bg-amber-100 text-amber-700" :
+                    "bg-blue-100 text-blue-700"
+                  }`}>{selectedStudent.status}</span>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <Mail className="w-5 h-5 text-slate-400" />
-                    <span className="text-slate-600 dark:text-slate-400">{selectedStudent.email || "—"}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Phone className="w-5 h-5 text-slate-400" />
-                    <span className="text-slate-600 dark:text-slate-400">{selectedStudent.phone || "—"}</span>
+                    <FileText className="w-5 h-5 text-slate-400" />
+                    <span className="text-slate-600 dark:text-slate-400">Admission No: <span className="font-medium text-slate-800 dark:text-white">{selectedStudent.admNo}</span></span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Calendar className="w-5 h-5 text-slate-400" />
-                    <span className="text-slate-600 dark:text-slate-400">{selectedStudent.dob || "—"}</span>
+                    <span className="text-slate-600 dark:text-slate-400">DOB: <span className="font-medium text-slate-800 dark:text-white">{selectedStudent.dob || "—"}</span></span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Calendar className="w-5 h-5 text-slate-400" />
+                    <span className="text-slate-600 dark:text-slate-400">Joined: <span className="font-medium text-slate-800 dark:text-white">{selectedStudent.joined}</span></span>
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin className="w-5 h-5 text-slate-400" />
@@ -393,6 +445,13 @@ export default function StudentsPage() {
                   </div>
                 </div>
                 <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <UserCheck className="w-5 h-5 text-slate-400" />
+                    <span className="text-slate-600 dark:text-slate-400">Guardian: <span className="font-medium text-slate-800 dark:text-white">{selectedStudent.guardianName}</span></span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-slate-600 dark:text-slate-400">Guardian Phone: <span className="font-medium text-slate-800 dark:text-white">{selectedStudent.guardianPhone || "—"}</span></span>
+                  </div>
                   <div className="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
                     <div className="text-sm text-slate-500 dark:text-slate-400">Average Score</div>
                     <div className={`text-2xl font-bold ${getScoreColor(selectedStudent.avgScore)}`}>{selectedStudent.avgScore}%</div>

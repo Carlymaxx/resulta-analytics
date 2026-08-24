@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { 
   TrendingUp, 
   TrendingDown,
@@ -119,6 +120,8 @@ const subjectTrends = [
 ];
 
 export default function AnalyticsPage() {
+  const { user } = useAuth();
+  const schoolName = user?.school || "My School";
   const [timeRange, setTimeRange] = useState("year");
   const [selectedClass, setSelectedClass] = useState("all");
 
@@ -128,7 +131,7 @@ export default function AnalyticsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Analytics</h1>
-          <p className="text-slate-500">Performance trends and detailed analysis</p>
+          <p className="text-slate-500">Performance trends for {schoolName}</p>
         </div>
         <div className="flex gap-3">
           <select

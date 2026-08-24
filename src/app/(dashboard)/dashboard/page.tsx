@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import { 
   TrendingUp, 
   Users, 
@@ -89,6 +90,9 @@ const riskDistribution = {
 };
 
 export default function DashboardPage() {
+  const { user } = useAuth();
+  const schoolName = user?.school || "My School";
+
   return (
     <div className="space-y-6">
       {/* Stats Cards */}

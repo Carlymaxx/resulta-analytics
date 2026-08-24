@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { DollarSign, Plus, X } from "lucide-react";
 import { Bar } from "react-chartjs-2";
 import {
@@ -68,6 +69,8 @@ const expenses = [
 ];
 
 export default function FinancePage() {
+  const { user } = useAuth();
+  const schoolName = user?.school || "My School";
   const [activeTab, setActiveTab] = useState("Fee Structure");
   const [showPayment, setShowPayment] = useState(false);
   const [payForm, setPayForm] = useState({ student: "", amount: "", method: "M-Pesa", category: "Tuition Fee" });
@@ -83,7 +86,7 @@ export default function FinancePage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Finance</h1>
-          <p className="text-slate-500 text-sm mt-1">Fee management and financial records</p>
+          <p className="text-slate-500 text-sm mt-1">Fee management and financial records for {schoolName}</p>
         </div>
         <button onClick={() => setShowPayment(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
           <Plus className="w-4 h-4" /> Record Payment

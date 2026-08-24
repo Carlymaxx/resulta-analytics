@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { 
   Search, 
   Plus, 
@@ -29,6 +30,8 @@ const classes = ["All Classes", "10-A", "10-B", "10-C", "9-A", "9-B", "11-A"];
 const subjects = ["Math", "English", "Science", "History", "Geography", "Physics"];
 
 export default function ResultsPage() {
+  const { user } = useAuth();
+  const schoolName = user?.school || "My School";
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClass, setSelectedClass] = useState("All Classes");
   const [showAddModal, setShowAddModal] = useState(false);
@@ -59,7 +62,7 @@ export default function ResultsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Results Management</h1>
-          <p className="text-slate-500">View and manage student academic records</p>
+          <p className="text-slate-500">View and manage student academic records for {schoolName}</p>
         </div>
         <button 
           onClick={() => setShowAddModal(true)}

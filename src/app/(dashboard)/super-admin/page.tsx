@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { Shield, X, Plus, Trash2 } from "lucide-react";
-import { useAuth, getRegisteredUsers, RegisteredUser, EDUCATION_LEVELS } from "@/context/AuthContext";
+import { getRegisteredUsers, RegisteredUser, EDUCATION_LEVELS } from "@/context/AuthContext";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -27,7 +28,6 @@ type School = {
   joined: string;
 };
 
-// No pre-seeded schools — add your own via the "Add School" button.
 const initialSchools: School[] = [];
 
 const revenueData = {
@@ -68,12 +68,7 @@ export default function SuperAdminPage() {
   const [schools, setSchools] = useState<School[]>(initialSchools);
   const [showAddSchool, setShowAddSchool] = useState(false);
   const [schoolForm, setSchoolForm] = useState({ name: "", city: "", students: "", plan: "Free" });
-  const [registered, setRegistered] = useState<RegisteredUser[]>([]);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setRegistered(getRegisteredUsers());
-  }, []);
+  const [registered, setRegistered] = useState<RegisteredUser[]>(() => getRegisteredUsers());
 
   if (user?.role !== "superadmin") {
     return (

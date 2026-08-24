@@ -32,14 +32,14 @@ export default function LoginPage() {
   };
 
   const demoAccounts = [
-    { email: "admin@school.edu", password: "admin123", role: "Admin" },
-    { email: "teacher@school.edu", password: "teacher123", role: "Teacher" },
-    { email: "student@school.edu", password: "student123", role: "Student" },
+    { email: "admin@school.edu", role: "Admin" },
+    { email: "teacher@school.edu", role: "Teacher" },
+    { email: "student@school.edu", role: "Student" },
   ];
 
-  const fillDemo = (email: string, password: string) => {
+  const fillDemo = (email: string) => {
     setEmail(email);
-    setPassword(password);
+    setPassword("");
     setError("");
   };
 
@@ -114,24 +114,25 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <div className="mt-6 bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
-          <h3 className="text-sm font-semibold text-slate-700 mb-4">Demo Accounts</h3>
-          <div className="space-y-3">
-            {demoAccounts.map((demo) => (
-              <button
-                key={demo.email}
-                onClick={() => fillDemo(demo.email, demo.password)}
-                className="w-full flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:border-teal-500 hover:bg-teal-50 transition-all"
-              >
-                <div className="text-left">
-                  <div className="text-sm font-medium text-slate-800">{demo.role}</div>
-                  <div className="text-xs text-slate-500">{demo.email}</div>
-                </div>
-                <span className="text-xs text-slate-400">{demo.password}</span>
-              </button>
-            ))}
+          <div className="mt-6 bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">Demo Accounts</h3>
+            <div className="space-y-3">
+              {demoAccounts.map((demo) => (
+                <button
+                  key={demo.email}
+                  onClick={() => fillDemo(demo.email)}
+                  className="w-full flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:border-teal-500 hover:bg-teal-50 transition-all"
+                >
+                  <div className="text-left">
+                    <div className="text-sm font-medium text-slate-800">{demo.role}</div>
+                    <div className="text-xs text-slate-500">{demo.email}</div>
+                  </div>
+                  <span className="text-xs text-slate-400">Click to fill</span>
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-slate-400 mt-3">Use any password to sign in with demo accounts.</p>
           </div>
-        </div>
       </div>
     </div>
   );

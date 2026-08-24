@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { 
   Calendar, 
   Users, 
@@ -32,6 +33,8 @@ const dailyAttendance = [
 ];
 
 export default function AttendancePage() {
+  const { user } = useAuth();
+  const schoolName = user?.school || "My School";
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClass, setSelectedClass] = useState("all");
 
@@ -48,7 +51,7 @@ export default function AttendancePage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Attendance Tracking</h1>
-          <p className="text-slate-500 dark:text-slate-400">Monitor student attendance and punctuality</p>
+          <p className="text-slate-500 dark:text-slate-400">Monitor student attendance and punctuality for {schoolName}</p>
         </div>
         <div className="flex gap-3">
           <button className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">

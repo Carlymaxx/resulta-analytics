@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { UserCheck, Plus, Search, X, Eye, Trash2, Phone, Mail, BookOpen } from "lucide-react";
 
 type Teacher = {
@@ -14,17 +15,19 @@ type Teacher = {
   type: string;
   status: string;
   joined: string;
+  qualification: string;
 };
 
-// No pre-seeded teachers — add your own via the "Add Teacher" button.
 const initialTeachers: Teacher[] = [];
 
 export default function TeachersPage() {
+  const { user } = useAuth();
+  const schoolName = user?.school || "My School";
   const [teachers, setTeachers] = useState<Teacher[]>(initialTeachers);
   const [search, setSearch] = useState("");
   const [showAdd, setShowAdd] = useState(false);
   const [viewTeacher, setViewTeacher] = useState<Teacher | null>(null);
-  const [form, setForm] = useState({ name: "", empId: "", email: "", phone: "", subject: "", classAssigned: "", type: "Full-time" });
+  const [form, setForm] = useState({ name: "", empId: "", email: "", phone: "", subject: "", classAssigned: "", type: "Full-time", qualification: "" });
 
   const filtered = teachers.filter(t =>
     t.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -39,7 +42,7 @@ export default function TeachersPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim()) return;
+    if (!form.name.trim() || !form.empId.trim()) return;
     const newTeacher: Teacher = {
       id: Date.now(),
       name: form.name,
@@ -51,10 +54,11 @@ export default function TeachersPage() {
       type: form.type,
       status: "Active",
       joined: new Date().toISOString().slice(0, 10),
+      qualification: form.qualification,
     };
     setTeachers(prev => [newTeacher, ...prev]);
     setShowAdd(false);
-    setForm({ name: "", empId: "", email: "", phone: "", subject: "", classAssigned: "", type: "Full-time" });
+    setForm({ name: "", empId: "", email: "", phone: "", subject: "", classAssigned: "", type: "Full-time", qualification: "" });
   };
 
   const handleDelete = (id: number) => {
@@ -66,7 +70,7 @@ export default function TeachersPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Teachers</h1>
-          <p className="text-slate-500 text-sm mt-1">Manage teaching staff records</p>
+          <p className="text-slate-500 text-sm mt-1">Manage teaching staff at {schoolName}</p>
         </div>
         <button onClick={() => setShowAdd(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
           <Plus className="w-4 h-4" /> Add Teacher
@@ -200,12 +204,17 @@ export default function TeachersPage() {
                     {["Form 1", "Form 2", "Form 3", "Form 4"].map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Qualification</label>
+                  <input value={form.qualification} onChange={e => setForm({ ...form, qualification: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="e.g. B.Ed, B.Sc, M.Sc" />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Employment Type</label>
                 <select value={form.type} onChange={e => setForm({ ...form, type: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
                   <option>Full-time</option>
                   <option>Part-time</option>
+                  <option>Contract</option>
                 </select>
               </div>
               <div className="flex gap-3 pt-2">
@@ -243,11 +252,12 @@ export default function TeachersPage() {
                   { icon: Mail, label: "Email", value: viewTeacher.email },
                   { icon: Phone, label: "Phone", value: viewTeacher.phone },
                   { icon: UserCheck, label: "Type", value: viewTeacher.type },
+                  { icon: UserCheck, label: "Qualification", value: viewTeacher.qualification || "—" },
                   { icon: UserCheck, label: "Joined", value: viewTeacher.joined },
                 ].map(row => (
                   <div key={row.label} className="flex items-center gap-3 text-sm">
                     <row.icon className="w-4 h-4 text-slate-400" />
-                    <span className="text-slate-500 w-20">{row.label}:</span>
+                    <span className="text-slate-500 w-24">{row.label}:</span>
                     <span className="text-slate-800 font-medium">{row.value || "—"}</span>
                   </div>
                 ))}
@@ -260,3 +270,4 @@ export default function TeachersPage() {
     </div>
   );
 }
+

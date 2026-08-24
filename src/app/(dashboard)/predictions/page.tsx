@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { 
   Brain, 
   AlertTriangle, 
@@ -90,6 +91,8 @@ const modelAccuracy = {
 };
 
 export default function PredictionsPage() {
+  const { user } = useAuth();
+  const schoolName = user?.school || "My School";
   const [selectedRisk, setSelectedRisk] = useState("all");
 
   const getRiskColor = (risk: string) => {
@@ -111,7 +114,7 @@ export default function PredictionsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Predictions</h1>
-          <p className="text-slate-500">AI-powered academic performance predictions</p>
+          <p className="text-slate-500">AI-powered academic predictions for {schoolName}</p>
         </div>
         <div className="flex gap-3">
           <button className="inline-flex items-center gap-2 px-4 py-2.5 border border-slate-200 rounded-lg hover:bg-slate-50">
@@ -146,7 +149,7 @@ export default function PredictionsPage() {
       {/* Prediction Chart */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-slate-800">Performance Prediction - Alex Johnson (Sample)</h3>
+          <h3 className="text-lg font-bold text-slate-800">Performance Prediction - Sample</h3>
           <span className="px-3 py-1 bg-amber-100 text-amber-700 text-sm font-medium rounded-full">Example</span>
         </div>
         <div className="h-72">
