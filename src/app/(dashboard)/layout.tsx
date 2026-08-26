@@ -26,7 +26,7 @@ const navGroups = [
       { href: "/students", label: "Students", icon: Users },
       { href: "/teachers", label: "Teachers", icon: UserCheck },
       { href: "/classes", label: "Classes", icon: BookOpen },
-      { href: "/subjects", label: "Subjects", icon: BookMarked },
+      { href: "/subjects", label: "Learning Areas", icon: BookMarked },
       { href: "/timetable", label: "Timetable", icon: Clock },
       { href: "/attendance", label: "Attendance", icon: Calendar },
     ]

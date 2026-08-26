@@ -13,13 +13,13 @@ import {
 } from "lucide-react";
 
 const mockNotifications = [
-  { id: 1, type: "alert", title: "At-Risk Student Detected", message: "Alex Johnson from Class 10-A has dropped below passing grade in Mathematics", time: "5 min ago", read: false },
+  { id: 1, type: "alert", title: "At-Risk Student Detected", message: "Alex Johnson from Grade 10-A has dropped below passing grade in Mathematics", time: "5 min ago", read: false },
   { id: 2, type: "success", title: "Results Imported Successfully", message: "245 student results have been imported from the spreadsheet", time: "1 hour ago", read: false },
   { id: 3, type: "info", title: "Weekly Report Ready", message: "Your weekly performance report is ready to view", time: "2 hours ago", read: true },
   { id: 4, type: "alert", title: "Low Attendance Alert", message: "Maria Garcia has below 75% attendance this month", time: "3 hours ago", read: true },
   { id: 5, type: "success", title: "Prediction Model Updated", message: "Our AI model has been retrained with new data - accuracy improved to 96%", time: "Yesterday", read: true },
   { id: 6, type: "info", title: "System Maintenance", message: "Scheduled maintenance on Saturday 2am-4am EST", time: "Yesterday", read: true },
-  { id: 7, type: "alert", title: "New Enrollment", message: "New student John Smith added to Class 9-B", time: "2 days ago", read: true },
+  { id: 7, type: "alert", title: "New Enrollment", message: "New student John Smith added to Grade 9-B", time: "2 days ago", read: true },
   { id: 8, type: "success", title: "Report Generated", message: "Q1 2025 Performance Report has been generated", time: "3 days ago", read: true },
 ];
 

@@ -4,36 +4,36 @@ import { useState } from "react";
 import { Monitor, Users, ClipboardList, Video, BookOpen, Plus, X, Download } from "lucide-react";
 
 const courses = [
-  { subject: "Mathematics", teacher: "Sarah Wanjiku", enrolled: 145, progress: 72, status: "Active", color: "bg-teal-500" },
-  { subject: "English Language", teacher: "James Otieno", enrolled: 158, progress: 85, status: "Active", color: "bg-blue-500" },
-  { subject: "Biology", teacher: "Grace Muthoni", enrolled: 92, progress: 60, status: "Active", color: "bg-green-500" },
-  { subject: "Physics", teacher: "Peter Kamau", enrolled: 78, progress: 45, status: "Upcoming", color: "bg-purple-500" },
-  { subject: "History & Government", teacher: "Joyce Auma", enrolled: 110, progress: 90, status: "Active", color: "bg-amber-500" },
-  { subject: "Geography", teacher: "David Kipchoge", enrolled: 98, progress: 55, status: "Active", color: "bg-rose-500" },
+  { learningArea: "Mathematics", teacher: "Sarah Wanjiku", enrolled: 145, progress: 72, status: "Active", color: "bg-teal-500" },
+  { learningArea: "English Language", teacher: "James Otieno", enrolled: 158, progress: 85, status: "Active", color: "bg-blue-500" },
+  { learningArea: "Biology", teacher: "Grace Muthoni", enrolled: 92, progress: 60, status: "Active", color: "bg-green-500" },
+  { learningArea: "Physics", teacher: "Peter Kamau", enrolled: 78, progress: 45, status: "Upcoming", color: "bg-purple-500" },
+  { learningArea: "History & Government", teacher: "Joyce Auma", enrolled: 110, progress: 90, status: "Active", color: "bg-amber-500" },
+  { learningArea: "Geography", teacher: "David Kipchoge", enrolled: 98, progress: 55, status: "Active", color: "bg-rose-500" },
 ];
 
 const assignments = [
-  { title: "Quadratic Equations Problem Set", subject: "Mathematics", due: "Dec 10, 2025", submitted: 38, total: 45, status: "Open" },
-  { title: "Essay: Climate Change Impact", subject: "English", due: "Dec 8, 2025", submitted: 42, total: 50, status: "Open" },
-  { title: "Cell Division Diagrams", subject: "Biology", due: "Dec 5, 2025", submitted: 30, total: 30, status: "Closed" },
-  { title: "Newton's Laws Experiment Report", subject: "Physics", due: "Dec 12, 2025", submitted: 15, total: 25, status: "Open" },
-  { title: "Independence Movements Essay", subject: "History", due: "Dec 7, 2025", submitted: 40, total: 40, status: "Closed" },
-  { title: "Map Reading Exercise", subject: "Geography", due: "Dec 15, 2025", submitted: 20, total: 32, status: "Open" },
+  { title: "Quadratic Equations Problem Set", learningArea: "Mathematics", due: "Dec 10, 2025", submitted: 38, total: 45, status: "Open" },
+  { title: "Essay: Climate Change Impact", learningArea: "English", due: "Dec 8, 2025", submitted: 42, total: 50, status: "Open" },
+  { title: "Cell Division Diagrams", learningArea: "Biology", due: "Dec 5, 2025", submitted: 30, total: 30, status: "Closed" },
+  { title: "Newton's Laws Experiment Report", learningArea: "Physics", due: "Dec 12, 2025", submitted: 15, total: 25, status: "Open" },
+  { title: "Independence Movements Essay", learningArea: "History", due: "Dec 7, 2025", submitted: 40, total: 40, status: "Closed" },
+  { title: "Map Reading Exercise", learningArea: "Geography", due: "Dec 15, 2025", submitted: 20, total: 32, status: "Open" },
 ];
 
 const notes = [
-  { title: "Grade 8 Mathematics Notes - Term 2", subject: "Mathematics", uploadedBy: "Sarah Wanjiku", date: "Nov 25, 2025", size: "2.4 MB", type: "PDF" },
-  { title: "English Grammar Reference Guide", subject: "English", uploadedBy: "James Otieno", date: "Nov 20, 2025", size: "1.8 MB", type: "PDF" },
-  { title: "Biology Diagrams - Chapter 5", subject: "Biology", uploadedBy: "Grace Muthoni", date: "Nov 18, 2025", size: "4.2 MB", type: "PDF" },
-  { title: "Physics Formula Sheet", subject: "Physics", uploadedBy: "Peter Kamau", date: "Nov 15, 2025", size: "0.8 MB", type: "PDF" },
-  { title: "African History Timeline", subject: "History", uploadedBy: "Joyce Auma", date: "Nov 10, 2025", size: "3.1 MB", type: "PDF" },
+  { title: "Grade 8 Mathematics Notes - Term 2", learningArea: "Mathematics", uploadedBy: "Sarah Wanjiku", date: "Nov 25, 2025", size: "2.4 MB", type: "PDF" },
+  { title: "English Grammar Reference Guide", learningArea: "English", uploadedBy: "James Otieno", date: "Nov 20, 2025", size: "1.8 MB", type: "PDF" },
+  { title: "Biology Diagrams - Chapter 5", learningArea: "Biology", uploadedBy: "Grace Muthoni", date: "Nov 18, 2025", size: "4.2 MB", type: "PDF" },
+  { title: "Physics Formula Sheet", learningArea: "Physics", uploadedBy: "Peter Kamau", date: "Nov 15, 2025", size: "0.8 MB", type: "PDF" },
+  { title: "African History Timeline", learningArea: "History", uploadedBy: "Joyce Auma", date: "Nov 10, 2025", size: "3.1 MB", type: "PDF" },
 ];
 
 const videos = [
-  { title: "Introduction to Calculus", subject: "Mathematics", duration: "32 min", views: 245, date: "Nov 22, 2025" },
-  { title: "Comprehension Techniques", subject: "English", duration: "28 min", views: 312, date: "Nov 19, 2025" },
-  { title: "Photosynthesis Process", subject: "Biology", duration: "45 min", views: 198, date: "Nov 16, 2025" },
-  { title: "Electricity and Circuits", subject: "Physics", duration: "38 min", views: 156, date: "Nov 12, 2025" },
+  { title: "Introduction to Calculus", learningArea: "Mathematics", duration: "32 min", views: 245, date: "Nov 22, 2025" },
+  { title: "Comprehension Techniques", learningArea: "English", duration: "28 min", views: 312, date: "Nov 19, 2025" },
+  { title: "Photosynthesis Process", learningArea: "Biology", duration: "45 min", views: 198, date: "Nov 16, 2025" },
+  { title: "Electricity and Circuits", learningArea: "Physics", duration: "38 min", views: 156, date: "Nov 12, 2025" },
 ];
 
 const stats = [
@@ -87,7 +87,7 @@ export default function ELearningPage() {
               <div className={`h-2 ${c.color}`} />
               <div className="p-5">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-bold text-slate-800">{c.subject}</h3>
+                   <h3 className="font-bold text-slate-800">{c.learningArea}</h3>
                   <span className={`text-xs px-2 py-1 rounded-full font-medium ${c.status === "Active" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}>{c.status}</span>
                 </div>
                 <p className="text-sm text-slate-500 mb-4">{c.teacher}</p>
@@ -114,7 +114,7 @@ export default function ELearningPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-slate-50 border-b border-slate-200">
-                <tr>{["Assignment", "Subject", "Due Date", "Submitted", "Status"].map(h => (
+                 <tr>{["Assignment", "Learning Area", "Due Date", "Submitted", "Status"].map(h => (
                   <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">{h}</th>
                 ))}</tr>
               </thead>
@@ -122,7 +122,7 @@ export default function ELearningPage() {
                 {assignments.map((a, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="py-3 px-4 text-sm font-medium text-slate-800">{a.title}</td>
-                    <td className="py-3 px-4 text-sm text-slate-600">{a.subject}</td>
+                     <td className="py-3 px-4 text-sm text-slate-600">{a.learningArea}</td>
                     <td className="py-3 px-4 text-sm text-slate-600">{a.due}</td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
@@ -152,7 +152,7 @@ export default function ELearningPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="font-medium text-slate-800 text-sm">{n.title}</div>
-                <div className="text-xs text-slate-500 mt-0.5">{n.subject} · {n.uploadedBy} · {n.date} · {n.size}</div>
+                 <div className="text-xs text-slate-500 mt-0.5">{n.learningArea} · {n.uploadedBy} · {n.date} · {n.size}</div>
               </div>
               <button className="flex items-center gap-1 text-teal-600 hover:text-teal-700 text-sm font-medium flex-shrink-0">
                 <Download className="w-4 h-4" /> Download
@@ -174,7 +174,7 @@ export default function ELearningPage() {
               <div className="p-4">
                 <h3 className="font-medium text-slate-800">{v.title}</h3>
                 <div className="flex items-center gap-4 mt-2 text-xs text-slate-500">
-                  <span>{v.subject}</span>
+                   <span>{v.learningArea}</span>
                   <span>{v.duration}</span>
                   <span>{v.views} views</span>
                 </div>
@@ -193,12 +193,12 @@ export default function ELearningPage() {
               <button onClick={() => setShowUploadModal(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5 text-slate-500" /></button>
             </div>
             <div className="p-6 space-y-4">
-              {[["Title", "text"], ["Subject", "select"], ["File", "file"]].map(([label, type]) => (
+                  {[["Assignment Title", "text"], ["Learning Area", "select"], ["File", "file"]].map(([label, type]) => (
                 <div key={label as string}>
                   <label className="block text-sm font-medium text-slate-700 mb-1">{label as string}</label>
                   {type === "select" ? (
                     <select className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-                      {courses.map(c => <option key={c.subject}>{c.subject}</option>)}
+                       {courses.map(c => <option key={c.learningArea}>{c.learningArea}</option>)}
                     </select>
                   ) : (
                     <input type={type as string} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />

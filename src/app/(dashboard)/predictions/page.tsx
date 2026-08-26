@@ -203,7 +203,7 @@ export default function PredictionsPage() {
             <thead className="bg-slate-50">
               <tr>
                 <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600">Student</th>
-                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Class</th>
+                 <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Grade</th>
                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Current</th>
                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Predicted</th>
                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Risk Level</th>

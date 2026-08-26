@@ -26,22 +26,23 @@ const mockStudents = [
   { id: 8, name: "Lisa Thompson", class: "Grade 7", math: 70, english: 75, science: 68, history: 72, total: 285, avg: 71.25 },
 ];
 
-const classes = ["All Classes", "Grade 7", "Grade 8", "Grade 9"];
+const classes = ["All Grades", "Grade 7", "Grade 8", "Grade 9"];
 const subjects = ["Math", "English", "Integrated Science", "History", "Creative Arts and Sports", "Pre-Technical Studies"];
+const learningAreas = ["Math", "English", "Integrated Science", "History", "Creative Arts and Sports", "Pre-Technical Studies"];
 
 export default function ResultsPage() {
   const { user } = useAuth();
   const schoolName = user?.school || "My School";
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedClass, setSelectedClass] = useState("All Classes");
+  const [selectedGrade, setSelectedGrade] = useState("All Grades");
   const [showAddModal, setShowAddModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
   const filteredStudents = mockStudents.filter(student => {
     const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesClass = selectedClass === "All Classes" || student.class === selectedClass;
-    return matchesSearch && matchesClass;
+    const matchesGrade = selectedGrade === "All Grades" || student.class === selectedGrade;
+    return matchesSearch && matchesGrade;
   });
 
   const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
@@ -88,8 +89,8 @@ export default function ResultsPage() {
           </div>
           <div className="flex gap-3">
             <select
-              value={selectedClass}
-              onChange={(e) => setSelectedClass(e.target.value)}
+               value={selectedGrade}
+               onChange={(e) => setSelectedGrade(e.target.value)}
               className="px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
               {classes.map(c => (
@@ -115,7 +116,7 @@ export default function ResultsPage() {
             <thead className="bg-slate-50">
               <tr>
                 <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600">Student</th>
-                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Class</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Grade</th>
                  <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Math</th>
                  <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">English</th>
                  <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Integrated Science</th>
@@ -224,10 +225,10 @@ export default function ResultsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Class</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Grade</label>
                   <select className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
-                    <option value="">Select Class</option>
-                    {classes.filter(c => c !== "All Classes").map(c => (
+                    <option value="">Select Grade</option>
+                    {classes.filter(c => c !== "All Grades").map(c => (
                       <option key={c} value={c}>{c}</option>
                     ))}
                   </select>
@@ -235,11 +236,11 @@ export default function ResultsPage() {
               </div>
               
               <div className="border-t border-slate-200 pt-6">
-                <h3 className="text-sm font-semibold text-slate-800 mb-4">Subject Scores</h3>
+                <h3 className="text-sm font-semibold text-slate-800 mb-4">Learning Area Scores</h3>
                 <div className="grid md:grid-cols-3 gap-4">
-                  {subjects.slice(0, 4).map(subject => (
-                    <div key={subject}>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">{subject}</label>
+                  {learningAreas.slice(0, 4).map(learningArea => (
+                     <div key={learningArea}>
+                       <label className="block text-sm font-medium text-slate-700 mb-2">{learningArea}</label>
                       <input 
                         type="number" 
                         min="0" 

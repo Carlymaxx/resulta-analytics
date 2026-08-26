@@ -17,10 +17,11 @@ export type StudentRecord = {
 };
 
 export type GradeInfo = { grade: string; points: number; remark: string };
+export type RatingInfo = { rating: string; description: string };
 
 // Classes per education level
 export const CLASSES_BY_LEVEL: Record<string, string[]> = {
-  primary: ["Std 1", "Std 2", "Std 3", "Std 4", "Std 5", "Std 6"],
+  primary: ["Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6"],
   junior: ["Grade 7", "Grade 8", "Grade 9"],
   secondary: ["Form 1", "Form 2", "Form 3", "Form 4"],
   other: ["Year 1", "Year 2", "Year 3"],
@@ -31,7 +32,7 @@ export const CLASSES: string[] = CLASSES_BY_LEVEL.junior;
 
 // Assessment name per level
 export const ASSESSMENT_BY_LEVEL: Record<string, string> = {
-  primary: "KPSEA",
+  primary: "KPCEA",
   junior: "KJSEA",
   secondary: "KCSE",
   other: "OTHER",
@@ -39,17 +40,17 @@ export const ASSESSMENT_BY_LEVEL: Record<string, string> = {
 
 // Level display labels
 export const LEVEL_LABELS: Record<string, { label: string; description: string; short: string }> = {
-  primary: { label: "Primary Schools", description: "Lower & Upper Primary (CBC)", short: "CBC Primary" },
+  primary: { label: "Primary School", description: "Grade 1 - Grade 6 (CBC)", short: "CBC Primary" },
   junior: { label: "Junior School / KNEC Students", description: "Junior Secondary (CBC)", short: "Junior" },
   secondary: { label: "Secondary Schools (KCSE)", description: "Form 1 - Form 4", short: "KCSE" },
   other: { label: "Other Educational Institution", description: "Custom curriculum", short: "Other" },
 };
 
-// Subjects per education level.
+// Learning Areas per education level.
 // Junior School replaces standalone "Science" with "Integrated Science" and
 // adds Agriculture, Creative Arts and Sports, Pre-Technical Studies, and
 // Christian Religious Education.
-export const SUBJECTS_BY_LEVEL: Record<string, string[]> = {
+export const LEARNING_AREAS_BY_LEVEL: Record<string, string[]> = {
   primary: [
     "Mathematics", "English", "Kiswahili", "Science", "Social Studies",
     "Creative Arts", "Pre-Primary Activities", "Physical Education",
@@ -70,6 +71,9 @@ export const SUBJECTS_BY_LEVEL: Record<string, string[]> = {
   ],
 };
 
+// Backwards-compatible alias
+export const SUBJECTS_BY_LEVEL = LEARNING_AREAS_BY_LEVEL;
+
 // KCSE-style 12-point grading (works well for secondary; reasonable for all levels)
 export function getGrade(score: number): GradeInfo {
   if (score >= 80) return { grade: "A", points: 12, remark: "Excellent" };
@@ -86,6 +90,13 @@ export function getGrade(score: number): GradeInfo {
   return { grade: "E", points: 1, remark: "Fail" };
 }
 
+export function getRating(score: number): RatingInfo {
+  if (score >= 80) return { rating: "Exceeding Expectations", description: "Outstanding performance beyond grade-level standards" };
+  if (score >= 50) return { rating: "Meeting Expectations", description: "Solid performance meeting grade-level standards" };
+  if (score >= 30) return { rating: "Approaching Expectations", description: "Performance is close to meeting grade-level standards" };
+  return { rating: "Below Expectations", description: "Performance is below grade-level standards; intervention needed" };
+}
+
 export function totalScore(marks: SubjectMark[]): number {
   return marks.reduce((sum, m) => sum + (Number(m.score) || 0), 0);
 }
@@ -97,6 +108,10 @@ export function averageScore(marks: SubjectMark[]): number {
 
 export function meanGrade(marks: SubjectMark[]): GradeInfo {
   return getGrade(averageScore(marks));
+}
+
+export function meanRating(marks: SubjectMark[]): RatingInfo {
+  return getRating(averageScore(marks));
 }
 
 // Position of each student within a class, ranked by total score (desc)

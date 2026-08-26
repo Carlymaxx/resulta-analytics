@@ -88,13 +88,13 @@ export default function Home() {
                 </div>
                 <div className="space-y-4">
                   {[
-                    { subject: "Mathematics", score: 78, change: "+5%" },
-                    { subject: "English", score: 82, change: "+3%" },
-                    { subject: "Science", score: 71, change: "+8%" },
-                    { subject: "History", score: 85, change: "+2%" },
+                     { learningArea: "Mathematics", score: 78, change: "+5%" },
+                     { learningArea: "English", score: 82, change: "+3%" },
+                     { learningArea: "Science", score: 71, change: "+8%" },
+                     { learningArea: "History", score: 85, change: "+2%" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-4">
-                      <span className="w-24 text-sm text-slate-600">{item.subject}</span>
+                       <span className="w-24 text-sm text-slate-600">{item.learningArea}</span>
                       <div className="flex-1 h-3 bg-slate-100 rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-teal-500 rounded-full transition-all duration-1000" 
@@ -140,7 +140,7 @@ export default function Home() {
               {
                 icon: TrendingUp,
                 title: "Trend Analysis",
-                desc: "Identify patterns in student performance across subjects, classes, and time periods."
+                 desc: "Identify patterns in student performance across learning areas, grades, and time periods."
               },
               {
                 icon: Users,

@@ -2,72 +2,66 @@
 
 ## Current State
 
-**Status**: ✅ Reconfigured for Grade 7-9 Junior School curriculum
+**Status**: ✅ Updated with Grade Ratings, Learning Areas terminology, Grade 1-6 naming, Remarks removal, and Timetable fix
 
-The application has been reconfigured to use Grade 7, Grade 8, and Grade 9 as the only available classes. All Form 1-4 class references have been replaced. The marks and subjects systems now reflect the CBC Junior School curriculum with Integrated Science replacing standalone Science, and additional subjects (Agriculture, Creative Arts and Sports, Pre-Technical Studies, Christian Religious Education) added.
+The application has been updated with the following changes:
+- Added grade ratings: Exceeding Expectations (80-100), Meeting Expectations (50-70), Approaching Expectations (30-50), Below Expectations (1-29)
+- Changed primary level classes from "Std 1-6" to "Grade 1-6"
+- Changed "Subjects" terminology to "Learning Areas" across all pages and UI
+- Removed Remarks section from report cards (replaced with Ratings column)
+- Fixed timetable generation to support Grade 7, Grade 8, and Grade 9 with functional Generate Timetable button
+- Changed many "Class" UI labels to "Grade" where referring to grade levels
 
 ## Recently Completed
 
-- [x] Added `CLASSES` and `SUBJECTS_BY_LEVEL` constants to `src/lib/grading.ts`
-- [x] Updated `src/app/(dashboard)/marks/page.tsx`:
-  - Replaced standalone "Science" with "Integrated Science" for Junior School subjects (no Science in junior level)
-  - Added 5 new subjects: Integrated Science, Agriculture, Creative Arts and Sports, Pre-Technical Studies, Christian Religious Education
-  - Replaced free-text class input with a Grade 7/8/9 dropdown (`CLASSES`)
-  - Added per-class marks filtering (class filter dropdown separates records by class, not combined)
-  - When a class is selected, only students/records in that class are shown
-- [x] Added new subjects to `src/app/(dashboard)/subjects/page.tsx` (Integrated Science, Creative Arts and Sports, Pre-Technical Studies; renamed CRE to "Christian Religious Education")
-- [x] Replaced all "Form 1A" / "Form 1B" / "Form 2A" etc. class references with Grade 7, Grade 8, Grade 9 across:
-  - `students/page.tsx`
-  - `certificates/page.tsx`
-  - `classes/page.tsx`
-  - `timetable/page.tsx`
-  - `cbt/page.tsx`
-  - `teachers/page.tsx`
-  - `attendance/page.tsx`
-  - `reports/page.tsx`
-  - `predictions/page.tsx`
-  - `analytics/page.tsx`
-  - `dashboard/page.tsx`
-  - `communication/page.tsx`
-  - `library/page.tsx`
-  - `finance/page.tsx`
-  - `elearning/page.tsx`
-- [x] Updated subjects in analytics, dashboard, results, and reports pages to reflect junior curriculum (no standalone Science)
-- [x] Verified typecheck, lint, and build pass cleanly
+- [x] Added `getRating()` and `meanRating()` functions to `src/lib/grading.ts` with CBC-style rating categories
+- [x] Changed primary classes from `["Std 1", "Std 2", ...]` to `["Grade 1", "Grade 2", ...]` in `CLASSES_BY_LEVEL`
+- [x] Renamed `SUBJECTS_BY_LEVEL` to `LEARNING_AREAS_BY_LEVEL` in `grading.ts` with backwards-compatible alias
+- [x] Updated all pages to use "Learning Areas" instead of "Subjects" in UI labels
+- [x] Removed Remarks section from report card in `marks/page.tsx` and replaced with Ratings column
+- [x] Fixed timetable generation in `timetable/page.tsx`:
+  - Added `grade7Timetable`, `grade8Timetable`, and `grade9Timetable` data
+  - Made timetable auto-load based on selected class using `useMemo`
+  - Functional Generate Timetable button
+- [x] Changed "Class" to "Grade" in UI labels across: students, results, attendance, predictions, finance, certificates, classes, reports, analytics, CBT, teachers, dashboard, e-learning, notifications, activity
+- [x] Verified typecheck and lint pass cleanly (0 errors, 2 pre-existing warnings)
 
 ## Current Structure
 
 | File/Directory | Purpose | Status |
 |----------------|---------|--------|
-| `src/lib/grading.ts` | Shared grading utilities + CLASSES & SUBJECTS_BY_LEVEL constants | ✅ Updated |
-| `src/app/(dashboard)/marks/page.tsx` | Marks entry with per-class filtering, junior subjects | ✅ Updated |
-| `src/app/(dashboard)/subjects/page.tsx` | Subjects list with new subjects added | ✅ Updated |
-| `src/app/(dashboard)/students/page.tsx` | Student management with Grade 7-9 classes | ✅ Updated |
-| `src/app/(dashboard)/certificates/page.tsx` | Certificate generation with Grade 7-9 classes | ✅ Updated |
-| `src/app/(dashboard)/classes/page.tsx` | Class management with Grade 7-9 | ✅ Updated |
-| `src/app/(dashboard)/timetable/page.tsx` | Timetable with Grade 7 classes | ✅ Updated |
-| `src/app/(dashboard)/cbt/page.tsx` | CBT exams with Grade 7-9 classes | ✅ Updated |
-| `src/app/(dashboard)/teachers/page.tsx` | Teacher management with Grade 7-9 classes | ✅ Updated |
-| `src/app/(dashboard)/attendance/page.tsx` | Attendance with Grade 7-9 classes | ✅ Updated |
-| `src/app/(dashboard)/analytics/page.tsx` | Analytics with junior subjects | ✅ Updated |
-| `src/app/(dashboard)/predictions/page.tsx` | Predictions with Grade 7-9 classes | ✅ Updated |
-| `src/app/(dashboard)/dashboard/page.tsx` | Dashboard with junior subjects | ✅ Updated |
-| `src/app/(dashboard)/results/page.tsx` | Results with Grade 7-9 classes | ✅ Updated |
-| `src/app/(dashboard)/reports/page.tsx` | Reports with Grade 7-9 classes | ✅ Updated |
-| `src/app/(dashboard)/communication/page.tsx` | Communication with Grade 7-9 references | ✅ Updated |
-| `src/app/(dashboard)/library/page.tsx` | Library with Grade 7-9 classes | ✅ Updated |
-| `src/app/(dashboard)/finance/page.tsx` | Finance with Grade 7-9 classes | ✅ Updated |
-| `src/app/(dashboard)/elearning/page.tsx` | E-learning with Grade 8 references | ✅ Updated |
+| `src/lib/grading.ts` | Shared grading utilities + CLASSES_BY_LEVEL, LEARNING_AREAS_BY_LEVEL, getRating/meanRating | ✅ Updated |
+| `src/app/(dashboard)/marks/page.tsx` | Marks entry with per-class filtering, ratings instead of remarks | ✅ Updated |
+| `src/app/(dashboard)/subjects/page.tsx` | Learning Areas list with renamed terminology | ✅ Updated |
+| `src/app/(dashboard)/classes/page.tsx` | Grade Management with Grade 1-6 primary classes | ✅ Updated |
+| `src/app/(dashboard)/timetable/page.tsx` | Timetable with generation for Grade 7/8/9 | ✅ Fixed |
+| `src/app/(dashboard)/teachers/page.tsx` | Teacher management with Learning Area/Grade terminology | ✅ Updated |
+| `src/app/(dashboard)/students/page.tsx` | Student management with Grade terminology | ✅ Updated |
+| `src/app/(dashboard)/results/page.tsx` | Results with Learning Area Scores and Grade filter | ✅ Updated |
+| `src/app/(dashboard)/analytics/page.tsx` | Analytics with Learning Area Comparison/Trends | ✅ Updated |
+| `src/app/(dashboard)/cbt/page.tsx` | CBT exams with Learning Area column | ✅ Updated |
+| `src/app/(dashboard)/elearning/page.tsx` | E-learning with Learning Area terminology | ✅ Updated |
+| `src/app/(dashboard)/dashboard/page.tsx` | Dashboard with Learning Areas stat | ✅ Updated |
+| `src/app/(dashboard)/reports/page.tsx` | Reports with Learning Area Analysis Report | ✅ Updated |
+| `src/app/(dashboard)/attendance/page.tsx` | Attendance with Grade column | ✅ Updated |
+| `src/app/(dashboard)/predictions/page.tsx` | Predictions with Grade column | ✅ Updated |
+| `src/app/(dashboard)/certificates/page.tsx` | Certificates with Grade terminology | ✅ Updated |
+| `src/app/(dashboard)/finance/page.tsx` | Finance with Grade column | ✅ Updated |
+| `src/app/(dashboard)/super-admin/page.tsx` | Super Admin with Topic column for tickets | ✅ Updated |
+| `src/app/(dashboard)/notifications/page.tsx` | Notifications with updated class references | ✅ Updated |
+| `src/app/(dashboard)/activity/page.tsx` | Activity log with updated class references | ✅ Updated |
+| `src/app/page.tsx` | Landing page with learning areas description | ✅ Updated |
 
 ## Current Focus
 
-The Grade 7-9 Junior School reconfiguration is complete. The marks system now:
-- Shows level-appropriate subjects (junior subjects for junior level, no standalone Science)
-- Filters marks by class so records are separated, not combined
-- Uses a Grade 7/8/9 class dropdown
+The system now uses:
+- Grade 1-6 for Primary, Grade 7-9 for Junior, Form 1-4 for Secondary
+- "Learning Areas" instead of "Subjects" throughout the UI
+- CBC-style ratings (Exceeding/Meeting/Approaching/Below Expectations)
+- Functional timetable generation for all junior school grades
 
 ## Session History
 
 | Date | Changes |
 |------|---------|
-| 2026-08-24 | Reconfigured for Grade 7-9: added CLASSES & SUBJECTS_BY_LEVEL constants, added 5 new subjects, removed Science from Junior School, added per-class marks filtering, replaced all Form 1A/1B/etc. with Grade 7-9 across all pages |
+| 2026-08-26 | Added grade ratings, changed primary classes to Grade 1-6, replaced Subjects with Learning Areas across all pages, removed Remarks section from report cards, fixed timetable generation for Grade 7/8/9, changed Class to Grade in UI labels |

@@ -13,11 +13,11 @@ import {
   Legend,
 } from "chart.js";
 import { useAuth } from "@/context/AuthContext";
-import { CLASSES_BY_LEVEL, LEVEL_LABELS, SUBJECTS_BY_LEVEL, ASSESSMENT_BY_LEVEL } from "@/lib/grading";
+import { CLASSES_BY_LEVEL, LEVEL_LABELS, LEARNING_AREAS_BY_LEVEL, ASSESSMENT_BY_LEVEL } from "@/lib/grading";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-// Subject metadata: maps subject name to code + type
+// Learning Area metadata: maps learning area name to code + type
 // Codes are level-agnostic labels; the same subject name across levels keeps its code
 const SUBJECT_META: Record<string, { code: string; type: "Compulsory" | "Optional" }> = {
   Mathematics: { code: "MAT", type: "Compulsory" },
@@ -84,11 +84,11 @@ export default function SubjectsPage() {
   const [form, setForm] = useState({ name: "", code: "", type: "Compulsory" });
   const [showLevelDropdown, setShowLevelDropdown] = useState(false);
 
-  const levelSubjects = SUBJECTS_BY_LEVEL[currentLevel] || SUBJECTS_BY_LEVEL.junior;
+  const levelLearningAreas = LEARNING_AREAS_BY_LEVEL[currentLevel] || LEARNING_AREAS_BY_LEVEL.junior;
   const levelLabels = LEVEL_LABELS[currentLevel];
 
-  // Build the subjects display array from level-specific list + metadata
-  const subjectsWithMeta = levelSubjects.map((name, idx) => {
+  // Build the learning areas display array from level-specific list + metadata
+  const learningAreasWithMeta = levelLearningAreas.map((name, idx) => {
     const meta = SUBJECT_META[name] || { code: name.substring(0, 3).toUpperCase(), type: "Compulsory" as const };
     return {
       id: idx,
@@ -102,11 +102,11 @@ export default function SubjectsPage() {
   });
 
   const chartData = {
-    labels: subjectsWithMeta.map(s => s.code),
+    labels: learningAreasWithMeta.map(s => s.code),
     datasets: [
       {
         label: "Average Score (%)",
-        data: subjectsWithMeta.map(s => s.avgScore),
+        data: learningAreasWithMeta.map(s => s.avgScore),
         backgroundColor: "rgba(20, 184, 166, 0.7)",
         borderColor: "rgb(20, 184, 166)",
         borderWidth: 1,
@@ -137,8 +137,8 @@ export default function SubjectsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Subjects</h1>
-          <p className="text-slate-500 text-sm mt-1">{levelLabels.description} — {levelSubjects.length} subjects</p>
+           <h1 className="text-2xl font-bold text-slate-800">Learning Areas</h1>
+           <p className="text-slate-500 text-sm mt-1">{levelLabels.description} — {levelLearningAreas.length} learning areas</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -173,7 +173,7 @@ export default function SubjectsPage() {
             )}
           </div>
           <button onClick={() => setShowAdd(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
-            <Plus className="w-4 h-4" /> Add Subject
+            <Plus className="w-4 h-4" /> Add Learning Area
           </button>
         </div>
       </div>
@@ -181,9 +181,9 @@ export default function SubjectsPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: "Total Subjects", value: subjectsWithMeta.length, color: "text-teal-600", bg: "bg-teal-50" },
-          { label: "Compulsory", value: subjectsWithMeta.filter(s => s.type === "Compulsory").length, color: "text-blue-600", bg: "bg-blue-50" },
-          { label: "Optional", value: subjectsWithMeta.filter(s => s.type === "Optional").length, color: "text-purple-600", bg: "bg-purple-50" },
+           { label: "Total Learning Areas", value: learningAreasWithMeta.length, color: "text-teal-600", bg: "bg-teal-50" },
+           { label: "Compulsory", value: learningAreasWithMeta.filter(s => s.type === "Compulsory").length, color: "text-blue-600", bg: "bg-blue-50" },
+           { label: "Optional", value: learningAreasWithMeta.filter(s => s.type === "Optional").length, color: "text-purple-600", bg: "bg-purple-50" },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
             <div className={`w-10 h-10 rounded-lg ${s.bg} flex items-center justify-center mb-3`}>
@@ -197,15 +197,15 @@ export default function SubjectsPage() {
 
       {/* Chart */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-        <h2 className="text-base font-semibold text-slate-800 mb-4">Average Scores by Subject</h2>
+         <h2 className="text-base font-semibold text-slate-800 mb-4">Average Scores by Learning Area</h2>
         <div className="h-56">
           <Bar data={chartData} options={{ ...chartOptions, maintainAspectRatio: false }} />
         </div>
       </div>
 
-      {/* Subject Grid */}
+      {/* Learning Area Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {subjectsWithMeta.map(s => (
+         {learningAreasWithMeta.map(s => (
           <div key={s.code} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
             <div className="flex items-start justify-between mb-3">
               <span className={`px-2 py-1 rounded-lg text-xs font-bold ${colorMap[s.code]}`}>{s.code}</span>
@@ -229,22 +229,22 @@ export default function SubjectsPage() {
         ))}
       </div>
 
-      {/* Add Subject Modal */}
+      {/* Add Learning Area Modal */}
       {showAdd && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-800">Add New Subject</h2>
+               <h2 className="text-lg font-semibold text-slate-800">Add New Learning Area</h2>
               <button onClick={() => setShowAdd(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5" /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Subject Name</label>
-                <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="e.g. Mathematics" />
+                 <label className="block text-sm font-medium text-slate-700 mb-1">Learning Area Name</label>
+                 <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="e.g. Mathematics" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Subject Code</label>
-                <input value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="e.g. MAT" />
+                 <label className="block text-sm font-medium text-slate-700 mb-1">Learning Area Code</label>
+                 <input value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="e.g. MAT" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
@@ -254,7 +254,7 @@ export default function SubjectsPage() {
                 </select>
               </div>
               <div className="flex gap-3 pt-2">
-                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex-1">Add Subject</button>
+                 <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex-1">Add Learning Area</button>
                 <button type="button" onClick={() => setShowAdd(false)} className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium">Cancel</button>
               </div>
             </form>

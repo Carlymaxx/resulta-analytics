@@ -41,7 +41,7 @@ const stats = [
   { label: "Total Students", value: "2,547", change: "+12%", positive: true, icon: Users },
   { label: "Average Score", value: "78.4%", change: "+3.2%", positive: true, icon: TrendingUp },
   { label: "At-Risk Learners", value: "156", change: "-8%", positive: true, icon: AlertTriangle },
-  { label: "Subjects", value: "12", change: "0", positive: true, icon: GraduationCap },
+  { label: "Learning Areas", value: "12", change: "0", positive: true, icon: GraduationCap },
 ];
 
 const performanceData = {
@@ -134,7 +134,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Subject Performance</h3>
+          <h3 className="text-lg font-bold text-slate-800 mb-4">Learning Area Performance</h3>
           <div className="h-64">
             <Bar 
               data={subjectData} 

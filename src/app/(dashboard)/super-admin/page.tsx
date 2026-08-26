@@ -51,11 +51,11 @@ const packages = [
 ];
 
 const tickets = [
-  { id: "TKT001", school: "Mombasa Academy", subject: "Unable to export reports", priority: "High", status: "Open", date: "2025-01-14" },
-  { id: "TKT002", school: "Kisumu Lakeside School", subject: "SMS integration not working", priority: "Medium", status: "In Progress", date: "2025-01-13" },
-  { id: "TKT003", school: "Nairobi High School", subject: "Payroll calculations incorrect", priority: "High", status: "Resolved", date: "2025-01-10" },
-  { id: "TKT004", school: "Eldoret International", subject: "Password reset not sending email", priority: "Low", status: "Open", date: "2025-01-12" },
-  { id: "TKT005", school: "Thika Road Academy", subject: "Timetable generator crash", priority: "Medium", status: "In Progress", date: "2025-01-11" },
+  { id: "TKT001", school: "Mombasa Academy", topic: "Unable to export reports", priority: "High", status: "Open", date: "2025-01-14" },
+  { id: "TKT002", school: "Kisumu Lakeside School", topic: "SMS integration not working", priority: "Medium", status: "In Progress", date: "2025-01-13" },
+  { id: "TKT003", school: "Nairobi High School", topic: "Payroll calculations incorrect", priority: "High", status: "Resolved", date: "2025-01-10" },
+  { id: "TKT004", school: "Eldoret International", topic: "Password reset not sending email", priority: "Low", status: "Open", date: "2025-01-12" },
+  { id: "TKT005", school: "Thika Road Academy", topic: "Timetable generator crash", priority: "Medium", status: "In Progress", date: "2025-01-11" },
 ];
 
 const tabs = ["Schools", "Registered Users", "Revenue", "Packages", "Support Tickets"];
@@ -310,7 +310,7 @@ export default function SuperAdminPage() {
               <table className="w-full">
                 <thead className="bg-slate-50">
                   <tr>
-                    {["Ticket ID", "School", "Subject", "Priority", "Status", "Date"].map(h => (
+                     {["Ticket ID", "School", "Topic", "Priority", "Status", "Date"].map(h => (
                       <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
                     ))}
                   </tr>
@@ -320,7 +320,7 @@ export default function SuperAdminPage() {
                     <tr key={t.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-mono text-slate-500">{t.id}</td>
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{t.school}</td>
-                      <td className="px-4 py-3 text-sm text-slate-600">{t.subject}</td>
+                       <td className="px-4 py-3 text-sm text-slate-600">{t.topic}</td>
                       <td className="px-4 py-3">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.priority === "High" ? "bg-red-100 text-red-700" : t.priority === "Medium" ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-600"}`}>{t.priority}</span>
                       </td>

@@ -14,7 +14,7 @@ import {
   X,
   ChevronDown,
 } from "lucide-react";
-import { CLASSES_BY_LEVEL, LEVEL_LABELS, SUBJECTS_BY_LEVEL } from "@/lib/grading";
+import { CLASSES_BY_LEVEL, LEVEL_LABELS, LEARNING_AREAS_BY_LEVEL } from "@/lib/grading";
 import { useAuth } from "@/context/AuthContext";
 
 const LEVEL_DROPDOWN = [
@@ -34,7 +34,7 @@ export default function ClassesPage() {
   const [showLevelDropdown, setShowLevelDropdown] = useState(false);
 
   const levelClasses = CLASSES_BY_LEVEL[currentLevel] || [];
-  const levelSubjects = SUBJECTS_BY_LEVEL[currentLevel] || [];
+  const levelLearningAreas = LEARNING_AREAS_BY_LEVEL[currentLevel] || [];
   const levelLabels = LEVEL_LABELS[currentLevel];
 
   // Generate deterministic mock stats per class so totals stay consistent when switching levels
@@ -42,7 +42,7 @@ export default function ClassesPage() {
     id: idx + 1,
     name,
     students: 35 + (idx * 7) + (currentLevel === "primary" ? 10 : currentLevel === "secondary" ? 25 : 0),
-    subjects: levelSubjects.length,
+    learningAreas: levelLearningAreas.length,
     avgScore: 68 + idx * 3.5 + (currentLevel === "secondary" ? 5 : currentLevel === "junior" ? 8 : 0),
     status: "Active",
   }));
@@ -56,7 +56,7 @@ export default function ClassesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Class Management</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Grade Management</h1>
           <p className="text-slate-500 dark:text-slate-400">{levelLabels.description}</p>
         </div>
         <div className="flex items-center gap-3">
@@ -98,7 +98,7 @@ export default function ClassesPage() {
             className="inline-flex items-center gap-2 bg-teal-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-teal-700 transition-all"
           >
             <Plus className="w-5 h-5" />
-            Add Class
+            Add Grade
           </button>
         </div>
       </div>
@@ -110,7 +110,7 @@ export default function ClassesPage() {
             <div className="w-10 h-10 bg-teal-100 dark:bg-teal-900 rounded-lg flex items-center justify-center">
               <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" />
             </div>
-            <span className="text-slate-500 dark:text-slate-400">Total Classes</span>
+             <span className="text-slate-500 dark:text-slate-400">Total Grades</span>
           </div>
           <div className="text-2xl font-bold text-slate-800 dark:text-white">{mockClasses.length}</div>
         </div>
@@ -128,16 +128,16 @@ export default function ClassesPage() {
               <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               </div>
-              <span className="text-slate-500 dark:text-slate-400">Subjects per Class</span>
+              <span className="text-slate-500 dark:text-slate-400">Learning Areas per Grade</span>
             </div>
-            <div className="text-2xl font-bold text-slate-800 dark:text-white">{mockClasses[0]?.subjects || 9}</div>
+             <div className="text-2xl font-bold text-slate-800 dark:text-white">{mockClasses[0]?.learningAreas || 9}</div>
           </div>
         <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
               <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
             </div>
-            <span className="text-slate-500 dark:text-slate-400">Active Classes</span>
+             <span className="text-slate-500 dark:text-slate-400">Active Grades</span>
           </div>
           <div className="text-2xl font-bold text-slate-800 dark:text-white">{mockClasses.length}</div>
         </div>
@@ -179,8 +179,8 @@ export default function ClassesPage() {
                <span className="text-2xl font-bold text-slate-800 dark:text-white">{cls.students}</span>
              </div>
              <div className="flex items-center justify-between">
-               <span className="text-slate-500 dark:text-slate-400 text-sm">Subjects</span>
-               <span className="text-2xl font-bold text-slate-800 dark:text-white">{cls.subjects}</span>
+                <span className="text-slate-500 dark:text-slate-400 text-sm">Learning Areas</span>
+                <span className="text-2xl font-bold text-slate-800 dark:text-white">{cls.learningAreas}</span>
              </div>
              <div className="flex items-center justify-between">
                <span className="text-slate-500 dark:text-slate-400 text-sm">Average Score</span>
@@ -205,7 +205,7 @@ export default function ClassesPage() {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
-              <h2 className="text-xl font-bold text-slate-800 dark:text-white">Add New Class</h2>
+               <h2 className="text-xl font-bold text-slate-800 dark:text-white">Add New Grade</h2>
               <button onClick={() => setShowAddModal(false)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
                 <X className="w-5 h-5 text-slate-500" />
               </button>
@@ -229,12 +229,12 @@ export default function ClassesPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Subjects</label>
+                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Learning Areas</label>
                 <div className="grid grid-cols-2 gap-2">
-                   {levelSubjects.map(subject => (
-                    <label key={subject} className="flex items-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700">
-                      <input type="checkbox" className="rounded text-teal-600" />
-                      <span className="text-sm text-slate-700 dark:text-slate-300">{subject}</span>
+                    {levelLearningAreas.map(learningArea => (
+                     <label key={learningArea} className="flex items-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700">
+
+                       <span className="text-sm text-slate-700 dark:text-slate-300">{learningArea}</span>
                     </label>
                   ))}
                 </div>
@@ -251,7 +251,7 @@ export default function ClassesPage() {
                   type="submit"
                   className="px-6 py-2.5 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700"
                 >
-                  Create Class
+                   Create Grade
                 </button>
               </div>
             </form>
@@ -263,24 +263,24 @@ export default function ClassesPage() {
       {showEditModal && selectedClass && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
-              <h2 className="text-xl font-bold text-slate-800 dark:text-white">Edit Class: {selectedClass.name}</h2>
+             <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+               <h2 className="text-xl font-bold text-slate-800 dark:text-white">Edit Grade: {selectedClass.name}</h2>
               <button onClick={() => setShowEditModal(false)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
                 <X className="w-5 h-5 text-slate-500" />
               </button>
             </div>
             <form className="p-6 space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class Name</label>
-                <input
-                  type="text"
-                  value={selectedClass.name}
-                  onChange={e => setSelectedClass({ ...selectedClass, name: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class Teacher</label>
+               <div>
+                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Grade Name</label>
+                 <input
+                   type="text"
+                   value={selectedClass.name}
+                   onChange={e => setSelectedClass({ ...selectedClass, name: e.target.value })}
+                   className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                 />
+               </div>
+               <div>
+                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Grade Teacher</label>
                 <select className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                   <option value="">Select Teacher</option>
                   <option value="1">Mrs. Johnson</option>
@@ -289,14 +289,14 @@ export default function ClassesPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Subjects</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Learning Areas</label>
                 <div className="grid grid-cols-2 gap-2">
-                  {levelSubjects.map(subject => (
-                    <label key={subject} className="flex items-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700">
-                      <input type="checkbox" defaultChecked className="rounded text-teal-600" />
-                      <span className="text-sm text-slate-700 dark:text-slate-300">{subject}</span>
-                    </label>
-                  ))}
+                   {levelLearningAreas.map(learningArea => (
+                     <label key={learningArea} className="flex items-center gap-2 p-2 border border-slate-200 dark:border-slate-600 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700">
+                       <input type="checkbox" defaultChecked className="rounded text-teal-600" />
+                       <span className="text-sm text-slate-700 dark:text-slate-300">{learningArea}</span>
+                     </label>
+                   ))}
                 </div>
               </div>
               <div className="flex justify-end gap-3 pt-4">
@@ -325,7 +325,7 @@ export default function ClassesPage() {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
-              <h2 className="text-xl font-bold text-slate-800 dark:text-white">Class Details: {selectedClass.name}</h2>
+               <h2 className="text-xl font-bold text-slate-800 dark:text-white">Grade Details: {selectedClass.name}</h2>
               <button onClick={() => setShowDetailsModal(false)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
                 <X className="w-5 h-5 text-slate-500" />
               </button>
@@ -337,8 +337,8 @@ export default function ClassesPage() {
                   <div className="text-sm text-slate-500 dark:text-slate-400">Students</div>
                 </div>
                 <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-4 text-center">
-                  <div className="text-3xl font-bold text-slate-800 dark:text-white">{selectedClass.subjects}</div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Subjects</div>
+                   <div className="text-3xl font-bold text-slate-800 dark:text-white">{selectedClass.learningAreas}</div>
+                   <div className="text-sm text-slate-500 dark:text-slate-400">Learning Areas</div>
                 </div>
                 <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-4 text-center">
                   <div className="text-3xl font-bold text-teal-600">{selectedClass.avgScore.toFixed(1)}%</div>
@@ -346,11 +346,11 @@ export default function ClassesPage() {
                 </div>
               </div>
               <div>
-                <h3 className="font-semibold text-slate-800 dark:text-white mb-3">Class Subject List</h3>
+                <h3 className="font-semibold text-slate-800 dark:text-white mb-3">Grade Learning Area List</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {levelSubjects.map(subject => (
-                    <div key={subject} className="flex items-center gap-2 p-2 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                      <span className="text-sm text-slate-700 dark:text-slate-300">{subject}</span>
+                  {levelLearningAreas.map(learningArea => (
+                    <div key={learningArea} className="flex items-center gap-2 p-2 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                      <span className="text-sm text-slate-700 dark:text-slate-300">{learningArea}</span>
                     </div>
                   ))}
                 </div>
@@ -362,7 +362,7 @@ export default function ClassesPage() {
                     onClick={() => { setShowDetailsModal(false); setShowEditModal(true); }}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-all"
                   >
-                    <Edit2 className="w-4 h-4" /> Edit Class
+                     <Edit2 className="w-4 h-4" /> Edit Grade
                   </button>
                   <button
                     onClick={() => setShowDetailsModal(false)}

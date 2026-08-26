@@ -102,7 +102,7 @@ export default function MedicalPage() {
               <table className="w-full">
                 <thead className="bg-slate-50">
                   <tr>
-                    {["Student", "Class", "Blood Group", "Allergies", "Conditions", "Last Checkup"].map(h => (
+                     {["Student", "Grade", "Blood Group", "Allergies", "Conditions", "Last Checkup"].map(h => (
                       <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
                     ))}
                   </tr>

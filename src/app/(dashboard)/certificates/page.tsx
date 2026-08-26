@@ -120,7 +120,7 @@ export default function CertificatesPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Class</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Grade</label>
                   <select value={studentClass} onChange={e => setStudentClass(e.target.value)} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
                       {levelClasses.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
@@ -137,7 +137,7 @@ export default function CertificatesPage() {
               <table className="w-full">
                 <thead className="bg-slate-50">
                   <tr>
-                    {["Cert ID", "Student", "Class", "Type", "Date Issued", "Issued By", "Actions"].map(h => (
+                     {["Cert ID", "Student", "Grade", "Type", "Date Issued", "Issued By", "Actions"].map(h => (
                       <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
                     ))}
                   </tr>
@@ -209,14 +209,14 @@ export default function CertificatesPage() {
 
                   <div className="text-xs text-slate-500 uppercase tracking-widest mb-2">This is to Certify That</div>
                   <div className="text-3xl font-bold text-slate-800 border-b-2 border-teal-300 pb-2 mb-4 px-8">{studentName}</div>
-                  <div className="text-sm text-slate-600 mb-1">of class <span className="font-semibold">{studentClass}</span></div>
+                   <div className="text-sm text-slate-600 mb-1">of grade <span className="font-semibold">{studentClass}</span></div>
                   <div className="text-xl font-bold text-teal-600 my-4">{selectedTypeLabel}</div>
                   <p className="text-sm text-slate-600 leading-relaxed mb-6 max-w-md mx-auto">{certBodyText[selectedType]}</p>
 
                   <div className="flex justify-between items-end mt-8 pt-6 border-t border-slate-200">
                     <div className="text-center">
                       <div className="border-t-2 border-slate-400 w-32 mb-1"></div>
-                      <div className="text-xs text-slate-500">Class Teacher</div>
+                      <div className="text-xs text-slate-500">Grade Teacher</div>
                     </div>
                     <div className="text-center">
                       <div className="text-xs text-slate-400">Date: {new Date().toLocaleDateString("en-GB")}</div>

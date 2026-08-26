@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Clock, Printer, RefreshCw } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { CLASSES_BY_LEVEL, SUBJECTS_BY_LEVEL } from "@/lib/grading";
+import { CLASSES_BY_LEVEL, LEARNING_AREAS_BY_LEVEL } from "@/lib/grading";
 
 const periods = [
   { label: "Period 1", time: "8:00 – 8:40" },
@@ -38,25 +38,88 @@ const grade7Timetable: TimetableData = {
   "Tuesday-7": { subject: "Agriculture", teacher: "P. Kamau" },
   "Wednesday-0": { subject: "Mathematics", teacher: "S. Wanjiku" },
   "Wednesday-1": { subject: "Social Studies", teacher: "D. Kipchoge" },
-  "Wednesday-2": { subject: "History", teacher: "J. Auma" },
-  "Wednesday-4": { subject: "English", teacher: "J. Otieno" },
+  "Wednesday-2": { subject: "English", teacher: "J. Otieno" },
+  "Wednesday-4": { subject: "Kiswahili", teacher: "F. Hassan" },
   "Wednesday-5": { subject: "Mathematics", teacher: "S. Wanjiku" },
-  "Wednesday-7": { subject: "CRE", teacher: "J. Auma" },
-  "Wednesday-8": { subject: "Pre-Technical Studies", teacher: "R. Njoroge" },
+  "Wednesday-7": { subject: "Christian Religious Education", teacher: "J. Auma" },
   "Thursday-0": { subject: "Integrated Science", teacher: "G. Muthoni" },
   "Thursday-1": { subject: "Agriculture", teacher: "G. Muthoni" },
   "Thursday-2": { subject: "Social Studies", teacher: "P. Kamau" },
   "Thursday-4": { subject: "Mathematics", teacher: "S. Wanjiku" },
   "Thursday-5": { subject: "English", teacher: "J. Otieno" },
   "Thursday-7": { subject: "Kiswahili", teacher: "F. Hassan" },
-  "Thursday-8": { subject: "History", teacher: "J. Auma" },
   "Friday-0": { subject: "Kiswahili", teacher: "F. Hassan" },
   "Friday-1": { subject: "Integrated Science", teacher: "G. Muthoni" },
   "Friday-2": { subject: "Mathematics", teacher: "S. Wanjiku" },
   "Friday-4": { subject: "Social Studies", teacher: "D. Kipchoge" },
   "Friday-5": { subject: "Pre-Technical Studies", teacher: "R. Njoroge" },
   "Friday-7": { subject: "English", teacher: "J. Otieno" },
-  "Friday-8": { subject: "Social Studies", teacher: "P. Kamau" },
+};
+
+const grade8Timetable: TimetableData = {
+  "Monday-0": { subject: "English", teacher: "J. Otieno" },
+  "Monday-1": { subject: "Mathematics", teacher: "S. Wanjiku" },
+  "Monday-2": { subject: "Integrated Science", teacher: "G. Muthoni" },
+  "Monday-4": { subject: "Kiswahili", teacher: "F. Hassan" },
+  "Monday-5": { subject: "Social Studies", teacher: "P. Kamau" },
+  "Monday-7": { subject: "Agriculture", teacher: "P. Kamau" },
+  "Tuesday-0": { subject: "Mathematics", teacher: "S. Wanjiku" },
+  "Tuesday-1": { subject: "English", teacher: "J. Otieno" },
+  "Tuesday-2": { subject: "Pre-Technical Studies", teacher: "R. Njoroge" },
+  "Tuesday-4": { subject: "Integrated Science", teacher: "G. Muthoni" },
+  "Tuesday-5": { subject: "Creative Arts and Sports", teacher: "D. Kipchoge" },
+  "Tuesday-7": { subject: "Christian Religious Education", teacher: "J. Auma" },
+  "Wednesday-0": { subject: "Kiswahili", teacher: "F. Hassan" },
+  "Wednesday-1": { subject: "Mathematics", teacher: "S. Wanjiku" },
+  "Wednesday-2": { subject: "English", teacher: "J. Otieno" },
+  "Wednesday-4": { subject: "Social Studies", teacher: "D. Kipchoge" },
+  "Wednesday-5": { subject: "Integrated Science", teacher: "G. Muthoni" },
+  "Wednesday-7": { subject: "Pre-Technical Studies", teacher: "R. Njoroge" },
+  "Thursday-0": { subject: "Mathematics", teacher: "S. Wanjiku" },
+  "Thursday-1": { subject: "Agriculture", teacher: "G. Muthoni" },
+  "Thursday-2": { subject: "English", teacher: "J. Otieno" },
+  "Thursday-4": { subject: "Kiswahili", teacher: "F. Hassan" },
+  "Thursday-5": { subject: "Creative Arts and Sports", teacher: "D. Kipchoge" },
+  "Thursday-7": { subject: "Christian Religious Education", teacher: "J. Auma" },
+  "Friday-0": { subject: "Integrated Science", teacher: "G. Muthoni" },
+  "Friday-1": { subject: "Social Studies", teacher: "P. Kamau" },
+  "Friday-2": { subject: "Mathematics", teacher: "S. Wanjiku" },
+  "Friday-4": { subject: "English", teacher: "J. Otieno" },
+  "Friday-5": { subject: "Pre-Technical Studies", teacher: "R. Njoroge" },
+  "Friday-7": { subject: "Kiswahili", teacher: "F. Hassan" },
+};
+
+const grade9Timetable: TimetableData = {
+  "Monday-0": { subject: "Mathematics", teacher: "S. Wanjiku" },
+  "Monday-1": { subject: "English", teacher: "J. Otieno" },
+  "Monday-2": { subject: "Integrated Science", teacher: "G. Muthoni" },
+  "Monday-4": { subject: "Kiswahili", teacher: "F. Hassan" },
+  "Monday-5": { subject: "Social Studies", teacher: "P. Kamau" },
+  "Monday-7": { subject: "Pre-Technical Studies", teacher: "R. Njoroge" },
+  "Tuesday-0": { subject: "English", teacher: "J. Otieno" },
+  "Tuesday-1": { subject: "Mathematics", teacher: "S. Wanjiku" },
+  "Tuesday-2": { subject: "Agriculture", teacher: "G. Muthoni" },
+  "Tuesday-4": { subject: "Christian Religious Education", teacher: "J. Auma" },
+  "Tuesday-5": { subject: "Integrated Science", teacher: "G. Muthoni" },
+  "Tuesday-7": { subject: "Creative Arts and Sports", teacher: "D. Kipchoge" },
+  "Wednesday-0": { subject: "Kiswahili", teacher: "F. Hassan" },
+  "Wednesday-1": { subject: "Social Studies", teacher: "D. Kipchoge" },
+  "Wednesday-2": { subject: "Mathematics", teacher: "S. Wanjiku" },
+  "Wednesday-4": { subject: "English", teacher: "J. Otieno" },
+  "Wednesday-5": { subject: "Pre-Technical Studies", teacher: "R. Njoroge" },
+  "Wednesday-7": { subject: "Agriculture", teacher: "P. Kamau" },
+  "Thursday-0": { subject: "Integrated Science", teacher: "G. Muthoni" },
+  "Thursday-1": { subject: "Mathematics", teacher: "S. Wanjiku" },
+  "Thursday-2": { subject: "Kiswahili", teacher: "F. Hassan" },
+  "Thursday-4": { subject: "Christian Religious Education", teacher: "J. Auma" },
+  "Thursday-5": { subject: "English", teacher: "J. Otieno" },
+  "Thursday-7": { subject: "Creative Arts and Sports", teacher: "D. Kipchoge" },
+  "Friday-0": { subject: "Social Studies", teacher: "P. Kamau" },
+  "Friday-1": { subject: "Mathematics", teacher: "S. Wanjiku" },
+  "Friday-2": { subject: "Integrated Science", teacher: "G. Muthoni" },
+  "Friday-4": { subject: "English", teacher: "J. Otieno" },
+  "Friday-5": { subject: "Kiswahili", teacher: "F. Hassan" },
+  "Friday-7": { subject: "Pre-Technical Studies", teacher: "R. Njoroge" },
 };
 
 export default function TimetablePage() {
@@ -64,7 +127,15 @@ export default function TimetablePage() {
   const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
   const [selectedClass, setSelectedClass] = useState(levelClasses[0] || "Grade 7");
 
-  const timetable = grade7Timetable;
+  const timetable = useMemo(() => {
+    if (selectedClass.includes("Grade 8")) return grade8Timetable;
+    if (selectedClass.includes("Grade 9")) return grade9Timetable;
+    return grade7Timetable;
+  }, [selectedClass]);
+
+  const generateTimetable = () => {
+    // Timetable auto-updates based on selectedClass via useMemo
+  };
 
   return (
     <div className="space-y-6">
@@ -81,7 +152,7 @@ export default function TimetablePage() {
           >
             {levelClasses.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
-          <button className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
+          <button onClick={generateTimetable} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
             <RefreshCw className="w-4 h-4" /> Generate Timetable
           </button>
           <button onClick={() => window.print()} className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium flex items-center gap-2">

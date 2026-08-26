@@ -22,14 +22,14 @@ const reportTypes = [
   { id: "class", name: "Class Performance Report", icon: GraduationCap, description: "Class-wide performance summary" },
   { id: "trend", name: "Trend Analysis Report", icon: TrendingUp, description: "Performance trends over time" },
   { id: "at-risk", name: "At-Risk Students Report", icon: Users, description: "Students needing intervention" },
-  { id: "subject", name: "Subject Analysis Report", icon: BarChart3, description: "Detailed subject performance" },
+  { id: "subject", name: "Learning Area Analysis Report", icon: BarChart3, description: "Detailed learning area performance" },
 ];
 
 const generatedReports = [
   { id: 1, name: "Q1 2025 Performance Report", type: "Performance Report", date: "2025-04-10", status: "Ready", size: "2.4 MB" },
   { id: 2, name: "Grade 9 Mid-Term Report", type: "Class Report", date: "2025-04-08", status: "Ready", size: "1.8 MB" },
   { id: 3, name: "At-Risk Students - April", type: "At-Risk Report", date: "2025-04-05", status: "Ready", size: "856 KB" },
-  { id: 4, name: "Subject Analysis - Mathematics", type: "Subject Report", date: "2025-04-01", status: "Ready", size: "1.2 MB" },
+  { id: 4, name: "Learning Area Analysis - Mathematics", type: "Learning Area Report", date: "2025-04-01", status: "Ready", size: "1.2 MB" },
   { id: 5, name: "Annual Trend Analysis 2024", type: "Trend Report", date: "2025-03-28", status: "Ready", size: "3.1 MB" },
 ];
 
@@ -94,13 +94,13 @@ export default function ReportsPage() {
           </div>
           
            <div>
-             <label className="block text-sm font-medium text-slate-700 mb-2">Class</label>
-             <select className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white">
-               <option value="">All Classes</option>
-               <option value="Grade 7">Grade 7</option>
-               <option value="Grade 8">Grade 8</option>
-               <option value="Grade 9">Grade 9</option>
-             </select>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Grade</label>
+              <select className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white">
+                <option value="">All Grades</option>
+                <option value="Grade 7">Grade 7</option>
+                <option value="Grade 8">Grade 8</option>
+                <option value="Grade 9">Grade 9</option>
+              </select>
            </div>
 
           <div>
@@ -187,11 +187,11 @@ export default function ReportsPage() {
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-slate-800 mb-3">Top Performing Subjects</h4>
+                   <h4 className="font-semibold text-slate-800 mb-3">Top Performing Learning Areas</h4>
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-slate-200">
-                        <th className="text-left py-2">Subject</th>
+                        <th className="text-left py-2">Learning Area</th>
                         <th className="text-right py-2">Average</th>
                         <th className="text-right py-2">Trend</th>
                       </tr>
@@ -213,7 +213,7 @@ export default function ReportsPage() {
                         <td className="text-right text-green-600">+3.2%</td>
                       </tr>
                       <tr>
-                        <td className="py-2">Science</td>
+                        <td className="py-2">Integrated Science</td>
                         <td className="text-right font-mono">71.2%</td>
                         <td className="text-right text-red-600">-1.8%</td>
                       </tr>

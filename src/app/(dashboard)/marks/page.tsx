@@ -7,8 +7,8 @@ import {
 } from "lucide-react";
 import {
   StudentRecord, SubjectMark, loadRecords, saveRecords,
-  totalScore, averageScore, meanGrade, getGrade, computePositions,
-  CLASSES_BY_LEVEL, SUBJECTS_BY_LEVEL, ASSESSMENT_BY_LEVEL,
+  totalScore, averageScore, meanGrade, meanRating, getGrade, getRating, computePositions,
+  CLASSES_BY_LEVEL, LEARNING_AREAS_BY_LEVEL, ASSESSMENT_BY_LEVEL,
 } from "@/lib/grading";
 
 const TERMS = ["Term 1", "Term 2", "Term 3"];
@@ -33,9 +33,9 @@ export default function MarksPage() {
   const [className, setClassName] = useState(levelClasses[0] || "Grade 7");
   const [term, setTerm] = useState("Term 1");
   const [year, setYear] = useState(String(new Date().getFullYear()));
-  const levelSubjects = SUBJECTS_BY_LEVEL[currentLevel] || SUBJECTS_BY_LEVEL.junior;
+  const levelLearningAreas = LEARNING_AREAS_BY_LEVEL[currentLevel] || LEARNING_AREAS_BY_LEVEL.junior;
   const [marks, setMarks] = useState<SubjectMark[]>(
-    levelSubjects.map((s) => ({ subject: s, score: 0 }))
+    levelLearningAreas.map((s) => ({ subject: s, score: 0 }))
   );
   const [selectedClass, setSelectedClass] = useState<string>("All Classes");
 
@@ -74,7 +74,7 @@ export default function MarksPage() {
   const resetForm = () => {
     setName(""); setAdmNo(""); setClassName(levelClasses[0] || "Grade 7"); setTerm("Term 1");
     setYear(String(new Date().getFullYear()));
-    setMarks(levelSubjects.map((s) => ({ subject: s, score: 0 })));
+    setMarks(levelLearningAreas.map((s) => ({ subject: s, score: 0 })));
   };
 
   const handleAddSubjectRow = () => setMarks((m) => [...m, { subject: "", score: 0 }]);
@@ -265,9 +265,9 @@ export default function MarksPage() {
 
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Subjects & Scores (0–100)</label>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Learning Areas & Scores (0–100)</label>
                   <button type="button" onClick={handleAddSubjectRow} className="text-sm text-teal-600 font-medium hover:underline inline-flex items-center gap-1">
-                    <Plus className="w-4 h-4" /> Add subject
+                    <Plus className="w-4 h-4" /> Add learning area
                   </button>
                 </div>
                 <div className="space-y-2">
@@ -278,7 +278,7 @@ export default function MarksPage() {
                         <input
                           value={m.subject}
                           onChange={(e) => setMarks((arr) => arr.map((x, idx) => idx === i ? { ...x, subject: e.target.value } : x))}
-                          placeholder="Subject"
+                          placeholder="Learning Area"
                           className="flex-1 px-3 py-2 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                         />
                         <input
@@ -367,21 +367,22 @@ function ReportCard({ record, position, classSize, user }: { record: StudentReco
       <table className="w-full text-sm border-collapse mb-6">
         <thead>
           <tr className="bg-teal-50">
-            <th className="border border-slate-300 px-3 py-2 text-left">Subject</th>
+            <th className="border border-slate-300 px-3 py-2 text-left">Learning Area</th>
             <th className="border border-slate-300 px-3 py-2 text-center">Score (%)</th>
             <th className="border border-slate-300 px-3 py-2 text-center">Grade</th>
-            <th className="border border-slate-300 px-3 py-2 text-left">Remark</th>
+            <th className="border border-slate-300 px-3 py-2 text-left">Rating</th>
           </tr>
         </thead>
         <tbody>
           {record.marks.map((m, i) => {
             const g = getGrade(m.score);
+            const rating = getRating(m.score);
             return (
               <tr key={i}>
                 <td className="border border-slate-300 px-3 py-2">{m.subject}</td>
                 <td className="border border-slate-300 px-3 py-2 text-center font-mono">{m.score}</td>
                 <td className="border border-slate-300 px-3 py-2 text-center font-semibold">{g.grade}</td>
-                <td className="border border-slate-300 px-3 py-2">{g.remark}</td>
+                <td className="border border-slate-300 px-3 py-2">{rating.rating}</td>
               </tr>
             );
           })}
@@ -393,11 +394,6 @@ function ReportCard({ record, position, classSize, user }: { record: StudentReco
         <div className="bg-slate-50 rounded-lg p-3"><div className="text-xs text-slate-500">Average</div><div className="font-bold">{avg.toFixed(1)}%</div></div>
         <div className="bg-slate-50 rounded-lg p-3"><div className="text-xs text-slate-500">Mean Grade</div><div className="font-bold">{mg.grade}</div></div>
         <div className="bg-slate-50 rounded-lg p-3"><div className="text-xs text-slate-500">Position</div><div className="font-bold">{position}/{classSize}</div></div>
-      </div>
-
-      <div className="text-sm space-y-1 mb-8">
-        <p><span className="text-slate-500">Class Teacher&apos;s Remark:</span> {mg.remark}. {avg >= 50 ? "Keep up the good work." : "Needs improvement and closer support."}</p>
-        <p><span className="text-slate-500">Principal&apos;s Remark:</span> {avg >= 70 ? "An excellent result." : avg >= 50 ? "A satisfactory performance." : "More effort is required next term."}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-8 text-sm mt-10">

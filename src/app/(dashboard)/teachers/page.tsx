@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { CLASSES_BY_LEVEL, SUBJECTS_BY_LEVEL, LEVEL_LABELS } from "@/lib/grading";
+import { CLASSES_BY_LEVEL, LEARNING_AREAS_BY_LEVEL, LEVEL_LABELS } from "@/lib/grading";
 import { UserCheck, Plus, Search, X, Eye, Trash2, Phone, Mail, BookOpen } from "lucide-react";
 
 type Teacher = {
   id: number;
   name: string;
   empId: string;
-  subject: string;
-  classAssigned: string;
+  learningArea: string;
+  gradeAssigned: string;
   email: string;
   phone: string;
   type: string;
@@ -25,17 +25,17 @@ export default function TeachersPage() {
   const { user, currentLevel } = useAuth();
   const schoolName = user?.school || "My School";
   const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
-  const levelSubjects = SUBJECTS_BY_LEVEL[currentLevel] || SUBJECTS_BY_LEVEL.junior;
+  const levelLearningAreas = LEARNING_AREAS_BY_LEVEL[currentLevel] || LEARNING_AREAS_BY_LEVEL.junior;
   const [teachers, setTeachers] = useState<Teacher[]>(initialTeachers);
   const [search, setSearch] = useState("");
   const [showAdd, setShowAdd] = useState(false);
   const [viewTeacher, setViewTeacher] = useState<Teacher | null>(null);
-  const [form, setForm] = useState({ name: "", empId: "", email: "", phone: "", subject: "", classAssigned: "", type: "Full-time", qualification: "" });
+  const [form, setForm] = useState({ name: "", empId: "", email: "", phone: "", learningArea: "", gradeAssigned: "", type: "Full-time", qualification: "" });
 
   const filtered = teachers.filter(t =>
     t.name.toLowerCase().includes(search.toLowerCase()) ||
     t.empId.toLowerCase().includes(search.toLowerCase()) ||
-    t.subject.toLowerCase().includes(search.toLowerCase())
+    t.learningArea.toLowerCase().includes(search.toLowerCase())
   );
 
   const total = teachers.length;
@@ -50,8 +50,8 @@ export default function TeachersPage() {
       id: Date.now(),
       name: form.name,
       empId: form.empId,
-      subject: form.subject,
-      classAssigned: form.classAssigned,
+      learningArea: form.learningArea,
+      gradeAssigned: form.gradeAssigned,
       email: form.email,
       phone: form.phone,
       type: form.type,
@@ -61,7 +61,7 @@ export default function TeachersPage() {
     };
     setTeachers(prev => [newTeacher, ...prev]);
     setShowAdd(false);
-    setForm({ name: "", empId: "", email: "", phone: "", subject: "", classAssigned: "", type: "Full-time", qualification: "" });
+    setForm({ name: "", empId: "", email: "", phone: "", learningArea: "", gradeAssigned: "", type: "Full-time", qualification: "" });
   };
 
   const handleDelete = (id: number) => {
@@ -117,7 +117,7 @@ export default function TeachersPage() {
           <table className="w-full">
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
-                {["Name", "Employee ID", "Subject", "Class", "Type", "Status", "Actions"].map(h => (
+                {["Name", "Employee ID", "Learning Area", "Grade Assigned", "Type", "Status", "Actions"].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
@@ -141,8 +141,8 @@ export default function TeachersPage() {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-sm text-slate-600">{t.empId}</td>
-                  <td className="px-4 py-3 text-sm text-slate-600">{t.subject}</td>
-                  <td className="px-4 py-3 text-sm text-slate-600">{t.classAssigned}</td>
+                   <td className="px-4 py-3 text-sm text-slate-600">{t.learningArea}</td>
+                   <td className="px-4 py-3 text-sm text-slate-600">{t.gradeAssigned}</td>
                   <td className="px-4 py-3">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.type === "Full-time" ? "bg-blue-100 text-blue-700" : "bg-purple-100 text-purple-700"}`}>
                       {t.type}
@@ -197,13 +197,13 @@ export default function TeachersPage() {
                   <input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="07XX-XXX-XXX" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Subject</label>
-                  <input value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="Mathematics" />
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Learning Area</label>
+                   <input value={form.learningArea} onChange={e => setForm({ ...form, learningArea: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="Mathematics" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Class Assigned</label>
-                  <select value={form.classAssigned} onChange={e => setForm({ ...form, classAssigned: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
-                    <option value="">Select class</option>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Grade Assigned</label>
+                  <select value={form.gradeAssigned} onChange={e => setForm({ ...form, gradeAssigned: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                    <option value="">Select grade</option>
                      {levelClasses.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
@@ -250,8 +250,8 @@ export default function TeachersPage() {
               </div>
               <div className="space-y-3">
                 {[
-                  { icon: BookOpen, label: "Subject", value: viewTeacher.subject },
-                  { icon: BookOpen, label: "Class", value: viewTeacher.classAssigned },
+                  { icon: BookOpen, label: "Learning Area", value: viewTeacher.learningArea },
+                  { icon: BookOpen, label: "Grade Assigned", value: viewTeacher.gradeAssigned },
                   { icon: Mail, label: "Email", value: viewTeacher.email },
                   { icon: Phone, label: "Phone", value: viewTeacher.phone },
                   { icon: UserCheck, label: "Type", value: viewTeacher.type },

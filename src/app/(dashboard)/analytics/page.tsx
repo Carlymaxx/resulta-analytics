@@ -110,13 +110,13 @@ const topPerformers = [
   { rank: 5, name: "James Lee", class: "Grade 8", avg: 89.8, trend: "down" },
 ];
 
-const subjectTrends = [
-  { subject: "Mathematics", current: 78, previous: 72, change: "+6", positive: true },
-  { subject: "English", current: 82, previous: 80, change: "+2", positive: true },
-  { subject: "Integrated Science", current: 71, previous: 75, change: "-4", positive: false },
-  { subject: "History", current: 85, previous: 83, change: "+2", positive: true },
-  { subject: "Social Studies", current: 76, previous: 74, change: "+2", positive: true },
-  { subject: "Pre-Technical Studies", current: 73, previous: 70, change: "+3", positive: true },
+  const subjectTrends = [
+  { learningArea: "Mathematics", current: 78, previous: 72, change: "+6", positive: true },
+  { learningArea: "English", current: 82, previous: 80, change: "+2", positive: true },
+  { learningArea: "Integrated Science", current: 71, previous: 75, change: "-4", positive: false },
+  { learningArea: "History", current: 85, previous: 83, change: "+2", positive: true },
+  { learningArea: "Social Studies", current: 76, previous: 74, change: "+2", positive: true },
+  { learningArea: "Pre-Technical Studies", current: 73, previous: 70, change: "+3", positive: true },
 ];
 
 export default function AnalyticsPage() {
@@ -201,7 +201,7 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Subject Comparison</h3>
+          <h3 className="text-lg font-bold text-slate-800 mb-4">Learning Area Comparison</h3>
           <div className="h-72">
             <Bar 
               data={subjectComparison}
@@ -240,12 +240,12 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Subject Trends</h3>
+          <h3 className="text-lg font-bold text-slate-800 mb-4">Learning Area Trends</h3>
           <div className="space-y-4">
             {subjectTrends.map((subject, i) => (
               <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                 <div>
-                  <div className="font-medium text-slate-800">{subject.subject}</div>
+                   <div className="font-medium text-slate-800">{subject.learningArea}</div>
                   <div className="text-sm text-slate-500">Prev: {subject.previous}%</div>
                 </div>
                 <div className="text-right">

@@ -15,11 +15,11 @@ const exams = [
 ];
 
 const questionBank = [
-  { subject: "Mathematics", count: 120, topics: ["Algebra", "Geometry", "Calculus", "Statistics"] },
-  { subject: "English", count: 85, topics: ["Grammar", "Comprehension", "Essay Writing", "Literature"] },
-  { subject: "Biology", count: 95, topics: ["Cell Biology", "Genetics", "Ecology", "Human Physiology"] },
-  { subject: "Physics", count: 80, topics: ["Mechanics", "Electricity", "Waves", "Optics"] },
-  { subject: "History", count: 70, topics: ["African History", "World Wars", "Kenya History", "Independence"] },
+  { learningArea: "Mathematics", count: 120, topics: ["Algebra", "Geometry", "Calculus", "Statistics"] },
+  { learningArea: "English", count: 85, topics: ["Grammar", "Comprehension", "Essay Writing", "Literature"] },
+  { learningArea: "Biology", count: 95, topics: ["Cell Biology", "Genetics", "Ecology", "Human Physiology"] },
+  { learningArea: "Physics", count: 80, topics: ["Mechanics", "Electricity", "Waves", "Optics"] },
+  { learningArea: "History", count: 70, topics: ["African History", "World Wars", "Kenya History", "Independence"] },
 ];
 
 const completedResults = [
@@ -39,7 +39,7 @@ export default function CBTPage() {
   const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
   const [activeTab, setActiveTab] = useState("exams");
   const [showModal, setShowModal] = useState(false);
-  const [expandedSubject, setExpandedSubject] = useState<string | null>(null);
+  const [expandedLearningArea, setExpandedLearningArea] = useState<string | null>(null);
 
   const activeExams = exams.filter(e => e.status === "Active");
 
@@ -97,7 +97,7 @@ export default function CBTPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-slate-50 border-b border-slate-200">
-                <tr>{["Title", "Subject", "Class", "Date", "Duration", "Questions", "Status"].map(h => (
+                <tr>{["Title", "Learning Area", "Grade", "Date", "Duration", "Questions", "Status"].map(h => (
                   <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">{h}</th>
                 ))}</tr>
               </thead>
@@ -105,7 +105,7 @@ export default function CBTPage() {
                 {exams.map((e, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="py-3 px-4 text-sm font-medium text-slate-800">{e.title}</td>
-                    <td className="py-3 px-4 text-sm text-slate-600">{e.subject}</td>
+                     <td className="py-3 px-4 text-sm text-slate-600">{e.subject}</td>
                     <td className="py-3 px-4 text-sm text-slate-600">{e.class}</td>
                     <td className="py-3 px-4 text-sm text-slate-600">{e.date}</td>
                     <td className="py-3 px-4 text-sm text-slate-600">{e.duration} min</td>
@@ -125,20 +125,20 @@ export default function CBTPage() {
         <div className="space-y-3">
           {questionBank.map((qb, i) => (
             <div key={i} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-              <button onClick={() => setExpandedSubject(expandedSubject === qb.subject ? null : qb.subject)}
+                  <button onClick={() => setExpandedLearningArea(expandedLearningArea === qb.learningArea ? null : qb.learningArea)}
                 className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center">
                     <Database className="w-4 h-4 text-teal-600" />
                   </div>
-                  <span className="font-medium text-slate-800">{qb.subject}</span>
+                   <span className="font-medium text-slate-800">{qb.learningArea}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-mono font-bold text-teal-700">{qb.count} questions</span>
-                  <span className="text-slate-400">{expandedSubject === qb.subject ? "▲" : "▼"}</span>
+                   <span className="text-slate-400">{expandedLearningArea === qb.learningArea ? "▲" : "▼"}</span>
                 </div>
               </button>
-              {expandedSubject === qb.subject && (
+                  {expandedLearningArea === qb.learningArea && (
                 <div className="px-4 pb-4 border-t border-slate-100">
                   <div className="flex flex-wrap gap-2 pt-3">
                     {qb.topics.map(topic => (
@@ -167,7 +167,7 @@ export default function CBTPage() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center p-3 bg-blue-50 rounded-lg">
                   <div className="text-2xl font-bold text-blue-700">{r.avg}%</div>
-                  <div className="text-xs text-blue-600 mt-1">Class Average</div>
+                   <div className="text-xs text-blue-600 mt-1">Grade Average</div>
                 </div>
                 <div className="text-center p-3 bg-green-50 rounded-lg">
                   <div className="text-2xl font-bold text-green-700">{r.highest}%</div>
@@ -191,12 +191,12 @@ export default function CBTPage() {
               <button onClick={() => setShowModal(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5 text-slate-500" /></button>
             </div>
             <div className="p-6 space-y-4">
-              {[["Exam Title", "text"], ["Subject", "select-subj"], ["Class", "select-class"], ["Exam Date", "date"], ["Duration (minutes)", "number"], ["Total Questions", "number"], ["Instructions", "textarea"]].map(([label, type]) => (
+                  {[["Exam Title", "text"], ["Learning Area", "select-subj"], ["Grade", "select-class"], ["Exam Date", "date"], ["Duration (minutes)", "number"], ["Total Questions", "number"], ["Instructions", "textarea"]].map(([label, type]) => (
                 <div key={label as string}>
                   <label className="block text-sm font-medium text-slate-700 mb-1">{label as string}</label>
                   {type === "select-subj" ? (
                     <select className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-                      {questionBank.map(q => <option key={q.subject}>{q.subject}</option>)}
+                      {questionBank.map(q => <option key={q.learningArea}>{q.learningArea}</option>)}
                     </select>
                   ) : type === "select-class" ? (
                     <select className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">

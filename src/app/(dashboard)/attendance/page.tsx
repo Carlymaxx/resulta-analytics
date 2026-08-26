@@ -162,7 +162,7 @@ export default function AttendancePage() {
             onChange={(e) => setSelectedClass(e.target.value)}
             className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white"
           >
-            <option value="all">All Classes</option>
+             <option value="all">All Grades</option>
             <option value="Grade 7">Grade 7</option>
             <option value="Grade 8">Grade 8</option>
             <option value="Grade 9">Grade 9</option>
@@ -176,7 +176,7 @@ export default function AttendancePage() {
           <thead className="bg-slate-50 dark:bg-slate-700">
             <tr>
               <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600 dark:text-slate-300">Student</th>
-              <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Class</th>
+               <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Grade</th>
               <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Present</th>
               <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Absent</th>
               <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Late</th>
