@@ -117,7 +117,7 @@ export default function MarksPage() {
         </div>
         <button
           onClick={() => setShowAdd(true)}
-          className="inline-flex items-center gap-2 bg-teal-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-teal-700 transition-all"
+          className="inline-flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium"
         >
           <Plus className="w-5 h-5" /> Enter Marks
         </button>
@@ -157,7 +157,7 @@ export default function MarksPage() {
             icon: Award,
           },
         ].map((s) => (
-          <div key={s.label} className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+          <div key={s.label} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className="w-9 h-9 rounded-lg bg-teal-100 dark:bg-teal-900 flex items-center justify-center mb-2">
               <s.icon className="w-4 h-4 text-teal-600" />
             </div>
@@ -174,14 +174,14 @@ export default function MarksPage() {
             <thead className="bg-slate-50 dark:bg-slate-700">
               <tr>
                 {["Student", "Adm No", "Class", "Term", "Total", "Average", "Grade", "Pos", "Documents"].map((h) => (
-                  <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">{h}</th>
+                  <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
               {filteredRecords.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-slate-400">
+                  <td colSpan={9} className="py-12 text-center text-slate-400 dark:text-slate-500">
                     No marks yet. Click <span className="font-medium text-teal-600">Enter Marks</span> to add a student&apos;s results.
                   </td>
                 </tr>
@@ -353,7 +353,7 @@ function ReportCard({ record, position, classSize, user }: { record: StudentReco
     <div className="print-area bg-white text-slate-900 rounded-lg p-8 shadow-2xl">
     <div className="text-center border-b-2 border-teal-600 pb-4 mb-6">
           <h1 className="text-2xl font-bold text-teal-700">{schoolName}</h1>
-          {schoolContact && <p className="text-sm text-slate-500">{schoolContact}</p>}
+          {schoolContact && <p className="text-sm text-slate-500 dark:text-slate-400">{schoolContact}</p>}
           {schoolMotto && <p className="text-xs italic text-slate-400 mt-1">{schoolMotto}</p>}
           <h2 className="mt-3 text-lg font-semibold uppercase tracking-wide">{ASSESSMENT_BY_LEVEL[record.level || "junior"]} — Termly Report Card</h2>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Clock, Printer, RefreshCw } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { CLASSES_BY_LEVEL, LEARNING_AREAS_BY_LEVEL } from "@/lib/grading";
@@ -19,9 +19,74 @@ const periods = [
 
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
-type SlotKey = string;
 type SlotData = { subject: string; teacher: string };
-type TimetableData = Record<SlotKey, SlotData>;
+type TimetableData = Record<string, SlotData>;
+
+const TEACHERS = [
+  "S. Wanjiku", "J. Otieno", "G. Muthoni", "P. Kamau", "F. Hassan",
+  "D. Kipchoge", "R. Njoroge", "J. Auma", "M. Ochieng", "A. Njeri",
+  "K. Mutiso", "L. Akinyi", "B. Odhiambo", "C. Wambui", "E. Kiprono",
+];
+
+function generateTimetableForLevel(level: string, className: string): TimetableData {
+  const learningAreas = LEARNING_AREAS_BY_LEVEL[level] || LEARNING_AREAS_BY_LEVEL.junior;
+  const timetable: TimetableData = {};
+  const teachingPeriods = periods.filter(p => !p.isBreak);
+  const totalSlots = days.length * teachingPeriods.length;
+
+  const subjectCounts: Record<string, number> = {};
+  learningAreas.forEach(subject => {
+    subjectCounts[subject] = Math.max(2, Math.floor(totalSlots / learningAreas.length));
+  });
+
+  let teacherIdx = 0;
+  const subjectTeachers: Record<string, string> = {};
+  learningAreas.forEach(subject => {
+    subjectTeachers[subject] = TEACHERS[teacherIdx % TEACHERS.length];
+    teacherIdx++;
+  });
+
+  const seed = className.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) +
+    level.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+  const shuffledSubjects: string[] = [];
+  learningAreas.forEach(subject => {
+    for (let i = 0; i < subjectCounts[subject]; i++) {
+      shuffledSubjects.push(subject);
+    }
+  });
+
+  while (shuffledSubjects.length < totalSlots) {
+    shuffledSubjects.push(learningAreas[shuffledSubjects.length % learningAreas.length]);
+  }
+
+  const pseudoRandomShuffle = (arr: string[], seedVal: number) => {
+    const result = [...arr];
+    for (let i = result.length - 1; i > 0; i--) {
+      const x = Math.sin(seedVal + i) * 10000;
+      const j = Math.floor((x - Math.floor(x)) * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  };
+
+  const distributed = pseudoRandomShuffle(shuffledSubjects, seed);
+
+  let slotIdx = 0;
+  days.forEach(day => {
+    teachingPeriods.forEach((_, periodIdx) => {
+      const actualPeriodIdx = periodIdx < 3 ? periodIdx : periodIdx + 1;
+      const subject = distributed[slotIdx % distributed.length];
+      timetable[`${day}-${actualPeriodIdx}`] = {
+        subject,
+        teacher: subjectTeachers[subject],
+      };
+      slotIdx++;
+    });
+  });
+
+  return timetable;
+}
 
 const grade7Timetable: TimetableData = {
   "Monday-0": { subject: "Mathematics", teacher: "S. Wanjiku" },
@@ -126,26 +191,39 @@ export default function TimetablePage() {
   const { currentLevel } = useAuth();
   const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
   const [selectedClass, setSelectedClass] = useState(levelClasses[0] || "Grade 7");
+  const [generatedTimetables, setGeneratedTimetables] = useState<Record<string, TimetableData>>({});
+
+  const validSelectedClass = levelClasses.includes(selectedClass) ? selectedClass : levelClasses[0] || "Grade 7";
 
   const timetable = useMemo(() => {
-    if (currentLevel !== "junior") return {};
-    if (selectedClass.includes("Grade 8")) return grade8Timetable;
-    if (selectedClass.includes("Grade 9")) return grade9Timetable;
-    return grade7Timetable;
-  }, [selectedClass, currentLevel]);
-
-  const generateTimetable = () => {
-    if (currentLevel !== "junior") {
-      alert("Timetable generation is only available for Junior School level.");
-      return;
+    const cacheKey = `${currentLevel}-${selectedClass}`;
+    if (generatedTimetables[cacheKey]) {
+      return generatedTimetables[cacheKey];
     }
-  };
+    if (currentLevel === "junior") {
+      if (selectedClass.includes("Grade 8")) return grade8Timetable;
+      if (selectedClass.includes("Grade 9")) return grade9Timetable;
+      return grade7Timetable;
+    }
+    return {};
+  }, [selectedClass, currentLevel, generatedTimetables]);
+
+  const generateTimetable = useCallback(() => {
+    const cacheKey = `${currentLevel}-${selectedClass}`;
+    const newTimetable = generateTimetableForLevel(currentLevel, selectedClass);
+    setGeneratedTimetables(prev => ({
+      ...prev,
+      [cacheKey]: newTimetable,
+    }));
+  }, [currentLevel, selectedClass]);
+
+  const hasTimetable = Object.keys(timetable).length > 0;
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Timetable</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Timetable</h1>
           <p className="text-slate-500 text-sm mt-1">Weekly class schedules</p>
         </div>
         <div className="flex items-center gap-3">
@@ -156,16 +234,16 @@ export default function TimetablePage() {
           >
             {levelClasses.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
-          <button onClick={generateTimetable} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
+          <button onClick={generateTimetable} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex items-center gap-2">
             <RefreshCw className="w-4 h-4" /> Generate Timetable
           </button>
-          <button onClick={() => window.print()} className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium flex items-center gap-2">
+          <button onClick={() => window.print()} className="border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm font-medium flex items-center gap-2">
             <Printer className="w-4 h-4" /> Print
           </button>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
         <div className="p-4 border-b border-slate-200 flex items-center gap-2">
           <Clock className="w-5 h-5 text-teal-600" />
           <span className="font-semibold text-slate-800">Weekly Schedule — {selectedClass}</span>
@@ -174,7 +252,7 @@ export default function TimetablePage() {
           <table className="w-full min-w-[900px]">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-24">Day</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider w-24">Day</th>
                 {periods.map((p, i) => (
                   <th key={i} className={`px-2 py-3 text-center text-xs font-semibold uppercase tracking-wider ${p.isBreak ? "text-slate-400 bg-slate-100" : "text-slate-500"}`}>
                     <div>{p.label}</div>
@@ -185,7 +263,7 @@ export default function TimetablePage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {days.map(day => (
-                <tr key={day} className="hover:bg-slate-50 transition-colors">
+                <tr key={day} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                   <td className="px-4 py-3 text-sm font-semibold text-slate-700">{day}</td>
                   {periods.map((p, i) => {
                     if (p.isBreak) {
@@ -216,11 +294,7 @@ export default function TimetablePage() {
             </tbody>
           </table>
         </div>
-        {currentLevel !== "junior" ? (
-          <div className="p-8 text-center text-slate-400 text-sm">
-            Timetable management is available for Junior School (Grade 7-9). Please switch to Junior School level to view and generate timetables.
-          </div>
-        ) : Object.keys(timetable).length === 0 && (
+        {!hasTimetable && (
           <div className="p-8 text-center text-slate-400 text-sm">
             No timetable data available for {selectedClass}. Click Generate Timetable to create one.
           </div>
@@ -230,15 +304,15 @@ export default function TimetablePage() {
       <div className="flex gap-4 text-sm">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-teal-100 border border-teal-200 rounded"></div>
-          <span className="text-slate-600">Occupied slot</span>
+          <span className="text-slate-600 dark:text-slate-400">Occupied slot</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 border border-dashed border-slate-200 rounded"></div>
-          <span className="text-slate-600">Free slot</span>
+          <span className="text-slate-600 dark:text-slate-400">Free slot</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-slate-100 rounded"></div>
-          <span className="text-slate-600">Break / Lunch</span>
+          <span className="text-slate-600 dark:text-slate-400">Break / Lunch</span>
         </div>
       </div>
     </div>

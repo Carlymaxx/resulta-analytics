@@ -124,11 +124,11 @@ export default function PredictionsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Predictions</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Predictions</h1>
           <p className="text-slate-500">AI-powered academic predictions for {schoolName}</p>
         </div>
         <div className="flex gap-3">
-          <button className="inline-flex items-center gap-2 px-4 py-2.5 border border-slate-200 rounded-lg hover:bg-slate-50">
+          <button className="inline-flex items-center gap-2 px-4 py-2.5 border border-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50">
             <Filter className="w-4 h-4" />
             Filter
           </button>
@@ -147,20 +147,20 @@ export default function PredictionsPage() {
           { label: "Recall", value: `${modelAccuracy.recall}%`, icon: CheckCircle, color: "text-green-600" },
           { label: "F1 Score", value: `${modelAccuracy.f1Score}%`, icon: AlertCircle, color: "text-purple-600" },
         ].map((stat, i) => (
-          <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+          <div key={i} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className="flex items-center gap-3 mb-2">
               <stat.icon className={`w-5 h-5 ${stat.color}`} />
-              <span className="text-sm text-slate-500">{stat.label}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">{stat.label}</span>
             </div>
-            <div className="text-2xl font-bold text-slate-800">{stat.value}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{stat.value}</div>
           </div>
         ))}
       </div>
 
       {/* Prediction Chart */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-slate-800">Performance Prediction - Sample</h3>
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white">Performance Prediction - Sample</h3>
           <span className="px-3 py-1 bg-amber-100 text-amber-700 text-sm font-medium rounded-full">Example</span>
         </div>
         <div className="h-72">
@@ -183,7 +183,7 @@ export default function PredictionsPage() {
             <Brain className="w-5 h-5 text-teal-600 mt-0.5" />
             <div>
               <div className="font-medium text-slate-800">Prediction Insight</div>
-              <p className="text-sm text-slate-600 mt-1">
+              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                 Without intervention, this student&apos;s performance is predicted to decline by 15% over the next 3 months. 
                 With targeted tutoring, a 25% improvement is possible.
               </p>
@@ -193,10 +193,10 @@ export default function PredictionsPage() {
       </div>
 
       {/* Student Predictions Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
         <div className="p-6 border-b border-slate-200">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-slate-800">Student Predictions</h3>
+            <h3 className="text-lg font-bold text-slate-800 dark:text-white">Student Predictions</h3>
           <select
                value={selectedClass}
                onChange={(e) => setSelectedClass(e.target.value)}
@@ -223,27 +223,27 @@ export default function PredictionsPage() {
           <table className="w-full">
             <thead className="bg-slate-50">
               <tr>
-                <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600">Student</th>
-                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Class</th>
-                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Current</th>
-                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Predicted</th>
-                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Risk Level</th>
-                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Confidence</th>
-                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Trend</th>
+                <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Student</th>
+                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Class</th>
+                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Current</th>
+                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Predicted</th>
+                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Risk Level</th>
+                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Confidence</th>
+                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Trend</th>
               </tr>
             </thead>
             <tbody>
               {filteredStudents.map((student) => (
-                <tr key={student.id} className="border-t border-slate-100 hover:bg-slate-50">
-                  <td className="py-4 px-6">
+                <tr key={student.id} className="border-t border-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                  <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-semibold">
+                      <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 dark:text-slate-400 font-semibold">
                         {student.name.charAt(0)}
                       </div>
                       <span className="font-medium text-slate-800">{student.name}</span>
                     </div>
                   </td>
-                  <td className="py-4 px-4 text-slate-600">{student.class}</td>
+                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400">{student.class}</td>
                   <td className="py-4 px-4 text-center font-mono font-semibold text-slate-800">{student.current}%</td>
                   <td className="py-4 px-4 text-center font-mono font-bold text-teal-700">{student.predicted}%</td>
                   <td className="py-4 px-4 text-center">
@@ -259,7 +259,7 @@ export default function PredictionsPage() {
                           style={{ width: `${student.confidence}%` }}
                         />
                       </div>
-                      <span className="text-sm text-slate-600">{student.confidence}%</span>
+                      <span className="text-sm text-slate-600 dark:text-slate-400">{student.confidence}%</span>
                     </div>
                   </td>
                   <td className="py-4 px-4 text-center">
@@ -274,19 +274,19 @@ export default function PredictionsPage() {
       </div>
 
       {/* Intervention Recommendations */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center">
             <AlertTriangle className="w-5 h-5 text-amber-600" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-slate-800">Intervention Recommendations</h3>
-            <p className="text-sm text-slate-500">Prioritized actions based on prediction analysis</p>
+            <h3 className="text-lg font-bold text-slate-800 dark:text-white">Intervention Recommendations</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Prioritized actions based on prediction analysis</p>
           </div>
         </div>
         <div className="space-y-4">
           {filteredInterventions.map((rec, i) => (
-            <div key={i} className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50">
+            <div key={i} className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50">
               <div className="flex items-center gap-4">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                   rec.priority === "High" ? "bg-red-100" : rec.priority === "Medium" ? "bg-amber-100" : "bg-green-100"
@@ -297,13 +297,13 @@ export default function PredictionsPage() {
                 </div>
                 <div>
                   <div className="font-medium text-slate-800">{rec.student}</div>
-                  <div className="text-sm text-slate-500">{rec.issue}</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">{rec.issue}</div>
                 </div>
               </div>
               <div className="flex items-center gap-6">
                 <div className="text-right">
                   <div className="text-sm font-medium text-slate-800">{rec.action}</div>
-                  <div className="flex items-center gap-1 text-sm text-slate-500">
+                  <div className="flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400">
                     <Clock className="w-4 h-4" />
                     {rec.timeline}
                   </div>

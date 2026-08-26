@@ -47,10 +47,10 @@ export default function LibraryPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Library</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Library</h1>
           <p className="text-slate-500 text-sm mt-1">Book inventory and borrowing records</p>
         </div>
-        <button onClick={() => setShowAdd(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
+        <button onClick={() => setShowAdd(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex items-center gap-2">
           <Plus className="w-4 h-4" /> Add Book
         </button>
       </div>
@@ -63,23 +63,23 @@ export default function LibraryPage() {
           { label: "Overdue", value: "12", color: "text-amber-600", bg: "bg-amber-50" },
           { label: "Lost / Missing", value: "3", color: "text-red-600", bg: "bg-red-50" },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div key={s.label} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className={`w-10 h-10 rounded-lg ${s.bg} flex items-center justify-center mb-3`}>
               <Library className={`w-5 h-5 ${s.color}`} />
             </div>
-            <div className="text-2xl font-bold text-slate-800">{s.value}</div>
-            <div className="text-sm text-slate-500">{s.label}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{s.value}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">{s.label}</div>
           </div>
         ))}
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
         <div className="border-b border-slate-200 px-6">
           <div className="flex gap-6">
             {tabs.map(tab => (
               <button key={tab} onClick={() => setActiveTab(tab)}
-                className={`py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === tab ? "border-teal-600 text-teal-600" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
+                className={`py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === tab ? "border-teal-600 text-teal-600 dark:text-teal-400" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
                 {tab}
               </button>
             ))}
@@ -92,15 +92,15 @@ export default function LibraryPage() {
                 <thead className="bg-slate-50">
                   <tr>
                     {["Title", "Author", "ISBN", "Category", "Copies", "Available"].map(h => (
-                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {filteredBooks.map(b => (
-                    <tr key={b.id} className="hover:bg-slate-50">
+                    <tr key={b.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{b.title}</td>
-                      <td className="px-4 py-3 text-sm text-slate-600">{b.author}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{b.author}</td>
                       <td className="px-4 py-3 text-xs font-mono text-slate-500">{b.isbn}</td>
                       <td className="px-4 py-3"><span className="px-2 py-1 bg-teal-50 text-teal-700 rounded-full text-xs">{b.category}</span></td>
                       <td className="px-4 py-3 text-sm text-slate-700">{b.copies}</td>
@@ -129,7 +129,7 @@ export default function LibraryPage() {
                           </span>
                         )}
                       </div>
-                      <div className="text-sm text-slate-600 mt-1">{b.book}</div>
+                      <div className="text-sm text-slate-600 dark:text-slate-400 mt-1">{b.book}</div>
                       <div className="text-xs text-slate-400 mt-1">Borrowed: {b.borrowDate} | Due: {b.dueDate}</div>
                     </div>
                     {b.daysOverdue > 0 && (
@@ -147,10 +147,10 @@ export default function LibraryPage() {
 
           {activeTab === "Returns" && (
             <div className="space-y-4">
-              <p className="text-sm text-slate-500">Process book returns. Search for borrowed books by student name or book title.</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Process book returns. Search for borrowed books by student name or book title.</p>
               <div className="flex gap-3">
                 <input className="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="Search student or book..." />
-                <button className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium">Search</button>
+                <button className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium">Search</button>
               </div>
               <div className="text-center py-8 text-slate-400 text-sm border border-dashed border-slate-200 rounded-lg">
                 Search for a borrowed book to process a return
@@ -162,29 +162,29 @@ export default function LibraryPage() {
 
       {/* Add Book Modal */}
       {showAdd && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-800">Add New Book</h2>
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Add New Book</h2>
               <button onClick={() => setShowAdd(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5" /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Book Title</label>
-                <input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="Book title" />
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Book Title</label>
+                <input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Book title" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Author</label>
-                <input value={form.author} onChange={e => setForm({ ...form, author: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="Author name" />
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Author</label>
+                <input value={form.author} onChange={e => setForm({ ...form, author: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Author name" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">ISBN</label>
-                <input value={form.isbn} onChange={e => setForm({ ...form, isbn: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="ISBN number" />
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">ISBN</label>
+                <input value={form.isbn} onChange={e => setForm({ ...form, isbn: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="ISBN number" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
-                  <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Category</label>
+                  <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                     <option>Textbook</option>
                     <option>Reference</option>
                     <option>Literature</option>
@@ -193,13 +193,13 @@ export default function LibraryPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Copies</label>
-                  <input type="number" value={form.copies} onChange={e => setForm({ ...form, copies: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="1" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Copies</label>
+                  <input type="number" value={form.copies} onChange={e => setForm({ ...form, copies: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="1" />
                 </div>
               </div>
               <div className="flex gap-3 pt-2">
-                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex-1">Add Book</button>
-                <button type="button" onClick={() => setShowAdd(false)} className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium">Cancel</button>
+                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex-1">Add Book</button>
+                <button type="button" onClick={() => setShowAdd(false)} className="border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm font-medium">Cancel</button>
               </div>
             </form>
           </div>

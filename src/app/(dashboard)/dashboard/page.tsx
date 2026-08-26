@@ -94,7 +94,7 @@ export default function DashboardPage() {
     datasets: [
       {
         label: 'Average Score',
-        data: levelLearningAreas.slice(0, 6).map((_, i) => 65 + (i * 3) + Math.floor(Math.random() * 10)),
+        data: levelLearningAreas.slice(0, 6).map((_, i) => 65 + (i * 3) + ((i * 7 + 3) % 10)),
         backgroundColor: '#0D9488',
         borderRadius: 6,
       },
@@ -134,9 +134,9 @@ export default function DashboardPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div key={i} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-teal-100 dark:bg-teal-900 rounded-lg flex items-center justify-center">
                 <stat.icon className="w-5 h-5 text-teal-600" />
               </div>
               <span className={`text-sm font-medium ${stat.positive ? 'text-green-600' : 'text-red-600'}`}>
@@ -144,16 +144,16 @@ export default function DashboardPage() {
                 {' '}{stat.change}
               </span>
             </div>
-            <div className="text-2xl font-bold text-slate-800">{stat.value}</div>
-            <div className="text-sm text-slate-500">{stat.label}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{stat.value}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">{stat.label}</div>
           </div>
         ))}
       </div>
 
       {/* Charts Row */}
       <div className="grid lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Performance Trend</h3>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Performance Trend</h3>
           <div className="h-64">
             <Line 
               data={performanceData} 
@@ -169,8 +169,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Learning Area Performance</h3>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Learning Area Performance</h3>
           <div className="h-64">
             <Bar 
               data={subjectData} 
@@ -186,8 +186,8 @@ export default function DashboardPage() {
 
       {/* Risk Distribution & Recent Activity */}
       <div className="grid lg:grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Risk Distribution</h3>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Risk Distribution</h3>
           <div className="h-48 flex items-center justify-center">
             <Doughnut 
               data={riskDistribution}
@@ -200,8 +200,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Recent Activity</h3>
+        <div className="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Recent Activity</h3>
           <div className="space-y-4">
             {[
               { icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-100', text: `Results uploaded for ${levelClasses[0] || 'Grade 7'}`, time: '2 hours ago' },
@@ -209,7 +209,7 @@ export default function DashboardPage() {
               { icon: FileText, color: 'text-teal-600', bg: 'bg-teal-100', text: 'Quarterly report generated', time: 'Yesterday' },
               ...(totalStudents > 0 ? [{ icon: Users, color: 'text-blue-600', bg: 'bg-blue-100', text: `${totalStudents} students enrolled in ${schoolName}`, time: '2 days ago' }] : []),
             ].map((activity, i) => (
-              <div key={i} className="flex items-center gap-4 p-3 rounded-lg hover:bg-slate-50">
+              <div key={i} className="flex items-center gap-4 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50">
                 <div className={`w-10 h-10 ${activity.bg} rounded-lg flex items-center justify-center`}>
                   <activity.icon className={`w-5 h-5 ${activity.color}`} />
                 </div>
@@ -224,27 +224,27 @@ export default function DashboardPage() {
       </div>
 
       {/* At-Risk Students */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-slate-800">At-Risk Students</h3>
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white">At-Risk Students</h3>
           <button className="text-sm text-teal-600 font-medium hover:underline">View All</button>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600">Student</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600">Class</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600">Avg Score</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600">Risk Level</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600">Action</th>
+              <tr className="bg-slate-50 dark:bg-slate-700 border-b border-slate-200">
+                <th className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Student</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Class</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Avg Score</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Risk Level</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Action</th>
               </tr>
             </thead>
             <tbody>
               {atRiskStudents.length > 0 ? atRiskStudents.map((student, i) => (
-                <tr key={i} className="border-b border-slate-100 hover:bg-slate-50">
+                <tr key={i} className="border-b border-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700/50">
                   <td className="py-3 px-4 text-sm font-medium text-slate-800">{student.name}</td>
-                  <td className="py-3 px-4 text-sm text-slate-600">{student.class}</td>
+                  <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{student.class}</td>
                   <td className="py-3 px-4 text-sm font-mono text-slate-800">{student.score}</td>
                   <td className="py-3 px-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${getRiskColor(student.risk)}`}>
@@ -257,7 +257,7 @@ export default function DashboardPage() {
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan={5} className="py-8 text-center text-slate-500">
+                  <td colSpan={5} className="py-12 text-center text-slate-500 dark:text-slate-400">
                     <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-2" />
                     <p>No at-risk students. All learners are performing well!</p>
                   </td>

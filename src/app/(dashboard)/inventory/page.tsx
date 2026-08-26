@@ -64,14 +64,14 @@ export default function InventoryPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Inventory</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Inventory</h1>
           <p className="text-slate-500 text-sm mt-1">Assets, stationery, and procurement</p>
         </div>
         <div className="flex gap-3">
-          <button onClick={() => setShowAddItem(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
+          <button onClick={() => setShowAddItem(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex items-center gap-2">
             <Plus className="w-4 h-4" /> Add Item
           </button>
-          <button onClick={() => setShowPurchase(true)} className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium flex items-center gap-2">
+          <button onClick={() => setShowPurchase(true)} className="border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm font-medium flex items-center gap-2">
             <Plus className="w-4 h-4" /> Record Purchase
           </button>
         </div>
@@ -85,23 +85,23 @@ export default function InventoryPage() {
           { label: "Low Stock", value: "8", color: "text-amber-600", bg: "bg-amber-50" },
           { label: "Suppliers", value: "12", color: "text-purple-600", bg: "bg-purple-50" },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div key={s.label} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className={`w-10 h-10 rounded-lg ${s.bg} flex items-center justify-center mb-3`}>
               <Package className={`w-5 h-5 ${s.color}`} />
             </div>
-            <div className="text-2xl font-bold text-slate-800">{s.value}</div>
-            <div className="text-sm text-slate-500">{s.label}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{s.value}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">{s.label}</div>
           </div>
         ))}
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
         <div className="border-b border-slate-200 px-6">
           <div className="flex gap-6">
             {tabs.map(tab => (
               <button key={tab} onClick={() => setActiveTab(tab)}
-                className={`py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === tab ? "border-teal-600 text-teal-600" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
+                className={`py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === tab ? "border-teal-600 text-teal-600 dark:text-teal-400" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
                 {tab}
               </button>
             ))}
@@ -114,20 +114,20 @@ export default function InventoryPage() {
                 <thead className="bg-slate-50">
                   <tr>
                     {["Item Name", "Category", "Quantity", "Condition", "Location"].map(h => (
-                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {filteredAssets.map(a => (
-                    <tr key={a.id} className="hover:bg-slate-50">
+                    <tr key={a.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{a.name}</td>
-                      <td className="px-4 py-3"><span className="px-2 py-1 bg-slate-100 text-slate-600 rounded-full text-xs">{a.category}</span></td>
+                      <td className="px-4 py-3"><span className="px-2 py-1 bg-slate-100 text-slate-600 dark:text-slate-400 rounded-full text-xs">{a.category}</span></td>
                       <td className="px-4 py-3 text-sm text-slate-700">{a.qty}</td>
                       <td className="px-4 py-3">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${a.condition === "Good" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}>{a.condition}</span>
                       </td>
-                      <td className="px-4 py-3 text-sm text-slate-600">{a.location}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{a.location}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -141,7 +141,7 @@ export default function InventoryPage() {
                 <thead className="bg-slate-50">
                   <tr>
                     {["Item", "In Stock", "Min Stock", "Unit", "Status"].map(h => (
-                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -150,7 +150,7 @@ export default function InventoryPage() {
                     const status = getStockStatus(s.inStock, s.minStock);
                     const isLow = s.inStock < s.minStock;
                     return (
-                      <tr key={s.id} className={`${isLow ? "bg-amber-50" : "hover:bg-slate-50"}`}>
+                      <tr key={s.id} className={`${isLow ? "bg-amber-50" : "hover:bg-slate-50 dark:hover:bg-slate-700/50"}`}>
                         <td className="px-4 py-3 text-sm font-medium text-slate-800">
                           <div className="flex items-center gap-2">
                             {isLow && <AlertTriangle className="w-4 h-4 text-amber-500" />}
@@ -158,8 +158,8 @@ export default function InventoryPage() {
                           </div>
                         </td>
                         <td className="px-4 py-3 text-sm font-semibold text-slate-800">{s.inStock}</td>
-                        <td className="px-4 py-3 text-sm text-slate-500">{s.minStock}</td>
-                        <td className="px-4 py-3 text-sm text-slate-600">{s.unit}</td>
+                        <td className="px-4 py-3 text-sm text-slate-500 dark:text-slate-400">{s.minStock}</td>
+                        <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{s.unit}</td>
                         <td className="px-4 py-3">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${status.cls}`}>{status.label}</span>
                         </td>
@@ -177,18 +177,18 @@ export default function InventoryPage() {
                 <thead className="bg-slate-50">
                   <tr>
                     {["Item", "Supplier", "Qty", "Amount (KES)", "Date", "Status"].map(h => (
-                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {filteredPurchases.map(p => (
-                    <tr key={p.id} className="hover:bg-slate-50">
+                    <tr key={p.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{p.item}</td>
-                      <td className="px-4 py-3 text-sm text-slate-600">{p.supplier}</td>
-                      <td className="px-4 py-3 text-sm text-slate-600">{p.qty}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{p.supplier}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{p.qty}</td>
                       <td className="px-4 py-3 text-sm font-semibold text-slate-800">{p.amount.toLocaleString()}</td>
-                      <td className="px-4 py-3 text-sm text-slate-600">{p.date}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{p.date}</td>
                       <td className="px-4 py-3">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${p.status === "Delivered" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}>{p.status}</span>
                       </td>
@@ -205,17 +205,17 @@ export default function InventoryPage() {
                 <thead className="bg-slate-50">
                   <tr>
                     {["Company", "Contact Person", "Phone", "Email", "Category"].map(h => (
-                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {filteredSuppliers.map(s => (
-                    <tr key={s.id} className="hover:bg-slate-50">
+                    <tr key={s.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{s.name}</td>
-                      <td className="px-4 py-3 text-sm text-slate-600">{s.contact}</td>
-                      <td className="px-4 py-3 text-sm text-slate-600">{s.phone}</td>
-                      <td className="px-4 py-3 text-sm text-slate-500">{s.email}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{s.contact}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{s.phone}</td>
+                      <td className="px-4 py-3 text-sm text-slate-500 dark:text-slate-400">{s.email}</td>
                       <td className="px-4 py-3"><span className="px-2 py-1 bg-teal-50 text-teal-700 rounded-full text-xs">{s.category}</span></td>
                     </tr>
                   ))}
@@ -228,42 +228,42 @@ export default function InventoryPage() {
 
       {/* Add Item Modal */}
       {showAddItem && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-800">Add Item</h2>
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Add Item</h2>
               <button onClick={() => setShowAddItem(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5" /></button>
             </div>
             <form onSubmit={e => { e.preventDefault(); setShowAddItem(false); }} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Item Name</label>
-                <input value={itemForm.name} onChange={e => setItemForm({ ...itemForm, name: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="Item name" />
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Item Name</label>
+                <input value={itemForm.name} onChange={e => setItemForm({ ...itemForm, name: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Item name" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
-                  <select value={itemForm.category} onChange={e => setItemForm({ ...itemForm, category: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Category</label>
+                  <select value={itemForm.category} onChange={e => setItemForm({ ...itemForm, category: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                     <option>Furniture</option><option>ICT</option><option>Science</option><option>Sports</option><option>Arts</option><option>Stationery</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Quantity</label>
-                  <input type="number" value={itemForm.qty} onChange={e => setItemForm({ ...itemForm, qty: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="0" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Quantity</label>
+                  <input type="number" value={itemForm.qty} onChange={e => setItemForm({ ...itemForm, qty: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="0" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Condition</label>
-                  <select value={itemForm.condition} onChange={e => setItemForm({ ...itemForm, condition: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Condition</label>
+                  <select value={itemForm.condition} onChange={e => setItemForm({ ...itemForm, condition: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                     <option>Good</option><option>Fair</option><option>Poor</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Location</label>
-                  <input value={itemForm.location} onChange={e => setItemForm({ ...itemForm, location: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="Location" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Location</label>
+                  <input value={itemForm.location} onChange={e => setItemForm({ ...itemForm, location: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Location" />
                 </div>
               </div>
               <div className="flex gap-3 pt-2">
-                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex-1">Add Item</button>
-                <button type="button" onClick={() => setShowAddItem(false)} className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium">Cancel</button>
+                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex-1">Add Item</button>
+                <button type="button" onClick={() => setShowAddItem(false)} className="border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm font-medium">Cancel</button>
               </div>
             </form>
           </div>
@@ -272,36 +272,36 @@ export default function InventoryPage() {
 
       {/* Record Purchase Modal */}
       {showPurchase && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-800">Record Purchase</h2>
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Record Purchase</h2>
               <button onClick={() => setShowPurchase(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5" /></button>
             </div>
             <form onSubmit={e => { e.preventDefault(); setShowPurchase(false); }} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Item</label>
-                <input value={purForm.item} onChange={e => setPurForm({ ...purForm, item: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="Item name" />
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Item</label>
+                <input value={purForm.item} onChange={e => setPurForm({ ...purForm, item: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Item name" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Supplier</label>
-                <select value={purForm.supplier} onChange={e => setPurForm({ ...purForm, supplier: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Supplier</label>
+                <select value={purForm.supplier} onChange={e => setPurForm({ ...purForm, supplier: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                   {suppliers.map(s => <option key={s.id}>{s.name}</option>)}
                 </select>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Quantity</label>
-                  <input type="number" value={purForm.qty} onChange={e => setPurForm({ ...purForm, qty: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="0" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Quantity</label>
+                  <input type="number" value={purForm.qty} onChange={e => setPurForm({ ...purForm, qty: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="0" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Amount (KES)</label>
-                  <input type="number" value={purForm.amount} onChange={e => setPurForm({ ...purForm, amount: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="0" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Amount (KES)</label>
+                  <input type="number" value={purForm.amount} onChange={e => setPurForm({ ...purForm, amount: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="0" />
                 </div>
               </div>
               <div className="flex gap-3 pt-2">
-                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex-1">Record Purchase</button>
-                <button type="button" onClick={() => setShowPurchase(false)} className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium">Cancel</button>
+                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex-1">Record Purchase</button>
+                <button type="button" onClick={() => setShowPurchase(false)} className="border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm font-medium">Cancel</button>
               </div>
             </form>
           </div>

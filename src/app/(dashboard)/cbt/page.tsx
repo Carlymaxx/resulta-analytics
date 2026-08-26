@@ -70,10 +70,10 @@ export default function CBTPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">CBT Examinations</h1>
-          <p className="text-sm text-slate-500 mt-1">Computer-based testing, question bank, and results</p>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">CBT Examinations</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Computer-based testing, question bank, and results</p>
         </div>
-        <button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium">
+        <button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium">
           <Plus className="w-4 h-4" /> Create Exam
         </button>
       </div>
@@ -96,12 +96,12 @@ export default function CBTPage() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((s, i) => (
-          <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+          <div key={i} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${s.color}`}>
               <s.icon className="w-5 h-5" />
             </div>
-            <div className="text-2xl font-bold text-slate-800">{s.value}</div>
-            <div className="text-sm text-slate-500">{s.label}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{s.value}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">{s.label}</div>
           </div>
         ))}
       </div>
@@ -109,30 +109,30 @@ export default function CBTPage() {
       <div className="flex gap-2 border-b border-slate-200">
         {["exams", "questions", "results"].map(t => (
           <button key={t} onClick={() => setActiveTab(t)}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === t ? "border-teal-600 text-teal-600" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
+            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === t ? "border-teal-600 text-teal-600 dark:text-teal-400" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
             {t === "exams" ? "Exams" : t === "questions" ? "Question Bank" : "Results"}
           </button>
         ))}
       </div>
 
       {activeTab === "exams" && (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="bg-slate-50 dark:bg-slate-700 border-b border-slate-200">
                 <tr>{["Title", "Learning Area", "Class", "Date", "Duration", "Questions", "Status"].map(h => (
-                  <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">{h}</th>
+                  <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider uppercase tracking-wider uppercase tracking-wider">{h}</th>
                 ))}</tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredExams.map((e, i) => (
-                  <tr key={i} className="hover:bg-slate-50">
+                  <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                     <td className="py-3 px-4 text-sm font-medium text-slate-800">{e.title}</td>
-                     <td className="py-3 px-4 text-sm text-slate-600">{e.subject}</td>
-                    <td className="py-3 px-4 text-sm text-slate-600">{e.class}</td>
-                    <td className="py-3 px-4 text-sm text-slate-600">{e.date}</td>
-                    <td className="py-3 px-4 text-sm text-slate-600">{e.duration} min</td>
-                    <td className="py-3 px-4 text-sm text-slate-600">{e.questions}</td>
+                     <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{e.subject}</td>
+                    <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{e.class}</td>
+                    <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{e.date}</td>
+                    <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{e.duration} min</td>
+                    <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{e.questions}</td>
                     <td className="py-3 px-4">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${e.status === "Active" ? "bg-red-100 text-red-700" : e.status === "Upcoming" ? "bg-blue-100 text-blue-700" : "bg-green-100 text-green-700"}`}>{e.status}</span>
                     </td>
@@ -147,9 +147,9 @@ export default function CBTPage() {
       {activeTab === "questions" && (
         <div className="space-y-3">
           {filteredQuestionBank.map((qb, i) => (
-            <div key={i} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div key={i} className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                   <button onClick={() => setExpandedLearningArea(expandedLearningArea === qb.learningArea ? null : qb.learningArea)}
-                className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors">
+                className="w-full flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center">
                     <Database className="w-4 h-4 text-teal-600" />
@@ -179,13 +179,13 @@ export default function CBTPage() {
       {activeTab === "results" && (
         <div className="space-y-4">
           {filteredCompletedResults.map((r, i) => (
-            <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+            <div key={i} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="font-bold text-slate-800">{r.exam}</h3>
-                  <p className="text-sm text-slate-500">{r.class} · {r.date} · {r.students} students</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{r.class} · {r.date} · {r.students} students</p>
                 </div>
-                <button className="border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-slate-50 text-sm font-medium">View Report</button>
+                <button className="border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 text-sm font-medium">View Report</button>
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center p-3 bg-blue-50 rounded-lg">
@@ -207,34 +207,34 @@ export default function CBTPage() {
       )}
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-lg font-bold text-slate-800">Create Exam</h2>
-              <button onClick={() => setShowModal(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5 text-slate-500" /></button>
+              <h2 className="text-lg font-bold text-slate-800 dark:text-white">Create Exam</h2>
+              <button onClick="$1" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"><X className="w-5 h-5 text-slate-500 dark:text-slate-400" /></button>
             </div>
             <div className="p-6 space-y-4">
                   {[["Exam Title", "text"], ["Learning Area", "select-subj"], ["Class", "select-class"], ["Exam Date", "date"], ["Duration (minutes)", "number"], ["Total Questions", "number"], ["Instructions", "textarea"]].map(([label, type]) => (
                 <div key={label as string}>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">{label as string}</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">{label as string}</label>
                   {type === "select-subj" ? (
-                    <select className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <select className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                       {levelLearningAreas.map(area => <option key={area} value={area}>{area}</option>)}
                     </select>
                   ) : type === "select-class" ? (
-                    <select className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <select className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                         {levelClasses.map(c => <option key={c}>{c}</option>)}
                     </select>
                   ) : type === "textarea" ? (
-                    <textarea rows={3} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none" />
+                    <textarea rows={3} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none" />
                   ) : (
-                    <input type={type as string} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                    <input type={type as string} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                   )}
                 </div>
               ))}
             </div>
             <div className="flex gap-3 p-6 border-t border-slate-200">
-              <button onClick={() => setShowModal(false)} className="flex-1 border border-slate-200 text-slate-700 py-2 rounded-lg hover:bg-slate-50 text-sm font-medium">Cancel</button>
+              <button onClick={() => setShowModal(false)} className="flex-1 border border-slate-200 text-slate-700 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 text-sm font-medium">Cancel</button>
               <button onClick={() => setShowModal(false)} className="flex-1 bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 text-sm font-medium">Create Exam</button>
             </div>
           </div>

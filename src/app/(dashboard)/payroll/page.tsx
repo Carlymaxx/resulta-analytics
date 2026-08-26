@@ -34,23 +34,23 @@ export default function PayrollPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Payroll Management</h1>
-          <p className="text-sm text-slate-500 mt-1">Manage staff salaries, allowances, and payslips</p>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Payroll Management</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage staff salaries, allowances, and payslips</p>
         </div>
         <div className="flex gap-2">
-          <button className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium">Export</button>
-          <button className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium">Process All</button>
+          <button className="border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm font-medium">Export</button>
+          <button className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium">Process All</button>
         </div>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((s, i) => (
-          <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+          <div key={i} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${s.color}`}>
               <s.icon className="w-5 h-5" />
             </div>
-            <div className="text-2xl font-bold text-slate-800">{s.value}</div>
-            <div className="text-sm text-slate-500">{s.label}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{s.value}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">{s.label}</div>
           </div>
         ))}
       </div>
@@ -58,20 +58,20 @@ export default function PayrollPage() {
       <div className="flex gap-2 border-b border-slate-200">
         {["payroll", "payslips", "allowances"].map(t => (
           <button key={t} onClick={() => setActiveTab(t)}
-            className={`px-4 py-2 text-sm font-medium capitalize border-b-2 transition-colors ${activeTab === t ? "border-teal-600 text-teal-600" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
+            className={`px-4 py-2 text-sm font-medium capitalize border-b-2 transition-colors ${activeTab === t ? "border-teal-600 text-teal-600 dark:text-teal-400" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
             {t.charAt(0).toUpperCase() + t.slice(1)}
           </button>
         ))}
       </div>
 
       {activeTab === "payroll" && (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="bg-slate-50 dark:bg-slate-700 border-b border-slate-200">
                 <tr>
                   {["Employee", "Department", "Basic (KES)", "Allowances", "Deductions", "Net Pay", "Status", "Action"].map(h => (
-                    <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">{h}</th>
+                    <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider uppercase tracking-wider uppercase tracking-wider">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -79,9 +79,9 @@ export default function PayrollPage() {
                 {filteredPayroll.map((e, i) => {
                   const net = e.basic + e.allowances - e.deductions;
                   return (
-                    <tr key={i} className="hover:bg-slate-50">
+                    <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                       <td className="py-3 px-4 text-sm font-medium text-slate-800">{e.name}</td>
-                      <td className="py-3 px-4 text-sm text-slate-600">{e.dept}</td>
+                      <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{e.dept}</td>
                       <td className="py-3 px-4 text-sm font-mono text-slate-800">{e.basic.toLocaleString()}</td>
                       <td className="py-3 px-4 text-sm font-mono text-green-600">+{e.allowances.toLocaleString()}</td>
                       <td className="py-3 px-4 text-sm font-mono text-red-600">-{e.deductions.toLocaleString()}</td>
@@ -104,7 +104,7 @@ export default function PayrollPage() {
       )}
 
       {activeTab === "payslips" && (
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <p className="text-slate-500 text-sm mb-4">Click Payslip on any employee in the Payroll tab to view their payslip preview.</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {filteredPayroll.map((e, i) => (
@@ -121,8 +121,8 @@ export default function PayrollPage() {
       )}
 
       {activeTab === "allowances" && (
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Allowance Types</h3>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Allowance Types</h3>
           <div className="space-y-3">
             {[
               { name: "House Allowance", amount: "KES 5,000", applies: "All Staff" },
@@ -145,11 +145,11 @@ export default function PayrollPage() {
 
       {/* Payslip Modal */}
       {selectedEmployee && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-lg font-bold text-slate-800">Payslip — {selectedEmployee.name}</h2>
-              <button onClick={() => setSelectedEmployee(null)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5 text-slate-500" /></button>
+              <h2 className="text-lg font-bold text-slate-800 dark:text-white">Payslip — {selectedEmployee.name}</h2>
+              <button onClick="$1" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"><X className="w-5 h-5 text-slate-500 dark:text-slate-400" /></button>
             </div>
             <div className="p-6 space-y-4">
               <div className="text-center border-b border-slate-200 pb-4">
@@ -157,10 +157,10 @@ export default function PayrollPage() {
                 <div className="text-xs text-slate-500">Payslip for {new Date().toLocaleString("default", { month: "long", year: "numeric" })}</div>
               </div>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between"><span className="text-slate-600">Employee</span><span className="font-medium">{selectedEmployee.name}</span></div>
-                <div className="flex justify-between"><span className="text-slate-600">Department</span><span>{selectedEmployee.dept}</span></div>
+                <div className="flex justify-between"><span className="text-slate-600 dark:text-slate-400">Employee</span><span className="font-medium">{selectedEmployee.name}</span></div>
+                <div className="flex justify-between"><span className="text-slate-600 dark:text-slate-400">Department</span><span>{selectedEmployee.dept}</span></div>
                 <div className="border-t border-slate-200 pt-2 mt-2">
-                  <div className="flex justify-between"><span className="text-slate-600">Basic Salary</span><span className="font-mono">KES {selectedEmployee.basic.toLocaleString()}</span></div>
+                  <div className="flex justify-between"><span className="text-slate-600 dark:text-slate-400">Basic Salary</span><span className="font-mono">KES {selectedEmployee.basic.toLocaleString()}</span></div>
                   <div className="flex justify-between text-green-600"><span>Total Allowances</span><span className="font-mono">+ {selectedEmployee.allowances.toLocaleString()}</span></div>
                   <div className="flex justify-between text-red-600"><span>Total Deductions</span><span className="font-mono">- {selectedEmployee.deductions.toLocaleString()}</span></div>
                 </div>
@@ -171,7 +171,7 @@ export default function PayrollPage() {
               </div>
             </div>
             <div className="flex gap-3 p-6 border-t border-slate-200">
-              <button onClick={() => setSelectedEmployee(null)} className="flex-1 border border-slate-200 text-slate-700 py-2 rounded-lg hover:bg-slate-50 text-sm font-medium">Close</button>
+              <button onClick={() => setSelectedEmployee(null)} className="flex-1 border border-slate-200 text-slate-700 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 text-sm font-medium">Close</button>
               <button className="flex-1 bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 text-sm font-medium">Download PDF</button>
             </div>
           </div>

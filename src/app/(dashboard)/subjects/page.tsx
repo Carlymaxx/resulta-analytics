@@ -137,7 +137,7 @@ export default function SubjectsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-           <h1 className="text-2xl font-bold text-slate-800">Learning Areas</h1>
+           <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Learning Areas</h1>
            <p className="text-slate-500 text-sm mt-1">{levelLabels.description} — {levelLearningAreas.length} learning areas</p>
         </div>
         <div className="flex items-center gap-3">
@@ -172,7 +172,7 @@ export default function SubjectsPage() {
               </div>
             )}
           </div>
-          <button onClick={() => setShowAdd(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
+          <button onClick={() => setShowAdd(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex items-center gap-2">
             <Plus className="w-4 h-4" /> Add Learning Area
           </button>
         </div>
@@ -185,18 +185,18 @@ export default function SubjectsPage() {
            { label: "Compulsory", value: learningAreasWithMeta.filter(s => s.type === "Compulsory").length, color: "text-blue-600", bg: "bg-blue-50" },
            { label: "Optional", value: learningAreasWithMeta.filter(s => s.type === "Optional").length, color: "text-purple-600", bg: "bg-purple-50" },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div key={s.label} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className={`w-10 h-10 rounded-lg ${s.bg} flex items-center justify-center mb-3`}>
               <BookMarked className={`w-5 h-5 ${s.color}`} />
             </div>
-            <div className="text-2xl font-bold text-slate-800">{s.value}</div>
-            <div className="text-sm text-slate-500">{s.label}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{s.value}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">{s.label}</div>
           </div>
         ))}
       </div>
 
       {/* Chart */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
          <h2 className="text-base font-semibold text-slate-800 mb-4">Average Scores by Learning Area</h2>
         <div className="h-56">
           <Bar data={chartData} options={{ ...chartOptions, maintainAspectRatio: false }} />
@@ -206,14 +206,14 @@ export default function SubjectsPage() {
       {/* Learning Area Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
          {learningAreasWithMeta.map(s => (
-          <div key={s.code} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+          <div key={s.code} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
             <div className="flex items-start justify-between mb-3">
               <span className={`px-2 py-1 rounded-lg text-xs font-bold ${colorMap[s.code]}`}>{s.code}</span>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${s.type === "Compulsory" ? "bg-blue-50 text-blue-600" : "bg-purple-50 text-purple-600"}`}>{s.type}</span>
             </div>
             <div className="text-base font-semibold text-slate-800 mb-3">{s.name}</div>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between text-slate-600">
+              <div className="flex justify-between text-slate-600 dark:text-slate-400">
                 <span>Avg Score</span>
                 <span className="font-semibold text-slate-800">{s.avgScore}%</span>
               </div>
@@ -231,31 +231,31 @@ export default function SubjectsPage() {
 
       {/* Add Learning Area Modal */}
       {showAdd && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-               <h2 className="text-lg font-semibold text-slate-800">Add New Learning Area</h2>
+               <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Add New Learning Area</h2>
               <button onClick={() => setShowAdd(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5" /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                 <label className="block text-sm font-medium text-slate-700 mb-1">Learning Area Name</label>
-                 <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="e.g. Mathematics" />
+                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Learning Area Name</label>
+                 <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="e.g. Mathematics" />
               </div>
               <div>
-                 <label className="block text-sm font-medium text-slate-700 mb-1">Learning Area Code</label>
-                 <input value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="e.g. MAT" />
+                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Learning Area Code</label>
+                 <input value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="e.g. MAT" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
-                <select value={form.type} onChange={e => setForm({ ...form, type: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Type</label>
+                <select value={form.type} onChange={e => setForm({ ...form, type: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                   <option>Compulsory</option>
                   <option>Optional</option>
                 </select>
               </div>
               <div className="flex gap-3 pt-2">
-                 <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex-1">Add Learning Area</button>
-                <button type="button" onClick={() => setShowAdd(false)} className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium">Cancel</button>
+                 <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex-1">Add Learning Area</button>
+                <button type="button" onClick={() => setShowAdd(false)} className="border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm font-medium">Cancel</button>
               </div>
             </form>
           </div>

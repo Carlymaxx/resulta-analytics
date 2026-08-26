@@ -96,7 +96,7 @@ export default function ClassesPage() {
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="inline-flex items-center gap-2 bg-teal-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-teal-700 transition-all"
+            className="inline-flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium"
           >
             <Plus className="w-5 h-5" />
             Add Grade
@@ -175,25 +175,25 @@ export default function ClassesPage() {
             </div>
             
             <div className="space-y-3">
-          <div className="flex items-center justify-between">
-               <span className="text-slate-500 dark:text-slate-400 text-sm">Students</span>
-               <span className="text-2xl font-bold text-slate-800 dark:text-white">{cls.students}</span>
-             </div>
-             <div className="flex items-center justify-between">
-                <span className="text-slate-500 dark:text-slate-400 text-sm">Learning Areas</span>
-                <span className="text-2xl font-bold text-slate-800 dark:text-white">{cls.learningAreas}</span>
-             </div>
-             <div className="flex items-center justify-between">
-               <span className="text-slate-500 dark:text-slate-400 text-sm">Average Score</span>
-               <span className="text-xl font-bold text-teal-600">{cls.avgScore.toFixed(1)}%</span>
-             </div>
+              <div className="flex items-center justify-between">
+                 <span className="text-slate-500 dark:text-slate-400 text-sm">Students</span>
+                 <span className="text-2xl font-bold text-slate-800 dark:text-white">{cls.students}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                 <span className="text-slate-500 dark:text-slate-400 text-sm">Learning Areas</span>
+                 <span className="text-2xl font-bold text-slate-800 dark:text-white">{cls.learningAreas}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500 dark:text-slate-400 text-sm">Average Score</span>
+                <span className="text-xl font-bold text-teal-600">{cls.avgScore.toFixed(1)}%</span>
+              </div>
             </div>
 
             <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex gap-2">
               <button onClick={() => { setSelectedClass(cls); setShowDetailsModal(true); }} className="flex-1 px-4 py-2 text-sm font-medium text-teal-600 border border-teal-600 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900">
                 View Details
               </button>
-              <button onClick={() => { setSelectedClass({...cls}); setShowEditModal(true); }} className="p-2 text-slate-400 hover:text-slate-600 border border-slate-200 rounded-lg">
+              <button onClick={() => { setSelectedClass({...cls}); setShowEditModal(true); }} className="p-2 text-slate-400 hover:text-slate-600 dark:text-slate-400 border border-slate-200 rounded-lg">
                 <Edit2 className="w-4 h-4" />
               </button>
             </div>

@@ -45,7 +45,7 @@ const revenueData = {
 };
 
 const packages = [
-  { name: "Free Trial", price: "KES 0", students: "50 students", features: ["Basic student management", "Attendance tracking", "2 teacher accounts", "Community support"], color: "border-slate-200", badge: "bg-slate-100 text-slate-600" },
+  { name: "Free Trial", price: "KES 0", students: "50 students", features: ["Basic student management", "Attendance tracking", "2 teacher accounts", "Community support"], color: "border-slate-200", badge: "bg-slate-100 text-slate-600 dark:text-slate-400" },
   { name: "Starter", price: "KES 2,500/mo", students: "200 students", features: ["All Free features", "Results & analytics", "10 teacher accounts", "SMS notifications", "Email support"], color: "border-blue-200", badge: "bg-blue-100 text-blue-700" },
   { name: "Professional", price: "KES 5,000/mo", students: "500 students", features: ["All Starter features", "All modules unlocked", "Unlimited teachers", "CBT exams", "Priority support", "API access"], color: "border-teal-500", badge: "bg-teal-600 text-white", highlight: true },
   { name: "Enterprise", price: "KES 12,000/mo", students: "Unlimited", features: ["All Pro features", "Multi-school management", "Custom branding", "Dedicated support", "SLA guarantee", "On-site training"], color: "border-purple-200", badge: "bg-purple-100 text-purple-700" },
@@ -120,7 +120,7 @@ export default function SuperAdminPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">Super Admin</h1>
+        <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Super Admin</h1>
         <p className="text-slate-500 text-sm mt-1">Platform-wide management and oversight</p>
       </div>
 
@@ -132,23 +132,23 @@ export default function SuperAdminPage() {
           { label: "Suspended Schools", value: String(suspendedSchools), color: "text-red-600", bg: "bg-red-50" },
           { label: "Active Schools", value: String(activeSchools), color: "text-blue-600", bg: "bg-blue-50" },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div key={s.label} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className={`w-10 h-10 rounded-lg ${s.bg} flex items-center justify-center mb-3`}>
               <Shield className={`w-5 h-5 ${s.color}`} />
             </div>
-            <div className="text-2xl font-bold text-slate-800">{s.value}</div>
-            <div className="text-sm text-slate-500">{s.label}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{s.value}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">{s.label}</div>
           </div>
         ))}
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
         <div className="border-b border-slate-200 px-6 overflow-x-auto">
           <div className="flex gap-6 min-w-max">
             {tabs.map(tab => (
               <button key={tab} onClick={() => setActiveTab(tab)}
-                className={`py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab ? "border-teal-600 text-teal-600" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
+                className={`py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab ? "border-teal-600 text-teal-600 dark:text-teal-400" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
                 {tab}
               </button>
             ))}
@@ -158,8 +158,8 @@ export default function SuperAdminPage() {
           {activeTab === "Schools" && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <span className="text-sm text-slate-500">{schools.length} schools</span>
-                <button onClick={() => setShowAddSchool(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
+                <span className="text-sm text-slate-500 dark:text-slate-400">{schools.length} schools</span>
+                <button onClick={() => setShowAddSchool(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex items-center gap-2">
                   <Plus className="w-4 h-4" /> Add School
                 </button>
               </div>
@@ -168,7 +168,7 @@ export default function SuperAdminPage() {
                   <thead className="bg-slate-50">
                     <tr>
                       {["School Name", "City", "Students", "Plan", "Status", "Joined", "Action"].map(h => (
-                        <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                        <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -181,23 +181,23 @@ export default function SuperAdminPage() {
                       </tr>
                     )}
                     {schools.map(s => (
-                      <tr key={s.id} className="hover:bg-slate-50">
+                      <tr key={s.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                         <td className="px-4 py-3 text-sm font-medium text-slate-800">{s.name}</td>
-                        <td className="px-4 py-3 text-sm text-slate-600">{s.city}</td>
-                        <td className="px-4 py-3 text-sm text-slate-600">{s.students}</td>
+                        <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{s.city}</td>
+                        <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{s.students}</td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${s.plan === "Pro" ? "bg-teal-100 text-teal-700" : s.plan === "Starter" ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"}`}>{s.plan}</span>
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${s.plan === "Pro" ? "bg-teal-100 text-teal-700" : s.plan === "Starter" ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600 dark:text-slate-400"}`}>{s.plan}</span>
                         </td>
                         <td className="px-4 py-3">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${s.status === "Active" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>{s.status}</span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-slate-600">{s.joined}</td>
+                        <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{s.joined}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
                             <button onClick={() => toggleSchool(s.id)} className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${s.status === "Active" ? "bg-red-100 text-red-700 hover:bg-red-200" : "bg-green-100 text-green-700 hover:bg-green-200"}`}>
                               {s.status === "Active" ? "Suspend" : "Activate"}
                             </button>
-                            <button onClick={() => deleteSchool(s.id)} className="px-2 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" title="Delete">
+                            <button onClick={() => deleteSchool(s.id)} className="px-2 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 dark:text-slate-400 hover:bg-slate-200 transition-colors" title="Delete">
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
                           </div>
@@ -213,7 +213,7 @@ export default function SuperAdminPage() {
           {activeTab === "Registered Users" && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <span className="text-sm text-slate-500">{registered.length} registered accounts (built-in + self sign-ups)</span>
+                <span className="text-sm text-slate-500 dark:text-slate-400">{registered.length} registered accounts (built-in + self sign-ups)</span>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                 {[
@@ -233,7 +233,7 @@ export default function SuperAdminPage() {
                   <thead className="bg-slate-50">
                     <tr>
                       {["Name", "Email", "Role", "Level", "School", "Source"].map(h => (
-                        <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                        <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -242,16 +242,16 @@ export default function SuperAdminPage() {
                       <tr><td colSpan={6} className="px-4 py-12 text-center text-slate-400">No registered users yet.</td></tr>
                     )}
                     {registered.map(u => (
-                      <tr key={u.id + u.email} className="hover:bg-slate-50">
+                      <tr key={u.id + u.email} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                         <td className="px-4 py-3 text-sm font-medium text-slate-800">{u.name}</td>
-                        <td className="px-4 py-3 text-sm text-slate-600">{u.email}</td>
+                        <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{u.email}</td>
                         <td className="px-4 py-3">
                           <span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 capitalize">{u.role.replace("_", " ")}</span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-slate-600">{levelLabel(u.level)}</td>
-                        <td className="px-4 py-3 text-sm text-slate-600">{u.school || "—"}</td>
+                        <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{levelLabel(u.level)}</td>
+                        <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{u.school || "—"}</td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${u.source === "signup" ? "bg-teal-100 text-teal-700" : "bg-slate-100 text-slate-600"}`}>
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${u.source === "signup" ? "bg-teal-100 text-teal-700" : "bg-slate-100 text-slate-600 dark:text-slate-400"}`}>
                             {u.source === "signup" ? "Sign-up" : "Built-in"}
                           </span>
                         </td>
@@ -296,7 +296,7 @@ export default function SuperAdminPage() {
                   <div className="text-xs text-slate-500 mb-4">{pkg.students}</div>
                   <ul className="space-y-2">
                     {pkg.features.map(f => (
-                      <li key={f} className="text-xs text-slate-600 flex items-center gap-2">
+                      <li key={f} className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-2">
                         <div className="w-1.5 h-1.5 bg-teal-500 rounded-full flex-shrink-0" />
                         {f}
                       </li>
@@ -313,23 +313,23 @@ export default function SuperAdminPage() {
                 <thead className="bg-slate-50">
                   <tr>
                      {["Ticket ID", "School", "Topic", "Priority", "Status", "Date"].map(h => (
-                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {tickets.map(t => (
-                    <tr key={t.id} className="hover:bg-slate-50">
+                    <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                       <td className="px-4 py-3 text-sm font-mono text-slate-500">{t.id}</td>
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{t.school}</td>
-                       <td className="px-4 py-3 text-sm text-slate-600">{t.topic}</td>
+                       <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{t.topic}</td>
                       <td className="px-4 py-3">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.priority === "High" ? "bg-red-100 text-red-700" : t.priority === "Medium" ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-600"}`}>{t.priority}</span>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.priority === "High" ? "bg-red-100 text-red-700" : t.priority === "Medium" ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-600 dark:text-slate-400"}`}>{t.priority}</span>
                       </td>
                       <td className="px-4 py-3">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.status === "Resolved" ? "bg-green-100 text-green-700" : t.status === "In Progress" ? "bg-blue-100 text-blue-700" : "bg-amber-100 text-amber-700"}`}>{t.status}</span>
                       </td>
-                      <td className="px-4 py-3 text-sm text-slate-600">{t.date}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{t.date}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -341,36 +341,36 @@ export default function SuperAdminPage() {
 
       {/* Add School Modal */}
       {showAddSchool && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-800">Add New School</h2>
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Add New School</h2>
               <button onClick={() => setShowAddSchool(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5" /></button>
             </div>
             <form onSubmit={handleAddSchool} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium text-slate-700 mb-1">School Name</label>
-                  <input value={schoolForm.name} onChange={e => setSchoolForm({ ...schoolForm, name: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="School name" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">School Name</label>
+                  <input value={schoolForm.name} onChange={e => setSchoolForm({ ...schoolForm, name: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="School name" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">City</label>
-                  <input value={schoolForm.city} onChange={e => setSchoolForm({ ...schoolForm, city: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="City" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">City</label>
+                  <input value={schoolForm.city} onChange={e => setSchoolForm({ ...schoolForm, city: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="City" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Students</label>
-                  <input type="number" min="0" value={schoolForm.students} onChange={e => setSchoolForm({ ...schoolForm, students: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="0" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Students</label>
+                  <input type="number" min="0" value={schoolForm.students} onChange={e => setSchoolForm({ ...schoolForm, students: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="0" />
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Plan</label>
-                  <select value={schoolForm.plan} onChange={e => setSchoolForm({ ...schoolForm, plan: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Plan</label>
+                  <select value={schoolForm.plan} onChange={e => setSchoolForm({ ...schoolForm, plan: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                     {["Free", "Starter", "Pro", "Enterprise"].map(p => <option key={p} value={p}>{p}</option>)}
                   </select>
                 </div>
               </div>
               <div className="flex gap-3 pt-2">
-                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex-1">Add School</button>
-                <button type="button" onClick={() => setShowAddSchool(false)} className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium">Cancel</button>
+                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex-1">Add School</button>
+                <button type="button" onClick={() => setShowAddSchool(false)} className="border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm font-medium">Cancel</button>
               </div>
             </form>
           </div>

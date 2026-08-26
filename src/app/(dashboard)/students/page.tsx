@@ -135,7 +135,7 @@ export default function StudentsPage() {
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center gap-2 bg-teal-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-teal-700 transition-all"
+          className="inline-flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium"
         >
           <Plus className="w-5 h-5" />
           Add Student
@@ -144,21 +144,21 @@ export default function StudentsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="text-sm text-slate-500 dark:text-slate-400">Total Students</div>
           <div className="text-2xl font-bold text-slate-800 dark:text-white">{students.length}</div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="text-sm text-slate-500 dark:text-slate-400">Active</div>
           <div className="text-2xl font-bold text-green-600">{students.filter(s => s.status === "Active").length}</div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="text-sm text-slate-500 dark:text-slate-400">Avg Attendance</div>
           <div className="text-2xl font-bold text-teal-600">
             {students.length ? `${(students.reduce((a, s) => a + s.attendance, 0) / students.length).toFixed(1)}%` : "—"}
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="text-sm text-slate-500 dark:text-slate-400">Avg Score</div>
           <div className="text-2xl font-bold text-slate-800 dark:text-white">
             {students.length ? `${(students.reduce((a, s) => a + s.avgScore, 0) / students.length).toFixed(1)}%` : "—"}
@@ -208,7 +208,7 @@ export default function StudentsPage() {
           <table className="w-full">
             <thead className="bg-slate-50 dark:bg-slate-700">
               <tr>
-                <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600 dark:text-slate-300">Student</th>
+                <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Student</th>
                 <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Adm No</th>
                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Class</th>
                 <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Gender</th>
@@ -227,7 +227,7 @@ export default function StudentsPage() {
               )}
               {paginatedStudents.map((student) => (
                 <tr key={student.id} className="border-t border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                  <td className="py-4 px-6">
+                  <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-900 flex items-center justify-center text-teal-600 dark:text-teal-400 font-semibold">
                         {student.firstName.charAt(0)}
@@ -242,7 +242,7 @@ export default function StudentsPage() {
                   <td className="py-4 px-4 text-sm text-slate-600 dark:text-slate-400">{student.class}</td>
                   <td className="py-4 px-4 text-sm text-slate-600 dark:text-slate-400">{student.gender}</td>
                   <td className="py-4 px-4 text-sm text-slate-600 dark:text-slate-400">{student.guardianName}</td>
-                  <td className="py-4 px-4">
+                  <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">
                     <div className="flex items-center justify-center gap-2">
                       <div className="w-16 h-2 bg-slate-200 dark:bg-slate-600 rounded-full overflow-hidden">
                         <div
@@ -253,7 +253,7 @@ export default function StudentsPage() {
                       <span className="text-sm text-slate-600 dark:text-slate-400 w-8">{student.attendance}%</span>
                     </div>
                   </td>
-                  <td className="py-4 px-4">
+                  <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">
                     <div className="flex items-center justify-center gap-2">
                       <button
                         onClick={() => setShowViewModal(student.id)}
@@ -468,7 +468,7 @@ export default function StudentsPage() {
 
               <div className="flex gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
                 <button className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700">View Results</button>
-                <button className="px-4 py-2 border border-slate-200 dark:border-slate-600 rounded-lg font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">Edit Profile</button>
+                <button className="px-4 py-2 border border-slate-200 dark:border-slate-600 rounded-lg font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">Edit Profile</button>
               </div>
             </div>
           </div>

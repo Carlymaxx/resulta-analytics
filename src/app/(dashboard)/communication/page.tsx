@@ -65,7 +65,7 @@ export default function CommunicationPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Communication</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Communication</h1>
           <p className="text-slate-500 text-sm mt-1">Messages, notices, and announcements</p>
         </div>
         <button onClick={() => setShowCompose(true)} className="inline-flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-700">
@@ -75,21 +75,21 @@ export default function CommunicationPage() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((s, i) => (
-          <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+          <div key={i} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${s.color}`}>
               <s.icon className="w-5 h-5" />
             </div>
-            <div className="text-2xl font-bold text-slate-800">{s.value}</div>
-            <div className="text-sm text-slate-500">{s.label}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{s.value}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">{s.label}</div>
           </div>
         ))}
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
         <div className="border-b border-slate-200 px-6">
           <div className="flex gap-6">
             {["messages", "notices", "announcements", "sms"].map(tab => (
-              <button key={tab} onClick={() => setActiveTab(tab)} className={`py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === tab ? "border-teal-600 text-teal-600" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
+              <button key={tab} onClick={() => setActiveTab(tab)} className={`py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === tab ? "border-teal-600 text-teal-600 dark:text-teal-400" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
@@ -100,12 +100,12 @@ export default function CommunicationPage() {
             <div className="grid md:grid-cols-3 gap-6">
               <div className="md:col-span-1 space-y-2">
                 {filteredMessages.map((msg, i) => (
-                  <button key={i} onClick={() => setSelectedMessage(i)} className={`w-full text-left p-4 rounded-lg border transition-colors ${selectedMessage === i ? "border-teal-500 bg-teal-50" : "border-slate-200 hover:bg-slate-50"}`}>
+                  <button key={i} onClick={() => setSelectedMessage(i)} className={`w-full text-left p-4 rounded-lg border transition-colors ${selectedMessage === i ? "border-teal-500 bg-teal-50" : "border-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50"}`}>
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-medium text-slate-800 text-sm">{msg.from}</span>
                       <span className="text-xs text-slate-400">{msg.time}</span>
                     </div>
-                    <div className="text-sm text-slate-600 truncate">{msg.preview}</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400 truncate">{msg.preview}</div>
                     <div className="text-xs text-slate-400 mt-1">{msg.role}</div>
                   </button>
                 ))}
@@ -116,7 +116,7 @@ export default function CommunicationPage() {
                     <div className="font-semibold text-slate-800">{messages[selectedMessage].from}</div>
                     <div className="text-xs text-slate-500">{messages[selectedMessage].role} · {messages[selectedMessage].time}</div>
                   </div>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${messages[selectedMessage].unread ? "bg-teal-100 text-teal-700" : "bg-slate-200 text-slate-600"}`}>{messages[selectedMessage].unread ? "Unread" : "Read"}</span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${messages[selectedMessage].unread ? "bg-teal-100 text-teal-700" : "bg-slate-200 text-slate-600 dark:text-slate-400"}`}>{messages[selectedMessage].unread ? "Unread" : "Read"}</span>
                 </div>
                 <p className="text-sm text-slate-700 leading-relaxed">{messages[selectedMessage].full}</p>
                 <div className="mt-6 flex gap-3">
@@ -136,7 +136,7 @@ export default function CommunicationPage() {
                     <span className="text-xs text-slate-400">{notice.date}</span>
                   </div>
                   <span className="inline-block px-2 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-medium mb-2">{notice.category}</span>
-                  <p className="text-sm text-slate-600">{notice.content}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">{notice.content}</p>
                 </div>
               ))}
             </div>
@@ -153,7 +153,7 @@ export default function CommunicationPage() {
                     </div>
                     <span className="text-xs text-slate-400">{ann.date}</span>
                   </div>
-                  <p className="text-sm text-slate-600">{ann.content}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">{ann.content}</p>
                   <div className="mt-3 flex gap-2">
                     <button className="text-xs text-teal-600 font-medium hover:underline">Edit</button>
                     <button className="text-xs text-red-600 font-medium hover:underline">Delete</button>
@@ -167,7 +167,7 @@ export default function CommunicationPage() {
             <div className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Recipient</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Recipient</label>
                    <select value={smsRecipient} onChange={e => setSmsRecipient(e.target.value)} className="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white text-sm outline-none focus:border-teal-500">
                      <option>All Students</option>
                      <option>All Parents</option>
@@ -178,7 +178,7 @@ export default function CommunicationPage() {
                    </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Message</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Message</label>
                   <textarea value={smsText} onChange={e => setSmsText(e.target.value)} placeholder="Type your message..." className="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white text-sm outline-none focus:border-teal-500 h-[38px]" />
                 </div>
               </div>
@@ -193,17 +193,17 @@ export default function CommunicationPage() {
                     <thead className="bg-slate-50">
                       <tr>
                         {["Recipient", "Message", "Sent", "Count", "Status"].map(h => (
-                          <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                          <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider uppercase tracking-wider">{h}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
                       {filteredSmsHistory.map((sms, i) => (
-                        <tr key={i} className="hover:bg-slate-50">
+                        <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                           <td className="py-3 px-4 text-sm text-slate-800">{sms.recipient}</td>
-                          <td className="py-3 px-4 text-sm text-slate-600">{sms.message}</td>
-                          <td className="py-3 px-4 text-sm text-slate-600">{sms.sent}</td>
-                          <td className="py-3 px-4 text-sm text-slate-600">{sms.count}</td>
+                          <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{sms.message}</td>
+                          <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{sms.sent}</td>
+                          <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{sms.count}</td>
                           <td className="py-3 px-4"><span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">{sms.status}</span></td>
                         </tr>
                       ))}
@@ -217,23 +217,23 @@ export default function CommunicationPage() {
       </div>
 
       {showCompose && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-lg font-bold text-slate-800">Compose Announcement</h2>
-              <button onClick={() => setShowCompose(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5 text-slate-500" /></button>
+              <h2 className="text-lg font-bold text-slate-800 dark:text-white">Compose Announcement</h2>
+              <button onClick="$1" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"><X className="w-5 h-5 text-slate-500 dark:text-slate-400" /></button>
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Title</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Title</label>
                 <input type="text" className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-teal-500" placeholder="Announcement title" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Content</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Content</label>
                 <textarea className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-teal-500 h-24" placeholder="Write your announcement..." />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Audience</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Audience</label>
                 <select className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-teal-500 bg-white">
                   <option>All Students</option>
                   <option>All Parents</option>
@@ -242,7 +242,7 @@ export default function CommunicationPage() {
               </div>
             </div>
             <div className="flex gap-3 p-6 border-t border-slate-200">
-              <button onClick={() => setShowCompose(false)} className="flex-1 border border-slate-200 text-slate-700 py-2 rounded-lg hover:bg-slate-50 text-sm font-medium">Cancel</button>
+              <button onClick={() => setShowCompose(false)} className="flex-1 border border-slate-200 text-slate-700 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 text-sm font-medium">Cancel</button>
               <button onClick={() => setShowCompose(false)} className="flex-1 bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 text-sm font-medium">Publish</button>
             </div>
           </div>

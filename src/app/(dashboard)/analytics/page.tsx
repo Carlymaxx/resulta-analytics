@@ -159,14 +159,14 @@ export default function AnalyticsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Analytics</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Analytics</h1>
           <p className="text-slate-500">Performance trends for {schoolName}</p>
         </div>
         <div className="flex gap-3">
           <select
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value)}
-            className="px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+            className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
           >
             <option value="month">This Month</option>
             <option value="term">This Term</option>
@@ -175,14 +175,14 @@ export default function AnalyticsPage() {
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+              className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
               <option value="all">All Classes</option>
               {levelClasses.map(c => (
                 <option key={c} value={c}>{c}</option>
               ))}
             </select>
-          <button className="inline-flex items-center gap-2 px-4 py-2.5 border border-slate-200 rounded-lg hover:bg-slate-50">
+          <button className="inline-flex items-center gap-2 px-4 py-2.5 border border-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50">
             <Download className="w-4 h-4" />
             Export
           </button>
@@ -197,9 +197,9 @@ export default function AnalyticsPage() {
           { label: "Improvement", value: "12%", change: "+5%", positive: true },
           { label: "Top Performers", value: "156", change: "+23", positive: true },
         ].map((stat, i) => (
-          <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
-            <div className="text-sm text-slate-500 mb-1">{stat.label}</div>
-            <div className="text-2xl font-bold text-slate-800">{stat.value}</div>
+          <div key={i} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+            <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">{stat.label}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{stat.value}</div>
             <div className={`text-sm font-medium ${stat.positive ? 'text-green-600' : 'text-red-600'}`}>
               {stat.positive ? <TrendingUp className="w-4 h-4 inline mr-1" /> : <TrendingDown className="w-4 h-4 inline mr-1" />}
               {stat.change} vs last period
@@ -210,8 +210,8 @@ export default function AnalyticsPage() {
 
       {/* Charts Row 1 */}
       <div className="grid lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Performance Over Time</h3>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Performance Over Time</h3>
           <div className="h-72">
             <Line 
               data={monthlyData}
@@ -229,8 +229,8 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Learning Area Comparison</h3>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Learning Area Comparison</h3>
           <div className="h-72">
             <Bar 
               data={dynamicSubjectComparison}
@@ -248,8 +248,8 @@ export default function AnalyticsPage() {
 
       {/* Charts Row 2 */}
       <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Performance Distribution by Term</h3>
+        <div className="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Performance Distribution by Term</h3>
           <div className="h-64">
             <Bar 
               data={performanceByTerm}
@@ -268,14 +268,14 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Learning Area Trends</h3>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Learning Area Trends</h3>
           <div className="space-y-4">
             {filteredSubjectTrends.map((subject, i) => (
               <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                 <div>
                    <div className="font-medium text-slate-800">{subject.learningArea}</div>
-                  <div className="text-sm text-slate-500">Prev: {subject.previous}%</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Prev: {subject.previous}%</div>
                 </div>
                 <div className="text-right">
                   <div className="font-bold text-slate-800">{subject.current}%</div>
@@ -291,34 +291,34 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Top Performers */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-        <h3 className="text-lg font-bold text-slate-800 mb-4">Top Performers</h3>
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+        <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Top Performers</h3>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600">Rank</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600">Student</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600">Class</th>
-                <th className="text-center py-3 px-4 text-sm font-semibold text-slate-600">Average</th>
-                <th className="text-center py-3 px-4 text-sm font-semibold text-slate-600">Trend</th>
+              <tr className="bg-slate-50 dark:bg-slate-700 border-b border-slate-200">
+                <th className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Rank</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Student</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Class</th>
+                <th className="text-center py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Average</th>
+                <th className="text-center py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Trend</th>
               </tr>
             </thead>
             <tbody>
               {filteredTopPerformers.map((student) => (
-                <tr key={student.rank} className="border-b border-slate-100 hover:bg-slate-50">
+                <tr key={student.rank} className="border-b border-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700/50">
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${
                       student.rank === 1 ? 'bg-yellow-100 text-yellow-700' :
-                      student.rank === 2 ? 'bg-slate-100 text-slate-600' :
+                      student.rank === 2 ? 'bg-slate-100 text-slate-600 dark:text-slate-400' :
                       student.rank === 3 ? 'bg-orange-100 text-orange-700' :
-                      'bg-slate-50 text-slate-600'
+                      'bg-slate-50 text-slate-600 dark:text-slate-400'
                     }`}>
                       {student.rank}
                     </span>
                   </td>
                   <td className="py-3 px-4 font-medium text-slate-800">{student.name}</td>
-                  <td className="py-3 px-4 text-slate-600">{student.class}</td>
+                  <td className="py-3 px-4 text-slate-600 dark:text-slate-400">{student.class}</td>
                   <td className="py-3 px-4 text-center font-mono font-semibold text-teal-700">{student.avg}%</td>
                   <td className="py-3 px-4 text-center">
                     {student.trend === 'up' && <TrendingUp className="w-5 h-5 text-green-600 inline" />}

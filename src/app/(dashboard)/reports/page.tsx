@@ -49,14 +49,14 @@ export default function ReportsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Reports</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Reports</h1>
           <p className="text-slate-500">Generate and download academic reports</p>
         </div>
       </div>
 
       {/* Generate New Report */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-        <h3 className="text-lg font-bold text-slate-800 mb-6">Generate New Report</h3>
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+        <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-6">Generate New Report</h3>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           {reportTypes.map((report) => (
@@ -66,25 +66,25 @@ export default function ReportsPage() {
               className={`p-4 rounded-xl border-2 text-left transition-all ${
                 selectedReport === report.id 
                   ? "border-teal-500 bg-teal-50" 
-                  : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                  : "border-slate-200 hover:border-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50"
               }`}
             >
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${
                 selectedReport === report.id ? "bg-teal-100" : "bg-slate-100"
               }`}>
                 <report.icon className={`w-5 h-5 ${
-                  selectedReport === report.id ? "text-teal-600" : "text-slate-600"
+                  selectedReport === report.id ? "text-teal-600" : "text-slate-600 dark:text-slate-400"
                 }`} />
               </div>
               <div className="font-medium text-slate-800">{report.name}</div>
-              <div className="text-sm text-slate-500 mt-1">{report.description}</div>
+              <div className="text-sm text-slate-500 dark:text-slate-400 mt-1">{report.description}</div>
             </button>
           ))}
         </div>
 
         <div className="flex flex-wrap items-center gap-4 p-4 bg-slate-50 rounded-lg">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Date Range</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Date Range</label>
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
@@ -98,7 +98,7 @@ export default function ReportsPage() {
           </div>
           
             <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Class</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class</label>
                 <select className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white">
                   <option value="">All Classes</option>
                  {levelClasses.map(c => (
@@ -108,7 +108,7 @@ export default function ReportsPage() {
             </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Format</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Format</label>
             <select
               value={reportFormat}
               onChange={(e) => setReportFormat(e.target.value)}
@@ -131,18 +131,18 @@ export default function ReportsPage() {
 
       {/* Report Preview */}
       {selectedReport && (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div className="p-6 border-b border-slate-200 flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-bold text-slate-800">Report Preview</h3>
-              <p className="text-sm text-slate-500">Sample data from {reportTypes.find(r => r.id === selectedReport)?.name}</p>
+              <h3 className="text-lg font-bold text-slate-800 dark:text-white">Report Preview</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Sample data from {reportTypes.find(r => r.id === selectedReport)?.name}</p>
             </div>
             <div className="flex gap-2">
-              <button className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50">
+              <button className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50">
                 <Printer className="w-4 h-4" />
                 Print
               </button>
-              <button className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50">
+              <button className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50">
                 <Mail className="w-4 h-4" />
                 Email
               </button>
@@ -163,10 +163,10 @@ export default function ReportsPage() {
                   </div>
                   <div>
                     <div className="text-xl font-bold text-slate-800">{schoolName}</div>
-                    <div className="text-sm text-slate-500">Academic Results Analysis System</div>
+                    <div className="text-sm text-slate-500 dark:text-slate-400">Academic Results Analysis System</div>
                   </div>
                 </div>
-                <h2 className="text-2xl font-bold text-slate-800">{reportTypes.find(r => r.id === selectedReport)?.name}</h2>
+                <h2 className="text-2xl font-bold text-slate-800 dark:text-white">{reportTypes.find(r => r.id === selectedReport)?.name}</h2>
                 <p className="text-slate-500 mt-2">Academic Year 2025-2026 | Term 2</p>
               </div>
 
@@ -177,15 +177,15 @@ export default function ReportsPage() {
                   <div className="grid grid-cols-3 gap-4">
                     <div className="text-center p-4 bg-slate-50 rounded-lg">
                       <div className="text-2xl font-bold text-teal-600">2,547</div>
-                      <div className="text-sm text-slate-500">Total Students</div>
+                      <div className="text-sm text-slate-500 dark:text-slate-400">Total Students</div>
                     </div>
                     <div className="text-center p-4 bg-slate-50 rounded-lg">
                       <div className="text-2xl font-bold text-teal-600">78.4%</div>
-                      <div className="text-sm text-slate-500">Average Score</div>
+                      <div className="text-sm text-slate-500 dark:text-slate-400">Average Score</div>
                     </div>
                     <div className="text-center p-4 bg-slate-50 rounded-lg">
                       <div className="text-2xl font-bold text-teal-600">94.2%</div>
-                      <div className="text-sm text-slate-500">Pass Rate</div>
+                      <div className="text-sm text-slate-500 dark:text-slate-400">Pass Rate</div>
                     </div>
                   </div>
                 </div>
@@ -194,8 +194,8 @@ export default function ReportsPage() {
                    <h4 className="font-semibold text-slate-800 mb-3">Top Performing Learning Areas</h4>
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-slate-200">
-                        <th className="text-left py-2">Learning Area</th>
+                      <tr className="bg-slate-50 dark:bg-slate-700 border-b border-slate-200">
+                <th className="text-left py-2">Learning Area</th>
                         <th className="text-right py-2">Average</th>
                         <th className="text-right py-2">Trend</th>
                       </tr>
@@ -240,7 +240,7 @@ export default function ReportsPage() {
               </div>
 
               {/* Report Footer */}
-              <div className="mt-8 pt-6 border-t border-slate-200 text-center text-sm text-slate-500">
+              <div className="mt-8 pt-6 border-t border-slate-200 text-center text-sm text-slate-500 dark:text-slate-400">
                 <p>Generated on {new Date().toLocaleDateString()} | Page 1 of 1</p>
                 <p className="mt-1">{schoolName} - Confidential Report</p>
               </div>
@@ -250,43 +250,43 @@ export default function ReportsPage() {
       )}
 
       {/* Previously Generated Reports */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
         <div className="p-6 border-b border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800">Previously Generated Reports</h3>
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white">Previously Generated Reports</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-slate-50">
               <tr>
-                <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600">Report Name</th>
-                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Type</th>
-                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Date</th>
-                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Size</th>
-                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Status</th>
-                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Actions</th>
+                <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Report Name</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Type</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Date</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Size</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Status</th>
+                <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredReports.map((report) => (
-                <tr key={report.id} className="border-t border-slate-100 hover:bg-slate-50">
-                  <td className="py-4 px-6">
+                <tr key={report.id} className="border-t border-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                  <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">
                     <div className="flex items-center gap-3">
                       <FileText className="w-5 h-5 text-slate-400" />
                       <span className="font-medium text-slate-800">{report.name}</span>
                     </div>
                   </td>
-                  <td className="py-4 px-4 text-slate-600">{report.type}</td>
-                  <td className="py-4 px-4 text-slate-600">{report.date}</td>
-                  <td className="py-4 px-4 text-slate-600 font-mono text-sm">{report.size}</td>
-                  <td className="py-4 px-4">
+                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400">{report.type}</td>
+                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400">{report.date}</td>
+                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400 font-mono text-sm">{report.size}</td>
+                  <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">
                     <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
                       {report.status}
                     </span>
                   </td>
-                  <td className="py-4 px-4">
+                  <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">
                     <div className="flex items-center justify-center gap-2">
                       <button className="p-2 hover:bg-slate-100 rounded-lg" title="View">
-                        <FileText className="w-4 h-4 text-slate-600" />
+                        <FileText className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                       </button>
                       <button className="p-2 hover:bg-slate-100 rounded-lg" title="Download">
                         <Download className="w-4 h-4 text-teal-600" />

@@ -74,10 +74,10 @@ export default function TeachersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Teachers</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Teachers</h1>
           <p className="text-slate-500 text-sm mt-1">Manage teaching staff at {schoolName}</p>
         </div>
-        <button onClick={() => setShowAdd(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex items-center gap-2">
+        <button onClick={() => setShowAdd(true)} className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex items-center gap-2">
           <Plus className="w-4 h-4" /> Add Teacher
         </button>
       </div>
@@ -90,18 +90,18 @@ export default function TeachersPage() {
           { label: "Part-time", value: String(partTime), color: "text-purple-600", bg: "bg-purple-50" },
           { label: "On Leave", value: String(onLeave), color: "text-amber-600", bg: "bg-amber-50" },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div key={s.label} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className={`w-10 h-10 rounded-lg ${s.bg} flex items-center justify-center mb-3`}>
               <UserCheck className={`w-5 h-5 ${s.color}`} />
             </div>
-            <div className="text-2xl font-bold text-slate-800">{s.value}</div>
-            <div className="text-sm text-slate-500">{s.label}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{s.value}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">{s.label}</div>
           </div>
         ))}
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
         <div className="p-4 border-b border-slate-200 flex items-center gap-3">
           <div className="flex items-center bg-slate-100 rounded-lg px-3 py-2 flex-1 max-w-sm">
             <Search className="w-4 h-4 text-slate-400" />
@@ -113,14 +113,14 @@ export default function TeachersPage() {
               className="bg-transparent border-none outline-none text-sm ml-2 text-slate-800 placeholder-slate-400 w-full"
             />
           </div>
-          <span className="text-sm text-slate-500">{filtered.length} records</span>
+          <span className="text-sm text-slate-500 dark:text-slate-400">{filtered.length} records</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-slate-50 dark:bg-slate-700 border-b border-slate-200">
               <tr>
                  {["Name", "Employee ID", "Learning Area", "Class Assigned", "Type", "Status", "Actions"].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
+                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -133,7 +133,7 @@ export default function TeachersPage() {
                 </tr>
               )}
               {filtered.map(t => (
-                <tr key={t.id} className="hover:bg-slate-50 transition-colors">
+                <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-semibold text-xs">
@@ -142,9 +142,9 @@ export default function TeachersPage() {
                       <span className="font-medium text-slate-800 text-sm">{t.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-600">{t.empId}</td>
-                   <td className="px-4 py-3 text-sm text-slate-600">{t.learningArea}</td>
-                   <td className="px-4 py-3 text-sm text-slate-600">{t.gradeAssigned}</td>
+                  <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{t.empId}</td>
+                   <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{t.learningArea}</td>
+                   <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{t.gradeAssigned}</td>
                   <td className="px-4 py-3">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.type === "Full-time" ? "bg-blue-100 text-blue-700" : "bg-purple-100 text-purple-700"}`}>
                       {t.type}
@@ -157,7 +157,7 @@ export default function TeachersPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <button onClick={() => setViewTeacher(t)} className="border border-slate-200 text-slate-700 px-3 py-1 rounded-lg hover:bg-slate-50 transition-colors text-xs font-medium flex items-center gap-1">
+                      <button onClick={() => setViewTeacher(t)} className="border border-slate-200 text-slate-700 px-3 py-1 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors text-xs font-medium flex items-center gap-1">
                         <Eye className="w-3 h-3" /> View
                       </button>
                       <button onClick={() => handleDelete(t.id)} className="border border-slate-200 text-red-600 px-2 py-1 rounded-lg hover:bg-red-50 transition-colors text-xs font-medium flex items-center gap-1" title="Delete">
@@ -174,60 +174,60 @@ export default function TeachersPage() {
 
       {/* Add Teacher Modal */}
       {showAdd && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-800">Add New Teacher</h2>
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Add New Teacher</h2>
               <button onClick={() => setShowAdd(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5" /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                  <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="Full name" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Full Name</label>
+                  <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Full name" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Employee ID</label>
-                  <input value={form.empId} onChange={e => setForm({ ...form, empId: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="EMP009" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Employee ID</label>
+                  <input value={form.empId} onChange={e => setForm({ ...form, empId: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="EMP009" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                  <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="email@school.edu" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
+                  <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="email@school.edu" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
-                  <input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="07XX-XXX-XXX" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone</label>
+                  <input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="07XX-XXX-XXX" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Learning Area</label>
-                   <select value={form.learningArea} onChange={e => setForm({ ...form, learningArea: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Learning Area</label>
+                   <select value={form.learningArea} onChange={e => setForm({ ...form, learningArea: e.target.value })} required className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                      <option value="">Select learning area</option>
                      {levelLearningAreas.map(area => <option key={area} value={area}>{area}</option>)}
                    </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Class Assigned</label>
-                  <select value={form.gradeAssigned} onChange={e => setForm({ ...form, gradeAssigned: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class Assigned</label>
+                  <select value={form.gradeAssigned} onChange={e => setForm({ ...form, gradeAssigned: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                     <option value="">Select grade</option>
                      {levelClasses.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Qualification</label>
-                  <input value={form.qualification} onChange={e => setForm({ ...form, qualification: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="e.g. B.Ed, B.Sc, M.Sc" />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Qualification</label>
+                  <input value={form.qualification} onChange={e => setForm({ ...form, qualification: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="e.g. B.Ed, B.Sc, M.Sc" />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Employment Type</label>
-                <select value={form.type} onChange={e => setForm({ ...form, type: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Employment Type</label>
+                <select value={form.type} onChange={e => setForm({ ...form, type: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                   <option>Full-time</option>
                   <option>Part-time</option>
                   <option>Contract</option>
                 </select>
               </div>
               <div className="flex gap-3 pt-2">
-                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium flex-1">Add Teacher</button>
-                <button type="button" onClick={() => setShowAdd(false)} className="border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium">Cancel</button>
+                <button type="submit" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium flex-1">Add Teacher</button>
+                <button type="button" onClick={() => setShowAdd(false)} className="border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm font-medium">Cancel</button>
               </div>
             </form>
           </div>
@@ -236,10 +236,10 @@ export default function TeachersPage() {
 
       {/* View Profile Modal */}
       {viewTeacher && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-800">Teacher Profile</h2>
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Teacher Profile</h2>
               <button onClick={() => setViewTeacher(null)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5" /></button>
             </div>
             <div className="p-6">
@@ -249,7 +249,7 @@ export default function TeachersPage() {
                 </div>
                 <div>
                   <div className="text-xl font-bold text-slate-800">{viewTeacher.name}</div>
-                  <div className="text-sm text-slate-500">{viewTeacher.empId}</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">{viewTeacher.empId}</div>
                   <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${viewTeacher.status === "Active" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}>{viewTeacher.status}</span>
                 </div>
               </div>
@@ -270,7 +270,7 @@ export default function TeachersPage() {
                   </div>
                 ))}
               </div>
-              <button onClick={() => setViewTeacher(null)} className="mt-6 w-full border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium">Close</button>
+              <button onClick={() => setViewTeacher(null)} className="mt-6 w-full border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm font-medium">Close</button>
             </div>
           </div>
         </div>

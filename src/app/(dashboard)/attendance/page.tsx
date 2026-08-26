@@ -99,7 +99,7 @@ export default function AttendancePage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-teal-100 dark:bg-teal-900 rounded-lg flex items-center justify-center">
               <Users className="w-5 h-5 text-teal-600 dark:text-teal-400" />
@@ -110,7 +110,7 @@ export default function AttendancePage() {
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
               <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
@@ -121,7 +121,7 @@ export default function AttendancePage() {
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center">
               <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
@@ -132,7 +132,7 @@ export default function AttendancePage() {
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center">
               <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" />
@@ -207,7 +207,7 @@ export default function AttendancePage() {
         <table className="w-full">
           <thead className="bg-slate-50 dark:bg-slate-700">
             <tr>
-              <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600 dark:text-slate-300">Student</th>
+              <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Student</th>
                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Class</th>
               <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Present</th>
               <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Absent</th>
@@ -219,7 +219,7 @@ export default function AttendancePage() {
           <tbody>
             {filtered.map((student) => (
               <tr key={student.id} className="border-t border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                <td className="py-4 px-6">
+                <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-900 flex items-center justify-center text-teal-600 dark:text-teal-400 font-semibold">
                       {student.name.charAt(0)}

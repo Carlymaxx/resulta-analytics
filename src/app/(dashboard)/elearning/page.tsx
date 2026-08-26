@@ -89,22 +89,22 @@ export default function ELearningPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">E-Learning</h1>
-          <p className="text-sm text-slate-500 mt-1">Online courses, assignments, notes, and video lessons</p>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">E-Learning</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Online courses, assignments, notes, and video lessons</p>
         </div>
-        <button onClick={() => setShowUploadModal(true)} className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium">
+        <button onClick={() => setShowUploadModal(true)} className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all text-sm font-medium">
           <Plus className="w-4 h-4" /> Upload Note
         </button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((s, i) => (
-          <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+          <div key={i} className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${s.color}`}>
               <s.icon className="w-5 h-5" />
             </div>
-            <div className="text-2xl font-bold text-slate-800">{s.value}</div>
-            <div className="text-sm text-slate-500">{s.label}</div>
+            <div className="text-2xl font-bold text-slate-800 dark:text-white">{s.value}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">{s.label}</div>
           </div>
         ))}
       </div>
@@ -112,7 +112,7 @@ export default function ELearningPage() {
       <div className="flex gap-2 border-b border-slate-200">
         {["courses", "assignments", "notes", "videos"].map(t => (
           <button key={t} onClick={() => setActiveTab(t)}
-            className={`px-4 py-2 text-sm font-medium capitalize border-b-2 transition-colors ${activeTab === t ? "border-teal-600 text-teal-600" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
+            className={`px-4 py-2 text-sm font-medium capitalize border-b-2 transition-colors ${activeTab === t ? "border-teal-600 text-teal-600 dark:text-teal-400" : "border-transparent text-slate-500 hover:text-slate-700"}`}>
             {t.charAt(0).toUpperCase() + t.slice(1)}
           </button>
         ))}
@@ -128,8 +128,8 @@ export default function ELearningPage() {
                    <h3 className="font-bold text-slate-800">{c.learningArea}</h3>
                   <span className={`text-xs px-2 py-1 rounded-full font-medium ${c.status === "Active" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}>{c.status}</span>
                 </div>
-                <p className="text-sm text-slate-500 mb-4">{c.teacher}</p>
-                <div className="flex items-center gap-2 text-sm text-slate-600 mb-3">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">{c.teacher}</p>
+                <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 mb-3">
                   <Users className="w-4 h-4" />
                   <span>{c.enrolled} enrolled</span>
                 </div>
@@ -148,20 +148,20 @@ export default function ELearningPage() {
       )}
 
       {activeTab === "assignments" && (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="bg-slate-50 dark:bg-slate-700 border-b border-slate-200">
                  <tr>{["Assignment", "Learning Area", "Due Date", "Submitted", "Status"].map(h => (
-                  <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">{h}</th>
+                  <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider uppercase tracking-wider uppercase tracking-wider">{h}</th>
                 ))}</tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredAssignments.map((a, i) => (
-                  <tr key={i} className="hover:bg-slate-50">
+                  <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                     <td className="py-3 px-4 text-sm font-medium text-slate-800">{a.title}</td>
-                     <td className="py-3 px-4 text-sm text-slate-600">{a.learningArea}</td>
-                    <td className="py-3 px-4 text-sm text-slate-600">{a.due}</td>
+                     <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{a.learningArea}</td>
+                    <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{a.due}</td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-slate-800 font-medium">{a.submitted}/{a.total}</span>
@@ -171,7 +171,7 @@ export default function ELearningPage() {
                       </div>
                     </td>
                     <td className="py-3 px-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${a.status === "Open" ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600"}`}>{a.status}</span>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${a.status === "Open" ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600 dark:text-slate-400"}`}>{a.status}</span>
                     </td>
                   </tr>
                 ))}
@@ -224,28 +224,28 @@ export default function ELearningPage() {
       )}
 
       {showUploadModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-lg font-bold text-slate-800">Upload Note</h2>
-              <button onClick={() => setShowUploadModal(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5 text-slate-500" /></button>
+              <h2 className="text-lg font-bold text-slate-800 dark:text-white">Upload Note</h2>
+              <button onClick="$1" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"><X className="w-5 h-5 text-slate-500 dark:text-slate-400" /></button>
             </div>
             <div className="p-6 space-y-4">
                   {[["Assignment Title", "text"], ["Learning Area", "select"], ["File", "file"]].map(([label, type]) => (
                 <div key={label as string}>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">{label as string}</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">{label as string}</label>
                   {type === "select" ? (
-                    <select className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <select className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                        {courses.map(c => <option key={c.learningArea}>{c.learningArea}</option>)}
                     </select>
                   ) : (
-                    <input type={type as string} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                    <input type={type as string} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                   )}
                 </div>
               ))}
             </div>
             <div className="flex gap-3 p-6 border-t border-slate-200">
-              <button onClick={() => setShowUploadModal(false)} className="flex-1 border border-slate-200 text-slate-700 py-2 rounded-lg hover:bg-slate-50 text-sm font-medium">Cancel</button>
+              <button onClick={() => setShowUploadModal(false)} className="flex-1 border border-slate-200 text-slate-700 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 text-sm font-medium">Cancel</button>
               <button onClick={() => setShowUploadModal(false)} className="flex-1 bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 text-sm font-medium">Upload</button>
             </div>
           </div>
