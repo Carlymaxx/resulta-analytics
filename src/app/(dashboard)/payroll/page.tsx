@@ -5,14 +5,14 @@ import { useAuth } from "@/context/AuthContext";
 import { Users, DollarSign, CheckCircle, Clock, X, Eye } from "lucide-react";
 
 const payrollData = [
-  { name: "Sarah Wanjiku", dept: "Academics", basic: 45000, allowances: 12000, deductions: 6800, status: "Paid" },
-  { name: "James Otieno", dept: "Finance", basic: 55000, allowances: 15000, deductions: 8500, status: "Paid" },
-  { name: "Grace Muthoni", dept: "Academics", basic: 42000, allowances: 10000, deductions: 6200, status: "Paid" },
-  { name: "Peter Kamau", dept: "Academics", basic: 43000, allowances: 11000, deductions: 6400, status: "Pending" },
-  { name: "Joyce Auma", dept: "Academics", basic: 40000, allowances: 9000, deductions: 5900, status: "Paid" },
-  { name: "David Kipchoge", dept: "Transport", basic: 35000, allowances: 8000, deductions: 5200, status: "Paid" },
-  { name: "Fatuma Hassan", dept: "Library", basic: 38000, allowances: 7500, deductions: 5500, status: "Pending" },
-  { name: "Robert Njoroge", dept: "Academics", basic: 44000, allowances: 11500, deductions: 6600, status: "Paid" },
+  { name: "Sarah Wanjiku", dept: "Academics", basic: 45000, allowances: 12000, deductions: 6800, status: "Paid", schoolId: "school-nairobi-high" },
+  { name: "James Otieno", dept: "Finance", basic: 55000, allowances: 15000, deductions: 8500, status: "Paid", schoolId: "school-nairobi-high" },
+  { name: "Grace Muthoni", dept: "Academics", basic: 42000, allowances: 10000, deductions: 6200, status: "Paid", schoolId: "school-nairobi-high" },
+  { name: "Peter Kamau", dept: "Academics", basic: 43000, allowances: 11000, deductions: 6400, status: "Pending", schoolId: "school-nairobi-high" },
+  { name: "Joyce Auma", dept: "Academics", basic: 40000, allowances: 9000, deductions: 5900, status: "Paid", schoolId: "school-nairobi-high" },
+  { name: "David Kipchoge", dept: "Transport", basic: 35000, allowances: 8000, deductions: 5200, status: "Paid", schoolId: "school-nairobi-high" },
+  { name: "Fatuma Hassan", dept: "Library", basic: 38000, allowances: 7500, deductions: 5500, status: "Pending", schoolId: "school-nairobi-high" },
+  { name: "Robert Njoroge", dept: "Academics", basic: 44000, allowances: 11500, deductions: 6600, status: "Paid", schoolId: "school-nairobi-high" },
 ];
 
 const stats = [
@@ -27,6 +27,8 @@ export default function PayrollPage() {
   const schoolName = user?.school || "My School";
   const [activeTab, setActiveTab] = useState("payroll");
   const [selectedEmployee, setSelectedEmployee] = useState<typeof payrollData[0] | null>(null);
+
+  const filteredPayroll = payrollData.filter(e => !user?.schoolId || e.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -74,7 +76,7 @@ export default function PayrollPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {payrollData.map((e, i) => {
+                {filteredPayroll.map((e, i) => {
                   const net = e.basic + e.allowances - e.deductions;
                   return (
                     <tr key={i} className="hover:bg-slate-50">
@@ -105,7 +107,7 @@ export default function PayrollPage() {
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
           <p className="text-slate-500 text-sm mb-4">Click Payslip on any employee in the Payroll tab to view their payslip preview.</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {payrollData.map((e, i) => (
+            {filteredPayroll.map((e, i) => (
               <button key={i} onClick={() => setSelectedEmployee(e)} className="p-4 border border-slate-200 rounded-xl hover:border-teal-400 hover:bg-teal-50 transition-colors text-left">
                 <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs font-bold mb-2">
                   {e.name.split(" ").map(n => n[0]).join("")}

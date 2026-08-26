@@ -1,32 +1,33 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { Bus, Users, MapPin, UserCheck, Plus, X } from "lucide-react";
 
 const vehicles = [
-  { reg: "KBC 123A", type: "Bus", capacity: 45, driver: "John Mwangi", route: "Westlands", status: "Active" },
-  { reg: "KBD 456B", type: "Bus", capacity: 45, driver: "Peter Otieno", route: "Eastleigh", status: "Active" },
-  { reg: "KBE 789C", type: "Minibus", capacity: 25, driver: "Samuel Kamau", route: "Karen", status: "Active" },
-  { reg: "KBF 012D", type: "Minibus", capacity: 25, driver: "David Njoroge", route: "Githurai", status: "Maintenance" },
-  { reg: "KBG 345E", type: "Bus", capacity: 45, driver: "Joseph Waweru", route: "Kikuyu", status: "Active" },
-  { reg: "KBH 678F", type: "Van", capacity: 14, driver: "Charles Auma", route: "Westlands", status: "Active" },
+  { reg: "KBC 123A", type: "Bus", capacity: 45, driver: "John Mwangi", route: "Westlands", status: "Active", schoolId: "school-nairobi-high" },
+  { reg: "KBD 456B", type: "Bus", capacity: 45, driver: "Peter Otieno", route: "Eastleigh", status: "Active", schoolId: "school-nairobi-high" },
+  { reg: "KBE 789C", type: "Minibus", capacity: 25, driver: "Samuel Kamau", route: "Karen", status: "Active", schoolId: "school-nairobi-high" },
+  { reg: "KBF 012D", type: "Minibus", capacity: 25, driver: "David Njoroge", route: "Githurai", status: "Maintenance", schoolId: "school-nairobi-high" },
+  { reg: "KBG 345E", type: "Bus", capacity: 45, driver: "Joseph Waweru", route: "Kikuyu", status: "Active", schoolId: "school-nairobi-high" },
+  { reg: "KBH 678F", type: "Van", capacity: 14, driver: "Charles Auma", route: "Westlands", status: "Active", schoolId: "school-nairobi-high" },
 ];
 
 const routes = [
-  { name: "Westlands Route", stops: "Westlands – Parklands – CBD", students: 52, distance: "18 km", time: "6:30 AM", vehicle: "KBC 123A" },
-  { name: "Eastleigh Route", stops: "Eastleigh – Pumwani – CBD", students: 38, distance: "12 km", time: "6:45 AM", vehicle: "KBD 456B" },
-  { name: "Karen Route", stops: "Karen – Langata – CBD", students: 24, distance: "22 km", time: "6:15 AM", vehicle: "KBE 789C" },
-  { name: "Githurai Route", stops: "Githurai 44 – Roysambu – Thika Rd", students: 35, distance: "28 km", time: "6:00 AM", vehicle: "KBF 012D" },
-  { name: "Kikuyu Route", stops: "Kikuyu – Uthiru – Kawangware", students: 31, distance: "30 km", time: "5:50 AM", vehicle: "KBG 345E" },
+  { name: "Westlands Route", stops: "Westlands – Parklands – CBD", students: 52, distance: "18 km", time: "6:30 AM", vehicle: "KBC 123A", schoolId: "school-nairobi-high" },
+  { name: "Eastleigh Route", stops: "Eastleigh – Pumwani – CBD", students: 38, distance: "12 km", time: "6:45 AM", vehicle: "KBD 456B", schoolId: "school-nairobi-high" },
+  { name: "Karen Route", stops: "Karen – Langata – CBD", students: 24, distance: "22 km", time: "6:15 AM", vehicle: "KBE 789C", schoolId: "school-nairobi-high" },
+  { name: "Githurai Route", stops: "Githurai 44 – Roysambu – Thika Rd", students: 35, distance: "28 km", time: "6:00 AM", vehicle: "KBF 012D", schoolId: "school-nairobi-high" },
+  { name: "Kikuyu Route", stops: "Kikuyu – Uthiru – Kawangware", students: 31, distance: "30 km", time: "5:50 AM", vehicle: "KBG 345E", schoolId: "school-nairobi-high" },
 ];
 
 const drivers = [
-  { name: "John Mwangi", id: "DRV001", license: "PSV-12345", phone: "0712 111222", vehicle: "KBC 123A", status: "Active" },
-  { name: "Peter Otieno", id: "DRV002", license: "PSV-23456", phone: "0723 222333", vehicle: "KBD 456B", status: "Active" },
-  { name: "Samuel Kamau", id: "DRV003", license: "PSV-34567", phone: "0734 333444", vehicle: "KBE 789C", status: "Active" },
-  { name: "David Njoroge", id: "DRV004", license: "PSV-45678", phone: "0745 444555", vehicle: "KBF 012D", status: "On Leave" },
-  { name: "Joseph Waweru", id: "DRV005", license: "PSV-56789", phone: "0756 555666", vehicle: "KBG 345E", status: "Active" },
-  { name: "Charles Auma", id: "DRV006", license: "PSV-67890", phone: "0767 666777", vehicle: "KBH 678F", status: "Active" },
+  { name: "John Mwangi", id: "DRV001", license: "PSV-12345", phone: "0712 111222", vehicle: "KBC 123A", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Peter Otieno", id: "DRV002", license: "PSV-23456", phone: "0723 222333", vehicle: "KBD 456B", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Samuel Kamau", id: "DRV003", license: "PSV-34567", phone: "0734 333444", vehicle: "KBE 789C", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "David Njoroge", id: "DRV004", license: "PSV-45678", phone: "0745 444555", vehicle: "KBF 012D", status: "On Leave", schoolId: "school-nairobi-high" },
+  { name: "Joseph Waweru", id: "DRV005", license: "PSV-56789", phone: "0756 555666", vehicle: "KBG 345E", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Charles Auma", id: "DRV006", license: "PSV-67890", phone: "0767 666777", vehicle: "KBH 678F", status: "Active", schoolId: "school-nairobi-high" },
 ];
 
 const stats = [
@@ -37,8 +38,13 @@ const stats = [
 ];
 
 export default function TransportPage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("vehicles");
   const [showVehicleModal, setShowVehicleModal] = useState(false);
+
+  const filteredVehicles = vehicles.filter(v => !user?.schoolId || v.schoolId === user.schoolId);
+  const filteredRoutes = routes.filter(r => !user?.schoolId || r.schoolId === user.schoolId);
+  const filteredDrivers = drivers.filter(d => !user?.schoolId || d.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -85,7 +91,7 @@ export default function TransportPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {vehicles.map((v, i) => (
+                {filteredVehicles.map((v, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="py-3 px-4 text-sm font-mono font-medium text-slate-800">{v.reg}</td>
                     <td className="py-3 px-4 text-sm text-slate-600">{v.type}</td>
@@ -105,7 +111,7 @@ export default function TransportPage() {
 
       {activeTab === "routes" && (
         <div className="grid gap-4">
-          {routes.map((r, i) => (
+          {filteredRoutes.map((r, i) => (
             <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
               <div className="flex items-start justify-between">
                 <div>
@@ -136,7 +142,7 @@ export default function TransportPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {drivers.map((d, i) => (
+                {filteredDrivers.map((d, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="py-3 px-4 text-sm font-medium text-slate-800">{d.name}</td>
                     <td className="py-3 px-4 text-sm text-slate-600 font-mono">{d.id}</td>

@@ -17,25 +17,25 @@ import {
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const feeStructure = [
-  { category: "Tuition Fee", amount: 15000, term: "Per Term", students: 480 },
-  { category: "Boarding Fee", amount: 8000, term: "Per Term", students: 140 },
-  { category: "Transport Fee", amount: 3000, term: "Per Term", students: 180 },
-  { category: "Uniform Fee", amount: 2500, term: "Once", students: 480 },
-  { category: "Lab Fee", amount: 1500, term: "Per Term", students: 380 },
-  { category: "Library Fee", amount: 500, term: "Per Term", students: 480 },
+  { category: "Tuition Fee", amount: 15000, term: "Per Term", students: 480, schoolId: "school-nairobi-high" },
+  { category: "Boarding Fee", amount: 8000, term: "Per Term", students: 140, schoolId: "school-nairobi-high" },
+  { category: "Transport Fee", amount: 3000, term: "Per Term", students: 180, schoolId: "school-nairobi-high" },
+  { category: "Uniform Fee", amount: 2500, term: "Once", students: 480, schoolId: "school-nairobi-high" },
+  { category: "Lab Fee", amount: 1500, term: "Per Term", students: 380, schoolId: "school-nairobi-high" },
+  { category: "Library Fee", amount: 500, term: "Per Term", students: 480, schoolId: "school-nairobi-high" },
 ];
 
 const payments = [
-  { id: "REC001", student: "Alice Wanjiru", class: "Grade 9", amount: 15000, date: "2025-01-08", method: "M-Pesa", receipt: "MP240108001", status: "Confirmed" },
-  { id: "REC002", student: "Brian Otieno", class: "Grade 8", amount: 8000, date: "2025-01-09", method: "Cash", receipt: "CSH240109001", status: "Confirmed" },
-  { id: "REC003", student: "Christine Mwangi", class: "Grade 9", amount: 15000, date: "2025-01-10", method: "M-Pesa", receipt: "MP240110001", status: "Confirmed" },
-  { id: "REC004", student: "Dennis Kamau", class: "Grade 7", amount: 3000, date: "2025-01-10", method: "M-Pesa", receipt: "MP240110002", status: "Pending" },
-  { id: "REC005", student: "Esther Njeri", class: "Grade 8", amount: 15000, date: "2025-01-11", method: "Cash", receipt: "CSH240111001", status: "Confirmed" },
-  { id: "REC006", student: "Frank Odhiambo", class: "Grade 7", amount: 1500, date: "2025-01-11", method: "M-Pesa", receipt: "MP240111001", status: "Confirmed" },
-  { id: "REC007", student: "Gloria Adhiambo", class: "Grade 8", amount: 15000, date: "2025-01-12", method: "M-Pesa", receipt: "MP240112001", status: "Confirmed" },
-  { id: "REC008", student: "Hassan Abdi", class: "Grade 9", amount: 8000, date: "2025-01-12", method: "Cash", receipt: "CSH240112001", status: "Confirmed" },
-  { id: "REC009", student: "Irene Wambua", class: "Grade 7", amount: 500, date: "2025-01-13", method: "M-Pesa", receipt: "MP240113001", status: "Confirmed" },
-  { id: "REC010", student: "John Muthoni", class: "Grade 8", amount: 15000, date: "2025-01-14", method: "Cash", receipt: "CSH240114001", status: "Pending" },
+  { id: "REC001", student: "Alice Wanjiru", class: "Grade 9", amount: 15000, date: "2025-01-08", method: "M-Pesa", receipt: "MP240108001", status: "Confirmed", schoolId: "school-nairobi-high" },
+  { id: "REC002", student: "Brian Otieno", class: "Grade 8", amount: 8000, date: "2025-01-09", method: "Cash", receipt: "CSH240109001", status: "Confirmed", schoolId: "school-nairobi-high" },
+  { id: "REC003", student: "Christine Mwangi", class: "Grade 9", amount: 15000, date: "2025-01-10", method: "M-Pesa", receipt: "MP240110001", status: "Confirmed", schoolId: "school-nairobi-high" },
+  { id: "REC004", student: "Dennis Kamau", class: "Grade 7", amount: 3000, date: "2025-01-10", method: "M-Pesa", receipt: "MP240110002", status: "Pending", schoolId: "school-nairobi-high" },
+  { id: "REC005", student: "Esther Njeri", class: "Grade 8", amount: 15000, date: "2025-01-11", method: "Cash", receipt: "CSH240111001", status: "Confirmed", schoolId: "school-nairobi-high" },
+  { id: "REC006", student: "Frank Odhiambo", class: "Grade 7", amount: 1500, date: "2025-01-11", method: "M-Pesa", receipt: "MP240111001", status: "Confirmed", schoolId: "school-nairobi-high" },
+  { id: "REC007", student: "Gloria Adhiambo", class: "Grade 8", amount: 15000, date: "2025-01-12", method: "M-Pesa", receipt: "MP240112001", status: "Confirmed", schoolId: "school-nairobi-high" },
+  { id: "REC008", student: "Hassan Abdi", class: "Grade 9", amount: 8000, date: "2025-01-12", method: "Cash", receipt: "CSH240112001", status: "Confirmed", schoolId: "school-nairobi-high" },
+  { id: "REC009", student: "Irene Wambua", class: "Grade 7", amount: 500, date: "2025-01-13", method: "M-Pesa", receipt: "MP240113001", status: "Confirmed", schoolId: "school-nairobi-high" },
+  { id: "REC010", student: "John Muthoni", class: "Grade 8", amount: 15000, date: "2025-01-14", method: "Cash", receipt: "CSH240114001", status: "Pending", schoolId: "school-nairobi-high" },
 ];
 
 const tabs = ["Fee Structure", "Payments", "Invoices", "Expenses"];
@@ -53,19 +53,19 @@ const monthlyData = {
 };
 
 const invoices = [
-  { id: "INV001", student: "Alice Wanjiru", amount: 15000, due: "2025-02-01", status: "Paid" },
-  { id: "INV002", student: "Brian Otieno", amount: 23000, due: "2025-02-01", status: "Overdue" },
-  { id: "INV003", student: "Christine Mwangi", amount: 15000, due: "2025-02-15", status: "Pending" },
-  { id: "INV004", student: "Dennis Kamau", amount: 18000, due: "2025-02-01", status: "Paid" },
-  { id: "INV005", student: "Esther Njeri", amount: 15000, due: "2025-02-20", status: "Pending" },
+  { id: "INV001", student: "Alice Wanjiru", amount: 15000, due: "2025-02-01", status: "Paid", schoolId: "school-nairobi-high" },
+  { id: "INV002", student: "Brian Otieno", amount: 23000, due: "2025-02-01", status: "Overdue", schoolId: "school-nairobi-high" },
+  { id: "INV003", student: "Christine Mwangi", amount: 15000, due: "2025-02-15", status: "Pending", schoolId: "school-nairobi-high" },
+  { id: "INV004", student: "Dennis Kamau", amount: 18000, due: "2025-02-01", status: "Paid", schoolId: "school-nairobi-high" },
+  { id: "INV005", student: "Esther Njeri", amount: 15000, due: "2025-02-20", status: "Pending", schoolId: "school-nairobi-high" },
 ];
 
 const expenses = [
-  { id: "EXP001", description: "Electricity Bill", category: "Utilities", amount: 45000, date: "2025-01-05", approvedBy: "Admin" },
-  { id: "EXP002", description: "Lab Supplies", category: "Academic", amount: 28000, date: "2025-01-08", approvedBy: "Principal" },
-  { id: "EXP003", description: "Sports Equipment", category: "Co-curricular", amount: 15000, date: "2025-01-10", approvedBy: "Admin" },
-  { id: "EXP004", description: "Office Stationery", category: "Administration", amount: 8500, date: "2025-01-12", approvedBy: "Admin" },
-  { id: "EXP005", description: "Cleaning Supplies", category: "Maintenance", amount: 12000, date: "2025-01-14", approvedBy: "Admin" },
+  { id: "EXP001", description: "Electricity Bill", category: "Utilities", amount: 45000, date: "2025-01-05", approvedBy: "Admin", schoolId: "school-nairobi-high" },
+  { id: "EXP002", description: "Lab Supplies", category: "Academic", amount: 28000, date: "2025-01-08", approvedBy: "Principal", schoolId: "school-nairobi-high" },
+  { id: "EXP003", description: "Sports Equipment", category: "Co-curricular", amount: 15000, date: "2025-01-10", approvedBy: "Admin", schoolId: "school-nairobi-high" },
+  { id: "EXP004", description: "Office Stationery", category: "Administration", amount: 8500, date: "2025-01-12", approvedBy: "Admin", schoolId: "school-nairobi-high" },
+  { id: "EXP005", description: "Cleaning Supplies", category: "Maintenance", amount: 12000, date: "2025-01-14", approvedBy: "Admin", schoolId: "school-nairobi-high" },
 ];
 
 export default function FinancePage() {
@@ -80,6 +80,11 @@ export default function FinancePage() {
     setShowPayment(false);
     setPayForm({ student: "", amount: "", method: "M-Pesa", category: "Tuition Fee" });
   };
+
+  const filteredFeeStructure = feeStructure.filter(f => !user?.schoolId || f.schoolId === user.schoolId);
+  const filteredPayments = payments.filter(p => !user?.schoolId || p.schoolId === user.schoolId);
+  const filteredInvoices = invoices.filter(inv => !user?.schoolId || inv.schoolId === user.schoolId);
+  const filteredExpenses = expenses.filter(exp => !user?.schoolId || exp.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -144,7 +149,7 @@ export default function FinancePage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {feeStructure.map(fee => (
+                  {filteredFeeStructure.map(fee => (
                     <tr key={fee.category} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{fee.category}</td>
                       <td className="px-4 py-3 text-sm text-slate-700 font-semibold">{fee.amount.toLocaleString()}</td>
@@ -168,7 +173,7 @@ export default function FinancePage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {payments.map(p => (
+                  {filteredPayments.map(p => (
                     <tr key={p.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{p.student}</td>
                       <td className="px-4 py-3 text-sm text-slate-600">{p.class}</td>
@@ -199,7 +204,7 @@ export default function FinancePage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {invoices.map(inv => (
+                  {filteredInvoices.map(inv => (
                     <tr key={inv.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-mono text-slate-600">{inv.id}</td>
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{inv.student}</td>
@@ -226,7 +231,7 @@ export default function FinancePage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {expenses.map(exp => (
+                  {filteredExpenses.map(exp => (
                     <tr key={exp.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-mono text-slate-500">{exp.id}</td>
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{exp.description}</td>

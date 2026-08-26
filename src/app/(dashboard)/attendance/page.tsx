@@ -16,12 +16,12 @@ import {
 } from "lucide-react";
 
 const attendanceData = [
-  { id: 1, name: "Alex Johnson", class: "Grade 9", present: 18, absent: 2, late: 1, percentage: 90, trend: "up" },
-  { id: 2, name: "Maria Garcia", class: "Grade 9", present: 20, absent: 0, late: 1, percentage: 95, trend: "up" },
-  { id: 3, name: "James Wilson", class: "Grade 8", present: 15, absent: 4, late: 2, percentage: 71, trend: "down" },
-  { id: 4, name: "Sarah Lee", class: "Grade 8", present: 19, absent: 1, late: 0, percentage: 95, trend: "same" },
-  { id: 5, name: "David Brown", class: "Grade 9", present: 14, absent: 5, late: 2, percentage: 67, trend: "down" },
-  { id: 6, name: "Emily Chen", class: "Grade 7", present: 20, absent: 0, late: 0, percentage: 100, trend: "up" },
+  { id: 1, name: "Alex Johnson", class: "Grade 9", present: 18, absent: 2, late: 1, percentage: 90, trend: "up", schoolId: "school-nairobi-high" },
+  { id: 2, name: "Maria Garcia", class: "Grade 9", present: 20, absent: 0, late: 1, percentage: 95, trend: "up", schoolId: "school-nairobi-high" },
+  { id: 3, name: "James Wilson", class: "Grade 8", present: 15, absent: 4, late: 2, percentage: 71, trend: "down", schoolId: "school-nairobi-high" },
+  { id: 4, name: "Sarah Lee", class: "Grade 8", present: 19, absent: 1, late: 0, percentage: 95, trend: "same", schoolId: "school-nairobi-high" },
+  { id: 5, name: "David Brown", class: "Grade 9", present: 14, absent: 5, late: 2, percentage: 67, trend: "down", schoolId: "school-nairobi-high" },
+  { id: 6, name: "Emily Chen", class: "Grade 7", present: 20, absent: 0, late: 0, percentage: 100, trend: "up", schoolId: "school-nairobi-high" },
 ];
 
 const dailyAttendance = [
@@ -38,12 +38,14 @@ export default function AttendancePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClass, setSelectedClass] = useState("all");
 
-  const filtered = attendanceData.filter(s => 
-    s.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (selectedClass === "all" || s.class === selectedClass)
-  );
+  const filtered = attendanceData.filter(s => {
+    const matchesSearch = s.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesClass = selectedClass === "all" || s.class === selectedClass;
+    const matchesSchool = !user?.schoolId || s.schoolId === user.schoolId;
+    return matchesSearch && matchesClass && matchesSchool;
+  });
 
-  const avgAttendance = Math.round(attendanceData.reduce((acc, s) => acc + s.percentage, 0) / attendanceData.length);
+  const avgAttendance = Math.round(filtered.reduce((acc, s) => acc + s.percentage, 0) / (filtered.length || 1));
 
   return (
     <div className="space-y-6">

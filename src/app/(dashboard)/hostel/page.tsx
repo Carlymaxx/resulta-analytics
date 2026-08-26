@@ -1,28 +1,29 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { Building2, Users, BedDouble, CheckCircle, X, Plus } from "lucide-react";
 
 const rooms = [
-  { number: "A-101", block: "Boys Block A", capacity: 4, occupied: 4 },
-  { number: "A-102", block: "Boys Block A", capacity: 4, occupied: 3 },
-  { number: "A-103", block: "Boys Block A", capacity: 4, occupied: 4 },
-  { number: "A-104", block: "Boys Block A", capacity: 4, occupied: 2 },
-  { number: "B-101", block: "Girls Block B", capacity: 4, occupied: 4 },
-  { number: "B-102", block: "Girls Block B", capacity: 4, occupied: 4 },
-  { number: "B-103", block: "Girls Block B", capacity: 4, occupied: 3 },
-  { number: "B-104", block: "Girls Block B", capacity: 4, occupied: 4 },
+  { number: "A-101", block: "Boys Block A", capacity: 4, occupied: 4, schoolId: "school-nairobi-high" },
+  { number: "A-102", block: "Boys Block A", capacity: 4, occupied: 3, schoolId: "school-nairobi-high" },
+  { number: "A-103", block: "Boys Block A", capacity: 4, occupied: 4, schoolId: "school-nairobi-high" },
+  { number: "A-104", block: "Boys Block A", capacity: 4, occupied: 2, schoolId: "school-nairobi-high" },
+  { number: "B-101", block: "Girls Block B", capacity: 4, occupied: 4, schoolId: "school-nairobi-high" },
+  { number: "B-102", block: "Girls Block B", capacity: 4, occupied: 4, schoolId: "school-nairobi-high" },
+  { number: "B-103", block: "Girls Block B", capacity: 4, occupied: 3, schoolId: "school-nairobi-high" },
+  { number: "B-104", block: "Girls Block B", capacity: 4, occupied: 4, schoolId: "school-nairobi-high" },
 ];
 
 const students = [
-  { name: "Alice Mwangi", admission: "ADM2201", room: "B-101", bed: 1, block: "Girls Block B", parent: "0712 345678", status: "Active" },
-  { name: "Brian Ochieng", admission: "ADM2202", room: "A-101", bed: 2, block: "Boys Block A", parent: "0723 456789", status: "Active" },
-  { name: "Carol Wanjiku", admission: "ADM2203", room: "B-102", bed: 1, block: "Girls Block B", parent: "0734 567890", status: "Active" },
-  { name: "Daniel Kamau", admission: "ADM2204", room: "A-102", bed: 1, block: "Boys Block A", parent: "0745 678901", status: "Active" },
-  { name: "Esther Auma", admission: "ADM2205", room: "B-103", bed: 3, block: "Girls Block B", parent: "0756 789012", status: "Active" },
-  { name: "Frank Njoroge", admission: "ADM2206", room: "A-103", bed: 4, block: "Boys Block A", parent: "0767 890123", status: "Active" },
-  { name: "Grace Otieno", admission: "ADM2207", room: "B-101", bed: 2, block: "Girls Block B", parent: "0778 901234", status: "Active" },
-  { name: "Henry Kipchoge", admission: "ADM2208", room: "A-104", bed: 1, block: "Boys Block A", parent: "0789 012345", status: "On Leave" },
+  { name: "Alice Mwangi", admission: "ADM2201", room: "B-101", bed: 1, block: "Girls Block B", parent: "0712 345678", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Brian Ochieng", admission: "ADM2202", room: "A-101", bed: 2, block: "Boys Block A", parent: "0723 456789", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Carol Wanjiku", admission: "ADM2203", room: "B-102", bed: 1, block: "Girls Block B", parent: "0734 567890", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Daniel Kamau", admission: "ADM2204", room: "A-102", bed: 1, block: "Boys Block A", parent: "0745 678901", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Esther Auma", admission: "ADM2205", room: "B-103", bed: 3, block: "Girls Block B", parent: "0756 789012", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Frank Njoroge", admission: "ADM2206", room: "A-103", bed: 4, block: "Boys Block A", parent: "0767 890123", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Grace Otieno", admission: "ADM2207", room: "B-101", bed: 2, block: "Girls Block B", parent: "0778 901234", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Henry Kipchoge", admission: "ADM2208", room: "A-104", bed: 1, block: "Boys Block A", parent: "0789 012345", status: "On Leave", schoolId: "school-nairobi-high" },
 ];
 
 const stats = [
@@ -33,9 +34,13 @@ const stats = [
 ];
 
 export default function HostelPage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("rooms");
   const [showModal, setShowModal] = useState(false);
   const tabs = ["rooms", "students", "visitors"];
+
+  const filteredRooms = rooms.filter(r => !user?.schoolId || r.schoolId === user.schoolId);
+  const filteredStudents = students.filter(s => !user?.schoolId || s.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -80,7 +85,7 @@ export default function HostelPage() {
             <span className="px-3 py-1 bg-pink-100 rounded-full text-pink-600 font-medium">Girls Block B</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {rooms.map((room, i) => {
+            {filteredRooms.map((room, i) => {
               const pct = Math.round((room.occupied / room.capacity) * 100);
               const isGirls = room.block.includes("Girls");
               return (
@@ -122,7 +127,7 @@ export default function HostelPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {students.map((s, i) => (
+                {filteredStudents.map((s, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="py-3 px-4 text-sm font-medium text-slate-800">{s.name}</td>
                     <td className="py-3 px-4 text-sm text-slate-600 font-mono">{s.admission}</td>

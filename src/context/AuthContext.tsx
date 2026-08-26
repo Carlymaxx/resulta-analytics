@@ -20,6 +20,7 @@ interface User {
   name: string;
   role: UserRole;
   school?: string;
+  schoolId?: string;
   level?: EducationLevel;
   schoolBadge?: string;
   schoolAddress?: string;
@@ -47,6 +48,7 @@ interface MockUser {
   name: string;
   role: UserRole;
   school?: string;
+  schoolId?: string;
   level?: EducationLevel;
   schoolBadge?: string;
   schoolAddress?: string;
@@ -57,11 +59,11 @@ interface MockUser {
 
 const MOCK_USERS: MockUser[] = [
   { id: "0", email: "superadmin@msms.com", password: "super123", name: "Super Admin", role: "superadmin" },
-  { id: "1", email: "admin@school.edu", password: "admin123", name: "Admin User", role: "admin", school: "Nairobi High School", level: "secondary", schoolBadge: "", schoolAddress: "P.O. Box 123-00100, Nairobi, Kenya", schoolBox: "P.O. Box 123-00100", schoolMotto: "Education for Excellence", schoolPhone: "+254 700 000 000" },
-  { id: "3", email: "student@school.edu", password: "student123", name: "Student John", role: "student", school: "Nairobi High School", level: "secondary", schoolBadge: "" },
-  { id: "4", email: "principal@school.edu", password: "principal123", name: "Dr. Mary Wanjiku", role: "principal", school: "Nairobi High School", level: "secondary", schoolBadge: "" },
-  { id: "5", email: "accountant@school.edu", password: "account123", name: "James Otieno", role: "accountant", school: "Nairobi High School", level: "secondary", schoolBadge: "" },
-  { id: "6", email: "parent@school.edu", password: "parent123", name: "Mr. David Kamau", role: "parent", school: "Nairobi High School", level: "primary", schoolBadge: "" },
+  { id: "1", email: "admin@school.edu", password: "admin123", name: "Admin User", role: "admin", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "", schoolAddress: "P.O. Box 123-00100, Nairobi, Kenya", schoolBox: "P.O. Box 123-00100", schoolMotto: "Education for Excellence", schoolPhone: "+254 700 000 000" },
+  { id: "3", email: "student@school.edu", password: "student123", name: "Student John", role: "student", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "" },
+  { id: "4", email: "principal@school.edu", password: "principal123", name: "Dr. Mary Wanjiku", role: "principal", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "" },
+  { id: "5", email: "accountant@school.edu", password: "account123", name: "James Otieno", role: "accountant", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "" },
+  { id: "6", email: "parent@school.edu", password: "parent123", name: "Mr. David Kamau", role: "parent", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "primary", schoolBadge: "" },
 ];
 
 export const ALL_ROLES: { value: UserRole; label: string }[] = [
@@ -88,6 +90,7 @@ export interface RegisteredUser {
   role: UserRole;
   level?: EducationLevel;
   school?: string;
+  schoolId?: string;
   schoolBadge?: string;
   source: "built-in" | "signup";
 }
@@ -95,14 +98,14 @@ export interface RegisteredUser {
 // Returns all accounts the platform knows about: built-in demo accounts + self-signups.
 export function getRegisteredUsers(): RegisteredUser[] {
   const builtIn: RegisteredUser[] = MOCK_USERS.map((u) => ({
-    id: u.id, name: u.name, email: u.email, role: u.role, level: u.level, school: u.school, schoolBadge: u.schoolBadge, source: "built-in",
+    id: u.id, name: u.name, email: u.email, role: u.role, level: u.level, school: u.school, schoolId: u.schoolId, schoolBadge: u.schoolBadge, source: "built-in",
   }));
   if (typeof window === "undefined") return builtIn;
   try {
     const raw = localStorage.getItem("resulta_signups");
     const signups: MockUser[] = raw ? JSON.parse(raw) : [];
     const mapped: RegisteredUser[] = signups.map((u) => ({
-      id: u.id, name: u.name, email: u.email, role: u.role, level: u.level, school: u.school, schoolBadge: u.schoolBadge, source: "signup",
+      id: u.id, name: u.name, email: u.email, role: u.role, level: u.level, school: u.school, schoolId: u.schoolId, schoolBadge: u.schoolBadge, source: "signup",
     }));
     return [...builtIn, ...mapped];
   } catch {
@@ -139,7 +142,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await new Promise(resolve => setTimeout(resolve, 800));
     const foundUser = MOCK_USERS.find(u => u.email === email && u.password === password);
     if (foundUser) {
-       const userData = { id: foundUser.id, email: foundUser.email, name: foundUser.name, role: foundUser.role, school: foundUser.school, level: foundUser.level, schoolBadge: foundUser.schoolBadge, schoolAddress: foundUser.schoolAddress, schoolBox: foundUser.schoolBox, schoolMotto: foundUser.schoolMotto, schoolPhone: foundUser.schoolPhone };
+       const userData = { id: foundUser.id, email: foundUser.email, name: foundUser.name, role: foundUser.role, school: foundUser.school, schoolId: foundUser.schoolId, level: foundUser.level, schoolBadge: foundUser.schoolBadge, schoolAddress: foundUser.schoolAddress, schoolBox: foundUser.schoolBox, schoolMotto: foundUser.schoolMotto, schoolPhone: foundUser.schoolPhone };
       setUser(userData);
       localStorage.setItem("resulta_user", JSON.stringify(userData));
       setIsLoading(false);
@@ -150,7 +153,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const signups: MockUser[] = JSON.parse(storedUsers);
       const signedUpUser = signups.find(u => u.email === email && u.password === password);
       if (signedUpUser) {
-         const userData = { id: signedUpUser.id, email: signedUpUser.email, name: signedUpUser.name, role: signedUpUser.role, school: signedUpUser.school, level: signedUpUser.level, schoolBadge: signedUpUser.schoolBadge, schoolAddress: signedUpUser.schoolAddress, schoolBox: signedUpUser.schoolBox, schoolMotto: signedUpUser.schoolMotto, schoolPhone: signedUpUser.schoolPhone };
+         const userData = { id: signedUpUser.id, email: signedUpUser.email, name: signedUpUser.name, role: signedUpUser.role, school: signedUpUser.school, schoolId: signedUpUser.schoolId, level: signedUpUser.level, schoolBadge: signedUpUser.schoolBadge, schoolAddress: signedUpUser.schoolAddress, schoolBox: signedUpUser.schoolBox, schoolMotto: signedUpUser.schoolMotto, schoolPhone: signedUpUser.schoolPhone };
         setUser(userData);
         localStorage.setItem("resulta_user", JSON.stringify(userData));
         setIsLoading(false);
@@ -170,10 +173,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false);
       return { success: false, error: "Email already registered" };
     }
-    const newUser: MockUser = { id: Date.now().toString(), email, password, name, role: role as UserRole, level, school, schoolBadge, schoolAddress, schoolBox, schoolMotto, schoolPhone };
+    const schoolId = `school-${Date.now()}`;
+    const newUser: MockUser = { id: Date.now().toString(), email, password, name, role: role as UserRole, level, school, schoolId, schoolBadge, schoolAddress, schoolBox, schoolMotto, schoolPhone };
     existingUsers.push(newUser);
     localStorage.setItem("resulta_signups", JSON.stringify(existingUsers));
-    const userData = { id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role, level: newUser.level, school: newUser.school, schoolBadge: newUser.schoolBadge, schoolAddress: newUser.schoolAddress, schoolBox: newUser.schoolBox, schoolMotto: newUser.schoolMotto, schoolPhone: newUser.schoolPhone };
+    const userData = { id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role, school: newUser.school, schoolId: newUser.schoolId, level: newUser.level, schoolBadge: newUser.schoolBadge, schoolAddress: newUser.schoolAddress, schoolBox: newUser.schoolBox, schoolMotto: newUser.schoolMotto, schoolPhone: newUser.schoolPhone };
     setUser(userData);
     localStorage.setItem("resulta_user", JSON.stringify(userData));
     setIsLoading(false);

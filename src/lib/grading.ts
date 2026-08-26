@@ -13,6 +13,7 @@ export type StudentRecord = {
   term: string;
   year: string;
   level: string; // primary | junior | secondary
+  schoolId?: string;
   marks: SubjectMark[];
 };
 
@@ -126,17 +127,27 @@ export function computePositions(students: StudentRecord[]): Record<number, numb
 
 const STORAGE_KEY = "resulta_marks";
 
-export function loadRecords(): StudentRecord[] {
+export function loadRecords(schoolId?: string): StudentRecord[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as StudentRecord[]) : [];
+    const all: StudentRecord[] = raw ? (JSON.parse(raw) as StudentRecord[]) : [];
+    if (!schoolId) return all;
+    return all.filter(r => r.schoolId === schoolId);
   } catch {
     return [];
   }
 }
 
-export function saveRecords(records: StudentRecord[]): void {
+export function saveRecords(records: StudentRecord[], schoolId?: string): void {
   if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+  if (!schoolId) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    return;
+  }
+  const raw = localStorage.getItem(STORAGE_KEY);
+  const all: StudentRecord[] = raw ? (JSON.parse(raw) as StudentRecord[]) : [];
+  const others = all.filter(r => r.schoolId !== schoolId);
+  const merged = [...others, ...records];
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
 }

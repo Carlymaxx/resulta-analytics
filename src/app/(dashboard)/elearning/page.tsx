@@ -1,39 +1,40 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { Monitor, Users, ClipboardList, Video, BookOpen, Plus, X, Download } from "lucide-react";
 
 const courses = [
-  { learningArea: "Mathematics", teacher: "Sarah Wanjiku", enrolled: 145, progress: 72, status: "Active", color: "bg-teal-500" },
-  { learningArea: "English Language", teacher: "James Otieno", enrolled: 158, progress: 85, status: "Active", color: "bg-blue-500" },
-  { learningArea: "Biology", teacher: "Grace Muthoni", enrolled: 92, progress: 60, status: "Active", color: "bg-green-500" },
-  { learningArea: "Physics", teacher: "Peter Kamau", enrolled: 78, progress: 45, status: "Upcoming", color: "bg-purple-500" },
-  { learningArea: "History & Government", teacher: "Joyce Auma", enrolled: 110, progress: 90, status: "Active", color: "bg-amber-500" },
-  { learningArea: "Geography", teacher: "David Kipchoge", enrolled: 98, progress: 55, status: "Active", color: "bg-rose-500" },
+  { learningArea: "Mathematics", teacher: "Sarah Wanjiku", enrolled: 145, progress: 72, status: "Active", color: "bg-teal-500", schoolId: "school-nairobi-high" },
+  { learningArea: "English Language", teacher: "James Otieno", enrolled: 158, progress: 85, status: "Active", color: "bg-blue-500", schoolId: "school-nairobi-high" },
+  { learningArea: "Biology", teacher: "Grace Muthoni", enrolled: 92, progress: 60, status: "Active", color: "bg-green-500", schoolId: "school-nairobi-high" },
+  { learningArea: "Physics", teacher: "Peter Kamau", enrolled: 78, progress: 45, status: "Upcoming", color: "bg-purple-500", schoolId: "school-nairobi-high" },
+  { learningArea: "History & Government", teacher: "Joyce Auma", enrolled: 110, progress: 90, status: "Active", color: "bg-amber-500", schoolId: "school-nairobi-high" },
+  { learningArea: "Geography", teacher: "David Kipchoge", enrolled: 98, progress: 55, status: "Active", color: "bg-rose-500", schoolId: "school-nairobi-high" },
 ];
 
 const assignments = [
-  { title: "Quadratic Equations Problem Set", learningArea: "Mathematics", due: "Dec 10, 2025", submitted: 38, total: 45, status: "Open" },
-  { title: "Essay: Climate Change Impact", learningArea: "English", due: "Dec 8, 2025", submitted: 42, total: 50, status: "Open" },
-  { title: "Cell Division Diagrams", learningArea: "Biology", due: "Dec 5, 2025", submitted: 30, total: 30, status: "Closed" },
-  { title: "Newton's Laws Experiment Report", learningArea: "Physics", due: "Dec 12, 2025", submitted: 15, total: 25, status: "Open" },
-  { title: "Independence Movements Essay", learningArea: "History", due: "Dec 7, 2025", submitted: 40, total: 40, status: "Closed" },
-  { title: "Map Reading Exercise", learningArea: "Geography", due: "Dec 15, 2025", submitted: 20, total: 32, status: "Open" },
+  { title: "Quadratic Equations Problem Set", learningArea: "Mathematics", due: "Dec 10, 2025", submitted: 38, total: 45, status: "Open", schoolId: "school-nairobi-high" },
+  { title: "Essay: Climate Change Impact", learningArea: "English", due: "Dec 8, 2025", submitted: 42, total: 50, status: "Open", schoolId: "school-nairobi-high" },
+  { title: "Cell Division Diagrams", learningArea: "Biology", due: "Dec 5, 2025", submitted: 30, total: 30, status: "Closed", schoolId: "school-nairobi-high" },
+  { title: "Newton's Laws Experiment Report", learningArea: "Physics", due: "Dec 12, 2025", submitted: 15, total: 25, status: "Open", schoolId: "school-nairobi-high" },
+  { title: "Independence Movements Essay", learningArea: "History", due: "Dec 7, 2025", submitted: 40, total: 40, status: "Closed", schoolId: "school-nairobi-high" },
+  { title: "Map Reading Exercise", learningArea: "Geography", due: "Dec 15, 2025", submitted: 20, total: 32, status: "Open", schoolId: "school-nairobi-high" },
 ];
 
 const notes = [
-  { title: "Grade 8 Mathematics Notes - Term 2", learningArea: "Mathematics", uploadedBy: "Sarah Wanjiku", date: "Nov 25, 2025", size: "2.4 MB", type: "PDF" },
-  { title: "English Grammar Reference Guide", learningArea: "English", uploadedBy: "James Otieno", date: "Nov 20, 2025", size: "1.8 MB", type: "PDF" },
-  { title: "Biology Diagrams - Chapter 5", learningArea: "Biology", uploadedBy: "Grace Muthoni", date: "Nov 18, 2025", size: "4.2 MB", type: "PDF" },
-  { title: "Physics Formula Sheet", learningArea: "Physics", uploadedBy: "Peter Kamau", date: "Nov 15, 2025", size: "0.8 MB", type: "PDF" },
-  { title: "African History Timeline", learningArea: "History", uploadedBy: "Joyce Auma", date: "Nov 10, 2025", size: "3.1 MB", type: "PDF" },
+  { title: "Grade 8 Mathematics Notes - Term 2", learningArea: "Mathematics", uploadedBy: "Sarah Wanjiku", date: "Nov 25, 2025", size: "2.4 MB", type: "PDF", schoolId: "school-nairobi-high" },
+  { title: "English Grammar Reference Guide", learningArea: "English", uploadedBy: "James Otieno", date: "Nov 20, 2025", size: "1.8 MB", type: "PDF", schoolId: "school-nairobi-high" },
+  { title: "Biology Diagrams - Chapter 5", learningArea: "Biology", uploadedBy: "Grace Muthoni", date: "Nov 18, 2025", size: "4.2 MB", type: "PDF", schoolId: "school-nairobi-high" },
+  { title: "Physics Formula Sheet", learningArea: "Physics", uploadedBy: "Peter Kamau", date: "Nov 15, 2025", size: "0.8 MB", type: "PDF", schoolId: "school-nairobi-high" },
+  { title: "African History Timeline", learningArea: "History", uploadedBy: "Joyce Auma", date: "Nov 10, 2025", size: "3.1 MB", type: "PDF", schoolId: "school-nairobi-high" },
 ];
 
 const videos = [
-  { title: "Introduction to Calculus", learningArea: "Mathematics", duration: "32 min", views: 245, date: "Nov 22, 2025" },
-  { title: "Comprehension Techniques", learningArea: "English", duration: "28 min", views: 312, date: "Nov 19, 2025" },
-  { title: "Photosynthesis Process", learningArea: "Biology", duration: "45 min", views: 198, date: "Nov 16, 2025" },
-  { title: "Electricity and Circuits", learningArea: "Physics", duration: "38 min", views: 156, date: "Nov 12, 2025" },
+  { title: "Introduction to Calculus", learningArea: "Mathematics", duration: "32 min", views: 245, date: "Nov 22, 2025", schoolId: "school-nairobi-high" },
+  { title: "Comprehension Techniques", learningArea: "English", duration: "28 min", views: 312, date: "Nov 19, 2025", schoolId: "school-nairobi-high" },
+  { title: "Photosynthesis Process", learningArea: "Biology", duration: "45 min", views: 198, date: "Nov 16, 2025", schoolId: "school-nairobi-high" },
+  { title: "Electricity and Circuits", learningArea: "Physics", duration: "38 min", views: 156, date: "Nov 12, 2025", schoolId: "school-nairobi-high" },
 ];
 
 const stats = [
@@ -44,8 +45,14 @@ const stats = [
 ];
 
 export default function ELearningPage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("courses");
   const [showUploadModal, setShowUploadModal] = useState(false);
+
+  const filteredCourses = courses.filter(c => !user?.schoolId || c.schoolId === user.schoolId);
+  const filteredAssignments = assignments.filter(a => !user?.schoolId || a.schoolId === user.schoolId);
+  const filteredNotes = notes.filter(n => !user?.schoolId || n.schoolId === user.schoolId);
+  const filteredVideos = videos.filter(v => !user?.schoolId || v.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -82,7 +89,7 @@ export default function ELearningPage() {
 
       {activeTab === "courses" && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {courses.map((c, i) => (
+          {filteredCourses.map((c, i) => (
             <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200">
               <div className={`h-2 ${c.color}`} />
               <div className="p-5">
@@ -119,7 +126,7 @@ export default function ELearningPage() {
                 ))}</tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {assignments.map((a, i) => (
+                {filteredAssignments.map((a, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="py-3 px-4 text-sm font-medium text-slate-800">{a.title}</td>
                      <td className="py-3 px-4 text-sm text-slate-600">{a.learningArea}</td>
@@ -145,7 +152,7 @@ export default function ELearningPage() {
 
       {activeTab === "notes" && (
         <div className="space-y-3">
-          {notes.map((n, i) => (
+          {filteredNotes.map((n, i) => (
             <div key={i} className="bg-white rounded-xl p-4 shadow-sm border border-slate-200 flex items-center gap-4">
               <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0">
                 <BookOpen className="w-5 h-5 text-red-600" />
@@ -164,7 +171,7 @@ export default function ELearningPage() {
 
       {activeTab === "videos" && (
         <div className="grid sm:grid-cols-2 gap-4">
-          {videos.map((v, i) => (
+          {filteredVideos.map((v, i) => (
             <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200">
               <div className="bg-slate-800 h-36 flex items-center justify-center">
                 <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center">

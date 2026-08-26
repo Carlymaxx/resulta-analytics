@@ -1,34 +1,39 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { Library, Plus, X, AlertTriangle } from "lucide-react";
 
 const books = [
-  { id: 1, title: "Advanced Mathematics Grade 8", author: "K. M. Njagi", isbn: "978-9966-25-001-1", category: "Textbook", copies: 30, available: 22 },
-  { id: 2, title: "English Grammar in Use", author: "Raymond Murphy", isbn: "978-0-521-18906-4", category: "Reference", copies: 15, available: 10 },
-  { id: 3, title: "Biology — A New Approach", author: "G. Opaa", isbn: "978-9966-25-002-2", category: "Textbook", copies: 25, available: 18 },
-  { id: 4, title: "Chemistry Grade 8", author: "S. M. Mwangi", isbn: "978-9966-25-003-3", category: "Textbook", copies: 20, available: 14 },
-  { id: 5, title: "Things Fall Apart", author: "Chinua Achebe", isbn: "978-0-385-47454-2", category: "Literature", copies: 40, available: 35 },
-  { id: 6, title: "The River and The Source", author: "Margaret Ogola", isbn: "978-9966-888-01-9", category: "Literature", copies: 35, available: 28 },
-  { id: 7, title: "Kenya History & Government", author: "P. Nthiwa", isbn: "978-9966-25-004-4", category: "Textbook", copies: 18, available: 12 },
-  { id: 8, title: "Computer Studies for Schools", author: "J. Githinji", isbn: "978-9966-25-005-5", category: "Textbook", copies: 22, available: 17 },
+  { id: 1, title: "Advanced Mathematics Grade 8", author: "K. M. Njagi", isbn: "978-9966-25-001-1", category: "Textbook", copies: 30, available: 22, schoolId: "school-nairobi-high" },
+  { id: 2, title: "English Grammar in Use", author: "Raymond Murphy", isbn: "978-0-521-18906-4", category: "Reference", copies: 15, available: 10, schoolId: "school-nairobi-high" },
+  { id: 3, title: "Biology — A New Approach", author: "G. Opaa", isbn: "978-9966-25-002-2", category: "Textbook", copies: 25, available: 18, schoolId: "school-nairobi-high" },
+  { id: 4, title: "Chemistry Grade 8", author: "S. M. Mwangi", isbn: "978-9966-25-003-3", category: "Textbook", copies: 20, available: 14, schoolId: "school-nairobi-high" },
+  { id: 5, title: "Things Fall Apart", author: "Chinua Achebe", isbn: "978-0-385-47454-2", category: "Literature", copies: 40, available: 35, schoolId: "school-nairobi-high" },
+  { id: 6, title: "The River and The Source", author: "Margaret Ogola", isbn: "978-9966-888-01-9", category: "Literature", copies: 35, available: 28, schoolId: "school-nairobi-high" },
+  { id: 7, title: "Kenya History & Government", author: "P. Nthiwa", isbn: "978-9966-25-004-4", category: "Textbook", copies: 18, available: 12, schoolId: "school-nairobi-high" },
+  { id: 8, title: "Computer Studies for Schools", author: "J. Githinji", isbn: "978-9966-25-005-5", category: "Textbook", copies: 22, available: 17, schoolId: "school-nairobi-high" },
 ];
 
 const borrowed = [
-  { id: 1, student: "Alice Wanjiru", class: "Grade 8", book: "Advanced Mathematics Grade 8", borrowDate: "2025-01-05", dueDate: "2025-01-19", returned: false, daysOverdue: 0 },
-  { id: 2, student: "Brian Otieno", class: "Grade 7", book: "English Grammar in Use", borrowDate: "2024-12-20", dueDate: "2025-01-03", returned: false, daysOverdue: 12 },
-  { id: 3, student: "Christine Mwangi", class: "Grade 9", book: "Things Fall Apart", borrowDate: "2025-01-08", dueDate: "2025-01-22", returned: false, daysOverdue: 0 },
-  { id: 4, student: "Dennis Kamau", class: "Grade 7", book: "Kenya History & Government", borrowDate: "2024-12-18", dueDate: "2025-01-01", returned: false, daysOverdue: 14 },
-  { id: 5, student: "Esther Njeri", class: "Grade 8", book: "Biology — A New Approach", borrowDate: "2025-01-10", dueDate: "2025-01-24", returned: false, daysOverdue: 0 },
-  { id: 6, student: "Frank Odhiambo", class: "Grade 7", book: "Chemistry Grade 8", borrowDate: "2024-12-22", dueDate: "2025-01-05", returned: false, daysOverdue: 10 },
+  { id: 1, student: "Alice Wanjiru", class: "Grade 8", book: "Advanced Mathematics Grade 8", borrowDate: "2025-01-05", dueDate: "2025-01-19", returned: false, daysOverdue: 0, schoolId: "school-nairobi-high" },
+  { id: 2, student: "Brian Otieno", class: "Grade 7", book: "English Grammar in Use", borrowDate: "2024-12-20", dueDate: "2025-01-03", returned: false, daysOverdue: 12, schoolId: "school-nairobi-high" },
+  { id: 3, student: "Christine Mwangi", class: "Grade 9", book: "Things Fall Apart", borrowDate: "2025-01-08", dueDate: "2025-01-22", returned: false, daysOverdue: 0, schoolId: "school-nairobi-high" },
+  { id: 4, student: "Dennis Kamau", class: "Grade 7", book: "Kenya History & Government", borrowDate: "2024-12-18", dueDate: "2025-01-01", returned: false, daysOverdue: 14, schoolId: "school-nairobi-high" },
+  { id: 5, student: "Esther Njeri", class: "Grade 8", book: "Biology — A New Approach", borrowDate: "2025-01-10", dueDate: "2025-01-24", returned: false, daysOverdue: 0, schoolId: "school-nairobi-high" },
+  { id: 6, student: "Frank Odhiambo", class: "Grade 7", book: "Chemistry Grade 8", borrowDate: "2024-12-22", dueDate: "2025-01-05", returned: false, daysOverdue: 10, schoolId: "school-nairobi-high" },
 ];
 
 const tabs = ["Books", "Borrowed", "Returns"];
 
 export default function LibraryPage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("Books");
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ title: "", author: "", isbn: "", category: "Textbook", copies: "" });
+
+  const filteredBooks = books.filter(b => !user?.schoolId || b.schoolId === user.schoolId);
+  const filteredBorrowed = borrowed.filter(b => !user?.schoolId || b.schoolId === user.schoolId);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,7 +97,7 @@ export default function LibraryPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {books.map(b => (
+                  {filteredBooks.map(b => (
                     <tr key={b.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{b.title}</td>
                       <td className="px-4 py-3 text-sm text-slate-600">{b.author}</td>
@@ -111,7 +116,7 @@ export default function LibraryPage() {
 
           {activeTab === "Borrowed" && (
             <div className="space-y-3">
-              {borrowed.map(b => (
+              {filteredBorrowed.map(b => (
                 <div key={b.id} className={`border rounded-lg p-4 ${b.daysOverdue > 0 ? "border-red-200 bg-red-50" : "border-slate-200"}`}>
                   <div className="flex items-start justify-between">
                     <div>

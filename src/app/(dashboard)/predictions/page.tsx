@@ -37,14 +37,14 @@ ChartJS.register(
 );
 
 const predictedStudents = [
-  { id: 1, name: "Alex Johnson", class: "Grade 9", current: 45, predicted: 52, risk: "High", confidence: 85, trend: "down" },
-  { id: 2, name: "Maria Garcia", class: "Grade 9", current: 52, predicted: 58, risk: "High", confidence: 78, trend: "down" },
-  { id: 3, name: "James Wilson", class: "Grade 8", current: 58, predicted: 72, risk: "Medium", confidence: 82, trend: "up" },
-  { id: 4, name: "Sarah Lee", class: "Grade 8", current: 61, predicted: 75, risk: "Medium", confidence: 88, trend: "up" },
-  { id: 5, name: "David Brown", class: "Grade 9", current: 55, predicted: 61, risk: "High", confidence: 75, trend: "down" },
-  { id: 6, name: "Emily Chen", class: "Grade 7", current: 82, predicted: 86, risk: "Low", confidence: 92, trend: "up" },
-  { id: 7, name: "Michael Park", class: "Grade 8", current: 90, predicted: 92, risk: "Low", confidence: 95, trend: "up" },
-  { id: 8, name: "Lisa Thompson", class: "Grade 7", current: 71, predicted: 74, risk: "Low", confidence: 80, trend: "up" },
+  { id: 1, name: "Alex Johnson", class: "Grade 9", current: 45, predicted: 52, risk: "High", confidence: 85, trend: "down", schoolId: "school-nairobi-high" },
+  { id: 2, name: "Maria Garcia", class: "Grade 9", current: 52, predicted: 58, risk: "High", confidence: 78, trend: "down", schoolId: "school-nairobi-high" },
+  { id: 3, name: "James Wilson", class: "Grade 8", current: 58, predicted: 72, risk: "Medium", confidence: 82, trend: "up", schoolId: "school-nairobi-high" },
+  { id: 4, name: "Sarah Lee", class: "Grade 8", current: 61, predicted: 75, risk: "Medium", confidence: 88, trend: "up", schoolId: "school-nairobi-high" },
+  { id: 5, name: "David Brown", class: "Grade 9", current: 55, predicted: 61, risk: "High", confidence: 75, trend: "down", schoolId: "school-nairobi-high" },
+  { id: 6, name: "Emily Chen", class: "Grade 7", current: 82, predicted: 86, risk: "Low", confidence: 92, trend: "up", schoolId: "school-nairobi-high" },
+  { id: 7, name: "Michael Park", class: "Grade 8", current: 90, predicted: 92, risk: "Low", confidence: 95, trend: "up", schoolId: "school-nairobi-high" },
+  { id: 8, name: "Lisa Thompson", class: "Grade 7", current: 71, predicted: 74, risk: "Low", confidence: 80, trend: "up", schoolId: "school-nairobi-high" },
 ];
 
 const predictionChartData = {
@@ -77,10 +77,10 @@ const predictionChartData = {
 };
 
 const interventionRecommendations = [
-  { student: "Alex Johnson", issue: "Struggling in Math & Science", action: "Schedule tutoring sessions", timeline: "2 weeks", priority: "High" },
-  { student: "Maria Garcia", issue: "Attendance issues + low scores", action: "Meet with parents + counseling", timeline: "1 week", priority: "High" },
-  { student: "David Brown", issue: "Consistent decline trend", action: "Academic intervention program", timeline: "3 weeks", priority: "Medium" },
-  { student: "James Wilson", issue: "Needs study support", action: "Peer tutoring + study group", timeline: "4 weeks", priority: "Low" },
+  { student: "Alex Johnson", issue: "Struggling in Math & Science", action: "Schedule tutoring sessions", timeline: "2 weeks", priority: "High", schoolId: "school-nairobi-high" },
+  { student: "Maria Garcia", issue: "Attendance issues + low scores", action: "Meet with parents + counseling", timeline: "1 week", priority: "High", schoolId: "school-nairobi-high" },
+  { student: "David Brown", issue: "Consistent decline trend", action: "Academic intervention program", timeline: "3 weeks", priority: "Medium", schoolId: "school-nairobi-high" },
+  { student: "James Wilson", issue: "Needs study support", action: "Peer tutoring + study group", timeline: "4 weeks", priority: "Low", schoolId: "school-nairobi-high" },
 ];
 
 const modelAccuracy = {
@@ -104,9 +104,9 @@ export default function PredictionsPage() {
     }
   };
 
-  const filteredStudents = selectedRisk === "all" 
-    ? predictedStudents 
-    : predictedStudents.filter(s => s.risk === selectedRisk);
+  const filteredStudents = predictedStudents.filter(s => !user?.schoolId || s.schoolId === user.schoolId)
+    .filter(s => selectedRisk === "all" || s.risk === selectedRisk);
+  const filteredInterventions = interventionRecommendations.filter(r => !user?.schoolId || r.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -264,7 +264,7 @@ export default function PredictionsPage() {
           </div>
         </div>
         <div className="space-y-4">
-          {interventionRecommendations.map((rec, i) => (
+          {filteredInterventions.map((rec, i) => (
             <div key={i} className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50">
               <div className="flex items-center gap-4">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${

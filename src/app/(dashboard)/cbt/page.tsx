@@ -6,25 +6,25 @@ import { useAuth } from "@/context/AuthContext";
 import { CLASSES_BY_LEVEL } from "@/lib/grading";
 
 const exams = [
-  { title: "Mathematics Mid-Term Exam", subject: "Mathematics", class: "Grade 9", date: "Dec 10, 2025", duration: 90, questions: 40, status: "Upcoming" },
-  { title: "English Comprehension Test", subject: "English", class: "Grade 8", date: "Dec 5, 2025", duration: 60, questions: 30, status: "Active" },
-  { title: "Integrated Science End of Term", subject: "Integrated Science", class: "Grade 9", date: "Dec 12, 2025", duration: 120, questions: 50, status: "Upcoming" },
-  { title: "Pre-Technical Studies Quiz", subject: "Pre-Technical Studies", class: "Grade 8", date: "Nov 28, 2025", duration: 45, questions: 20, status: "Active" },
-  { title: "CRE CAT 2", subject: "CRE", class: "Grade 7", date: "Nov 20, 2025", duration: 60, questions: 25, status: "Completed" },
-  { title: "Social Studies Term Test", subject: "Social Studies", class: "Grade 8", date: "Nov 15, 2025", duration: 60, questions: 30, status: "Completed" },
+  { title: "Mathematics Mid-Term Exam", subject: "Mathematics", class: "Grade 9", date: "Dec 10, 2025", duration: 90, questions: 40, status: "Upcoming", schoolId: "school-nairobi-high" },
+  { title: "English Comprehension Test", subject: "English", class: "Grade 8", date: "Dec 5, 2025", duration: 60, questions: 30, status: "Active", schoolId: "school-nairobi-high" },
+  { title: "Integrated Science End of Term", subject: "Integrated Science", class: "Grade 9", date: "Dec 12, 2025", duration: 120, questions: 50, status: "Upcoming", schoolId: "school-nairobi-high" },
+  { title: "Pre-Technical Studies Quiz", subject: "Pre-Technical Studies", class: "Grade 8", date: "Nov 28, 2025", duration: 45, questions: 20, status: "Active", schoolId: "school-nairobi-high" },
+  { title: "CRE CAT 2", subject: "CRE", class: "Grade 7", date: "Nov 20, 2025", duration: 60, questions: 25, status: "Completed", schoolId: "school-nairobi-high" },
+  { title: "Social Studies Term Test", subject: "Social Studies", class: "Grade 8", date: "Nov 15, 2025", duration: 60, questions: 30, status: "Completed", schoolId: "school-nairobi-high" },
 ];
 
 const questionBank = [
-  { learningArea: "Mathematics", count: 120, topics: ["Algebra", "Geometry", "Calculus", "Statistics"] },
-  { learningArea: "English", count: 85, topics: ["Grammar", "Comprehension", "Essay Writing", "Literature"] },
-  { learningArea: "Biology", count: 95, topics: ["Cell Biology", "Genetics", "Ecology", "Human Physiology"] },
-  { learningArea: "Physics", count: 80, topics: ["Mechanics", "Electricity", "Waves", "Optics"] },
-  { learningArea: "History", count: 70, topics: ["African History", "World Wars", "Kenya History", "Independence"] },
+  { learningArea: "Mathematics", count: 120, topics: ["Algebra", "Geometry", "Calculus", "Statistics"], schoolId: "school-nairobi-high" },
+  { learningArea: "English", count: 85, topics: ["Grammar", "Comprehension", "Essay Writing", "Literature"], schoolId: "school-nairobi-high" },
+  { learningArea: "Biology", count: 95, topics: ["Cell Biology", "Genetics", "Ecology", "Human Physiology"], schoolId: "school-nairobi-high" },
+  { learningArea: "Physics", count: 80, topics: ["Mechanics", "Electricity", "Waves", "Optics"], schoolId: "school-nairobi-high" },
+  { learningArea: "History", count: 70, topics: ["African History", "World Wars", "Kenya History", "Independence"], schoolId: "school-nairobi-high" },
 ];
 
 const completedResults = [
-  { exam: "CRE CAT 2", class: "Grade 7", students: 45, avg: 72, highest: 96, lowest: 38, date: "Nov 20, 2025" },
-  { exam: "Social Studies Term Test", class: "Grade 8", students: 52, avg: 68, highest: 92, lowest: 42, date: "Nov 15, 2025" },
+  { exam: "CRE CAT 2", class: "Grade 7", students: 45, avg: 72, highest: 96, lowest: 38, date: "Nov 20, 2025", schoolId: "school-nairobi-high" },
+  { exam: "Social Studies Term Test", class: "Grade 8", students: 52, avg: 68, highest: 92, lowest: 42, date: "Nov 15, 2025", schoolId: "school-nairobi-high" },
 ];
 
 const stats = [
@@ -35,13 +35,16 @@ const stats = [
 ];
 
 export default function CBTPage() {
-  const { currentLevel } = useAuth();
+  const { currentLevel, user } = useAuth();
   const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
   const [activeTab, setActiveTab] = useState("exams");
   const [showModal, setShowModal] = useState(false);
   const [expandedLearningArea, setExpandedLearningArea] = useState<string | null>(null);
 
   const activeExams = exams.filter(e => e.status === "Active");
+  const filteredExams = exams.filter(e => !user?.schoolId || e.schoolId === user.schoolId);
+  const filteredQuestionBank = questionBank.filter(q => !user?.schoolId || q.schoolId === user.schoolId);
+  const filteredCompletedResults = completedResults.filter(r => !user?.schoolId || r.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -102,7 +105,7 @@ export default function CBTPage() {
                 ))}</tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {exams.map((e, i) => (
+                {filteredExams.map((e, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="py-3 px-4 text-sm font-medium text-slate-800">{e.title}</td>
                      <td className="py-3 px-4 text-sm text-slate-600">{e.subject}</td>
@@ -123,7 +126,7 @@ export default function CBTPage() {
 
       {activeTab === "questions" && (
         <div className="space-y-3">
-          {questionBank.map((qb, i) => (
+          {filteredQuestionBank.map((qb, i) => (
             <div key={i} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                   <button onClick={() => setExpandedLearningArea(expandedLearningArea === qb.learningArea ? null : qb.learningArea)}
                 className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors">
@@ -155,7 +158,7 @@ export default function CBTPage() {
 
       {activeTab === "results" && (
         <div className="space-y-4">
-          {completedResults.map((r, i) => (
+          {filteredCompletedResults.map((r, i) => (
             <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
               <div className="flex items-center justify-between mb-4">
                 <div>

@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Status**: ✅ Updated with Grade Ratings, Learning Areas terminology, Grade 1-6 naming, Remarks removal, and Timetable fix
+**Status**: ✅ Multi-tenant school-aware filtering implemented across all dashboard pages
 
 The application has been updated with the following changes:
 - Added grade ratings: Exceeding Expectations (80-100), Meeting Expectations (50-70), Approaching Expectations (30-50), Below Expectations (1-29)
@@ -11,6 +11,7 @@ The application has been updated with the following changes:
 - Removed Remarks section from report cards (replaced with Ratings column)
 - Fixed timetable generation to support Grade 7, Grade 8, and Grade 9 with functional Generate Timetable button
 - Changed many "Class" UI labels to "Grade" where referring to grade levels
+- Made all dashboard pages school-aware (multi-tenant): each logged-in school only sees their own data via `user?.schoolId` filtering
 
 ## Recently Completed
 
@@ -24,7 +25,12 @@ The application has been updated with the following changes:
   - Made timetable auto-load based on selected class using `useMemo`
   - Functional Generate Timetable button
 - [x] Changed "Class" to "Grade" in UI labels across: students, results, attendance, predictions, finance, certificates, classes, reports, analytics, CBT, teachers, dashboard, e-learning, notifications, activity
-- [x] Verified typecheck and lint pass cleanly (0 errors, 2 pre-existing warnings)
+- [x] Implemented multi-tenant school-aware filtering across all dashboard pages with mock data:
+  - Added `schoolId: "school-nairobi-high"` to all mock data arrays
+  - Added `!user?.schoolId || item.schoolId === user.schoolId` filtering logic
+  - Added `schoolId?: string` to type definitions where applicable
+  - Added `schoolId: user?.schoolId` to form submissions for new records
+  - Verified typecheck passes cleanly (0 errors)
 
 ## Current Structure
 
@@ -38,18 +44,27 @@ The application has been updated with the following changes:
 | `src/app/(dashboard)/teachers/page.tsx` | Teacher management with Learning Area/Grade terminology | ✅ Updated |
 | `src/app/(dashboard)/students/page.tsx` | Student management with Grade terminology | ✅ Updated |
 | `src/app/(dashboard)/results/page.tsx` | Results with Learning Area Scores and Grade filter | ✅ Updated |
-| `src/app/(dashboard)/analytics/page.tsx` | Analytics with Learning Area Comparison/Trends | ✅ Updated |
-| `src/app/(dashboard)/cbt/page.tsx` | CBT exams with Learning Area column | ✅ Updated |
-| `src/app/(dashboard)/elearning/page.tsx` | E-learning with Learning Area terminology | ✅ Updated |
+| `src/app/(dashboard)/analytics/page.tsx` | Analytics with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/cbt/page.tsx` | CBT exams with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/elearning/page.tsx` | E-learning with school-aware filtering | ✅ Updated |
 | `src/app/(dashboard)/dashboard/page.tsx` | Dashboard with Learning Areas stat | ✅ Updated |
-| `src/app/(dashboard)/reports/page.tsx` | Reports with Learning Area Analysis Report | ✅ Updated |
+| `src/app/(dashboard)/reports/page.tsx` | Reports with school-aware filtering | ✅ Updated |
 | `src/app/(dashboard)/attendance/page.tsx` | Attendance with Grade column | ✅ Updated |
-| `src/app/(dashboard)/predictions/page.tsx` | Predictions with Grade column | ✅ Updated |
-| `src/app/(dashboard)/certificates/page.tsx` | Certificates with Grade terminology | ✅ Updated |
-| `src/app/(dashboard)/finance/page.tsx` | Finance with Grade column | ✅ Updated |
-| `src/app/(dashboard)/super-admin/page.tsx` | Super Admin with Topic column for tickets | ✅ Updated |
-| `src/app/(dashboard)/notifications/page.tsx` | Notifications with updated class references | ✅ Updated |
-| `src/app/(dashboard)/activity/page.tsx` | Activity log with updated class references | ✅ Updated |
+| `src/app/(dashboard)/predictions/page.tsx` | Predictions with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/certificates/page.tsx` | Certificates with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/finance/page.tsx` | Finance with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/super-admin/page.tsx` | Super Admin with schoolId in types and ticket data | ✅ Updated |
+| `src/app/(dashboard)/notifications/page.tsx` | Notifications with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/activity/page.tsx` | Activity log with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/library/page.tsx` | Library with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/hostel/page.tsx` | Hostel with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/transport/page.tsx` | Transport with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/inventory/page.tsx` | Inventory with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/medical/page.tsx` | Medical with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/payroll/page.tsx` | Payroll with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/hr/page.tsx` | HR with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/communication/page.tsx` | Communication with school-aware filtering | ✅ Updated |
+| `src/app/(dashboard)/subscription/page.tsx` | Subscription with school-aware filtering | ✅ Updated |
 | `src/app/page.tsx` | Landing page with learning areas description | ✅ Updated |
 
 ## Current Focus
@@ -59,9 +74,11 @@ The system now uses:
 - "Learning Areas" instead of "Subjects" throughout the UI
 - CBC-style ratings (Exceeding/Meeting/Approaching/Below Expectations)
 - Functional timetable generation for all junior school grades
+- Multi-tenant school-aware data filtering: each school only sees their own records via `user?.schoolId`
 
 ## Session History
 
 | Date | Changes |
 |------|---------|
 | 2026-08-26 | Added grade ratings, changed primary classes to Grade 1-6, replaced Subjects with Learning Areas across all pages, removed Remarks section from report cards, fixed timetable generation for Grade 7/8/9, changed Class to Grade in UI labels |
+| 2026-08-26 | Implemented multi-tenant school-aware filtering across all dashboard pages with mock data, added schoolId to types and data items, added filtering by user?.schoolId, verified typecheck passes cleanly |

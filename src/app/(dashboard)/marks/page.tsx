@@ -42,13 +42,13 @@ export default function MarksPage() {
   const CLASS_OPTIONS = ["All Classes", ...levelClasses];
 
   useEffect(() => {
-    setRecords(loadRecords());
+    setRecords(loadRecords(user?.schoolId));
     setLoaded(true);
-  }, []);
+  }, [user?.schoolId]);
 
   useEffect(() => {
-    if (loaded) saveRecords(records);
-  }, [records, loaded]);
+    if (loaded) saveRecords(records, user?.schoolId);
+  }, [records, loaded, user?.schoolId]);
 
   const positions = useMemo(() => {
     // positions are computed per class + term + year group
@@ -93,6 +93,7 @@ export default function MarksPage() {
       className: className.trim() || "—",
       term, year,
       level: currentLevel,
+      schoolId: user?.schoolId,
       marks: cleanMarks,
     };
     setRecords((prev) => [rec, ...prev]);

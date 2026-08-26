@@ -14,33 +14,33 @@ export default function CommunicationPage() {
   const [showCompose, setShowCompose] = useState(false);
 
   const messages = [
-    { from: "Dr. Mary Wanjiku", role: "Principal", preview: "Please ensure all Grade 9 teachers submit their...", time: "10:23 AM", unread: true, full: "Please ensure all Grade 9 teachers submit their mid-term assessment reports by Friday. This is critical for the Board meeting next Monday." },
-    { from: "James Otieno", role: "Accountant", preview: "The fee payment deadline has been extended to...", time: "9:45 AM", unread: true, full: "The fee payment deadline has been extended to January 15th. Please communicate this to all parents and guardians." },
-    { from: "Sarah Wanjiku", role: "Teacher", preview: "I wanted to flag that 3 students in Grade 8...", time: "Yesterday", unread: false, full: "I wanted to flag that 3 students in Grade 8 have been consistently absent on Mondays. We may need to follow up with their parents." },
-    { from: "Transport Manager", role: "Transport", preview: "Route Kikuyu will be running 20 minutes late...", time: "Yesterday", unread: false, full: "Route Kikuyu will be running 20 minutes late this week due to road construction at Uthiru junction. Please inform affected students and parents." },
-    { from: "Head Librarian", role: "Library", preview: "Reminder: 12 students have overdue books...", time: "2 days ago", unread: false, full: "Reminder: 12 students have overdue library books. Fines are accumulating daily. Please help us communicate this to the students listed in the attached report." },
-    { from: "Nurse Alice", role: "Medical", preview: "We have a confirmed case of flu in Grade 7...", time: "2 days ago", unread: false, full: "We have a confirmed case of flu in Grade 7. Precautionary measures have been taken. Please ensure the classroom is sanitized and parents are informed." },
+    { from: "Dr. Mary Wanjiku", role: "Principal", preview: "Please ensure all Grade 9 teachers submit their...", time: "10:23 AM", unread: true, full: "Please ensure all Grade 9 teachers submit their mid-term assessment reports by Friday. This is critical for the Board meeting next Monday.", schoolId: "school-nairobi-high" },
+    { from: "James Otieno", role: "Accountant", preview: "The fee payment deadline has been extended to...", time: "9:45 AM", unread: true, full: "The fee payment deadline has been extended to January 15th. Please communicate this to all parents and guardians.", schoolId: "school-nairobi-high" },
+    { from: "Sarah Wanjiku", role: "Teacher", preview: "I wanted to flag that 3 students in Grade 8...", time: "Yesterday", unread: false, full: "I wanted to flag that 3 students in Grade 8 have been consistently absent on Mondays. We may need to follow up with their parents.", schoolId: "school-nairobi-high" },
+    { from: "Transport Manager", role: "Transport", preview: "Route Kikuyu will be running 20 minutes late...", time: "Yesterday", unread: false, full: "Route Kikuyu will be running 20 minutes late this week due to road construction at Uthiru junction. Please inform affected students and parents.", schoolId: "school-nairobi-high" },
+    { from: "Head Librarian", role: "Library", preview: "Reminder: 12 students have overdue books...", time: "2 days ago", unread: false, full: "Reminder: 12 students have overdue library books. Fines are accumulating daily. Please help us communicate this to the students listed in the attached report.", schoolId: "school-nairobi-high" },
+    { from: "Nurse Alice", role: "Medical", preview: "We have a confirmed case of flu in Grade 7...", time: "2 days ago", unread: false, full: "We have a confirmed case of flu in Grade 7. Precautionary measures have been taken. Please ensure the classroom is sanitized and parents are informed.", schoolId: "school-nairobi-high" },
   ];
 
   const notices = [
-    { title: "End of Term Examination Schedule", date: "Dec 1, 2025", category: "Academic", content: "The Grade 9 final examinations are scheduled for December 8-19. Timetables are available at the administration office." },
-    { title: "Sports Day 2025", date: "Nov 25, 2025", category: "Sports", content: "Annual Sports Day will be held on December 5th. All students are encouraged to participate in at least one event." },
-    { title: "School Fee Reminder", date: "Nov 20, 2025", category: "Finance", content: "Term 2 school fees are due by December 31st. Late payment attracts a 5% fine." },
-    { title: "Parent-Teacher Conference", date: "Nov 15, 2025", category: "Administrative", content: "The annual Parent-Teacher Conference is scheduled for November 28th from 9 AM to 4 PM." },
+    { title: "End of Term Examination Schedule", date: "Dec 1, 2025", category: "Academic", content: "The Grade 9 final examinations are scheduled for December 8-19. Timetables are available at the administration office.", schoolId: "school-nairobi-high" },
+    { title: "Sports Day 2025", date: "Nov 25, 2025", category: "Sports", content: "Annual Sports Day will be held on December 5th. All students are encouraged to participate in at least one event.", schoolId: "school-nairobi-high" },
+    { title: "School Fee Reminder", date: "Nov 20, 2025", category: "Finance", content: "Term 2 school fees are due by December 31st. Late payment attracts a 5% fine.", schoolId: "school-nairobi-high" },
+    { title: "Parent-Teacher Conference", date: "Nov 15, 2025", category: "Administrative", content: "The annual Parent-Teacher Conference is scheduled for November 28th from 9 AM to 4 PM.", schoolId: "school-nairobi-high" },
   ];
 
   const announcements = [
-    { title: "School Closes December 20th", content: "The school will close for the Christmas holidays on December 20, 2025. Students are expected to report back on January 6, 2026.", pinned: true, date: "Nov 30, 2025" },
-    { title: "New Computer Lab Opened", content: "We are pleased to announce the opening of our new Computer Lab with 40 workstations. All students will have access during school hours.", pinned: true, date: "Nov 22, 2025" },
-    { title: "Water Supply Interruption", content: "Water supply will be interrupted on December 3rd from 8 AM to 2 PM for maintenance. Alternative arrangements have been made.", pinned: false, date: "Nov 28, 2025" },
-    { title: "COVID-19 Health Guidelines Update", content: "Following Ministry of Health guidelines, masks are now optional but recommended in enclosed spaces.", pinned: false, date: "Nov 10, 2025" },
+    { title: "School Closes December 20th", content: "The school will close for the Christmas holidays on December 20, 2025. Students are expected to report back on January 6, 2026.", pinned: true, date: "Nov 30, 2025", schoolId: "school-nairobi-high" },
+    { title: "New Computer Lab Opened", content: "We are pleased to announce the opening of our new Computer Lab with 40 workstations. All students will have access during school hours.", pinned: true, date: "Nov 22, 2025", schoolId: "school-nairobi-high" },
+    { title: "Water Supply Interruption", content: "Water supply will be interrupted on December 3rd from 8 AM to 2 PM for maintenance. Alternative arrangements have been made.", pinned: false, date: "Nov 28, 2025", schoolId: "school-nairobi-high" },
+    { title: "COVID-19 Health Guidelines Update", content: "Following Ministry of Health guidelines, masks are now optional but recommended in enclosed spaces.", pinned: false, date: "Nov 10, 2025", schoolId: "school-nairobi-high" },
   ];
 
   const smsSentHistory = [
-    { recipient: "All Parents", message: "School fees reminder: Please ensure...", sent: "Nov 28, 2025", count: 480, status: "Delivered" },
-    { recipient: "Grade 9 Parents", message: "Mid-term results are ready for collection...", sent: "Nov 20, 2025", count: 120, status: "Delivered" },
-    { recipient: "All Students", message: "Reminder: Sports Day is tomorrow...", sent: "Dec 4, 2025", count: 550, status: "Delivered" },
-    { recipient: "Grade 7 Parents", message: `Welcome to ${schoolName}. Your ward has been...`, sent: "Sep 3, 2025", count: 145, status: "Delivered" },
+    { recipient: "All Parents", message: "School fees reminder: Please ensure...", sent: "Nov 28, 2025", count: 480, status: "Delivered", schoolId: "school-nairobi-high" },
+    { recipient: "Grade 9 Parents", message: "Mid-term results are ready for collection...", sent: "Nov 20, 2025", count: 120, status: "Delivered", schoolId: "school-nairobi-high" },
+    { recipient: "All Students", message: "Reminder: Sports Day is tomorrow...", sent: "Dec 4, 2025", count: 550, status: "Delivered", schoolId: "school-nairobi-high" },
+    { recipient: "Grade 7 Parents", message: `Welcome to ${schoolName}. Your ward has been...`, sent: "Sep 3, 2025", count: 145, status: "Delivered", schoolId: "school-nairobi-high" },
   ];
 
   const stats = [
@@ -53,6 +53,11 @@ export default function CommunicationPage() {
   const [pinnedState, setPinnedState] = useState<Record<number, boolean>>(
     Object.fromEntries(announcements.map((a, i) => [i, a.pinned]))
   );
+
+  const filteredMessages = messages.filter(m => !user?.schoolId || m.schoolId === user.schoolId);
+  const filteredNotices = notices.filter(n => !user?.schoolId || n.schoolId === user.schoolId);
+  const filteredAnnouncements = announcements.filter(a => !user?.schoolId || a.schoolId === user.schoolId);
+  const filteredSmsHistory = smsSentHistory.filter(s => !user?.schoolId || s.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -92,7 +97,7 @@ export default function CommunicationPage() {
           {activeTab === "messages" && (
             <div className="grid md:grid-cols-3 gap-6">
               <div className="md:col-span-1 space-y-2">
-                {messages.map((msg, i) => (
+                {filteredMessages.map((msg, i) => (
                   <button key={i} onClick={() => setSelectedMessage(i)} className={`w-full text-left p-4 rounded-lg border transition-colors ${selectedMessage === i ? "border-teal-500 bg-teal-50" : "border-slate-200 hover:bg-slate-50"}`}>
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-medium text-slate-800 text-sm">{msg.from}</span>
@@ -122,7 +127,7 @@ export default function CommunicationPage() {
 
           {activeTab === "notices" && (
             <div className="space-y-4">
-              {notices.map((notice, i) => (
+              {filteredNotices.map((notice, i) => (
                 <div key={i} className="border border-slate-200 rounded-lg p-5 hover:border-teal-400 transition-colors">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold text-slate-800">{notice.title}</h3>
@@ -137,7 +142,7 @@ export default function CommunicationPage() {
 
           {activeTab === "announcements" && (
             <div className="space-y-4">
-              {announcements.map((ann, i) => (
+              {filteredAnnouncements.map((ann, i) => (
                 <div key={i} className={`border rounded-lg p-5 ${ann.pinned ? "border-amber-200 bg-amber-50" : "border-slate-200"}`}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
@@ -190,7 +195,7 @@ export default function CommunicationPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {smsSentHistory.map((sms, i) => (
+                      {filteredSmsHistory.map((sms, i) => (
                         <tr key={i} className="hover:bg-slate-50">
                           <td className="py-3 px-4 text-sm text-slate-800">{sms.recipient}</td>
                           <td className="py-3 px-4 text-sm text-slate-600">{sms.message}</td>

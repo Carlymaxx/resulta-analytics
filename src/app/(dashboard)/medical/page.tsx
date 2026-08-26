@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { Heart, Plus, X } from "lucide-react";
 
 const allergyColors: Record<string, string> = {
@@ -15,38 +16,43 @@ const allergyColors: Record<string, string> = {
 };
 
 const healthRecords = [
-  { id: 1, name: "Alice Wanjiru", class: "Grade 8", bloodGroup: "A+", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-10" },
-  { id: 2, name: "Brian Otieno", class: "Grade 7", bloodGroup: "O+", allergies: ["Penicillin"], conditions: "Mild asthma", lastCheckup: "2025-01-08" },
-  { id: 3, name: "Christine Mwangi", class: "Grade 9", bloodGroup: "B+", allergies: ["Peanuts"], conditions: "None", lastCheckup: "2025-01-05" },
-  { id: 4, name: "Dennis Kamau", class: "Grade 7", bloodGroup: "AB+", allergies: ["Dust", "Pollen"], conditions: "Allergic rhinitis", lastCheckup: "2025-01-12" },
-  { id: 5, name: "Esther Njeri", class: "Grade 8", bloodGroup: "A-", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-07" },
-  { id: 6, name: "Frank Odhiambo", class: "Grade 7", bloodGroup: "O-", allergies: ["Latex"], conditions: "Eczema", lastCheckup: "2024-12-20" },
-  { id: 7, name: "Gloria Adhiambo", class: "Grade 8", bloodGroup: "B-", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-14" },
-  { id: 8, name: "Hassan Abdi", class: "Grade 9", bloodGroup: "A+", allergies: ["Shellfish"], conditions: "None", lastCheckup: "2025-01-09" },
+  { id: 1, name: "Alice Wanjiru", class: "Grade 8", bloodGroup: "A+", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-10", schoolId: "school-nairobi-high" },
+  { id: 2, name: "Brian Otieno", class: "Grade 7", bloodGroup: "O+", allergies: ["Penicillin"], conditions: "Mild asthma", lastCheckup: "2025-01-08", schoolId: "school-nairobi-high" },
+  { id: 3, name: "Christine Mwangi", class: "Grade 9", bloodGroup: "B+", allergies: ["Peanuts"], conditions: "None", lastCheckup: "2025-01-05", schoolId: "school-nairobi-high" },
+  { id: 4, name: "Dennis Kamau", class: "Grade 7", bloodGroup: "AB+", allergies: ["Dust", "Pollen"], conditions: "Allergic rhinitis", lastCheckup: "2025-01-12", schoolId: "school-nairobi-high" },
+  { id: 5, name: "Esther Njeri", class: "Grade 8", bloodGroup: "A-", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-07", schoolId: "school-nairobi-high" },
+  { id: 6, name: "Frank Odhiambo", class: "Grade 7", bloodGroup: "O-", allergies: ["Latex"], conditions: "Eczema", lastCheckup: "2024-12-20", schoolId: "school-nairobi-high" },
+  { id: 7, name: "Gloria Adhiambo", class: "Grade 8", bloodGroup: "B-", allergies: ["None"], conditions: "None", lastCheckup: "2025-01-14", schoolId: "school-nairobi-high" },
+  { id: 8, name: "Hassan Abdi", class: "Grade 9", bloodGroup: "A+", allergies: ["Shellfish"], conditions: "None", lastCheckup: "2025-01-09", schoolId: "school-nairobi-high" },
 ];
 
 const clinicVisits = [
-  { id: 1, student: "Brian Otieno", date: "2025-01-14", complaint: "Chest tightness", diagnosis: "Asthma episode", treatment: "Nebulization + Salbutamol", nurse: "Agnes Wambui" },
-  { id: 2, student: "Dennis Kamau", date: "2025-01-13", complaint: "Runny nose, sneezing", diagnosis: "Allergic rhinitis", treatment: "Antihistamine prescribed", nurse: "Agnes Wambui" },
-  { id: 3, student: "Grace Muthoni", date: "2025-01-12", complaint: "Headache, fever 38.2°C", diagnosis: "Mild fever (viral)", treatment: "Paracetamol, rest, fluids", nurse: "Agnes Wambui" },
-  { id: 4, student: "Alice Wanjiru", date: "2025-01-11", complaint: "Stomach ache", diagnosis: "Gastritis", treatment: "Antacid, dietary advice", nurse: "Agnes Wambui" },
-  { id: 5, student: "Frank Odhiambo", date: "2025-01-10", complaint: "Skin rash on arms", diagnosis: "Eczema flare-up", treatment: "Topical hydrocortisone", nurse: "Agnes Wambui" },
-  { id: 6, student: "Hassan Abdi", date: "2025-01-08", complaint: "Eye irritation", diagnosis: "Conjunctivitis", treatment: "Eye drops prescribed", nurse: "Agnes Wambui" },
+  { id: 1, student: "Brian Otieno", date: "2025-01-14", complaint: "Chest tightness", diagnosis: "Asthma episode", treatment: "Nebulization + Salbutamol", nurse: "Agnes Wambui", schoolId: "school-nairobi-high" },
+  { id: 2, student: "Dennis Kamau", date: "2025-01-13", complaint: "Runny nose, sneezing", diagnosis: "Allergic rhinitis", treatment: "Antihistamine prescribed", nurse: "Agnes Wambui", schoolId: "school-nairobi-high" },
+  { id: 3, student: "Grace Muthoni", date: "2025-01-12", complaint: "Headache, fever 38.2°C", diagnosis: "Mild fever (viral)", treatment: "Paracetamol, rest, fluids", nurse: "Agnes Wambui", schoolId: "school-nairobi-high" },
+  { id: 4, student: "Alice Wanjiru", date: "2025-01-11", complaint: "Stomach ache", diagnosis: "Gastritis", treatment: "Antacid, dietary advice", nurse: "Agnes Wambui", schoolId: "school-nairobi-high" },
+  { id: 5, student: "Frank Odhiambo", date: "2025-01-10", complaint: "Skin rash on arms", diagnosis: "Eczema flare-up", treatment: "Topical hydrocortisone", nurse: "Agnes Wambui", schoolId: "school-nairobi-high" },
+  { id: 6, student: "Hassan Abdi", date: "2025-01-08", complaint: "Eye irritation", diagnosis: "Conjunctivitis", treatment: "Eye drops prescribed", nurse: "Agnes Wambui", schoolId: "school-nairobi-high" },
 ];
 
 const medications = [
-  { id: 1, student: "Brian Otieno", medication: "Salbutamol inhaler", dose: "2 puffs PRN", frequency: "As needed", startDate: "2025-01-14", endDate: "Ongoing" },
-  { id: 2, student: "Dennis Kamau", medication: "Cetirizine 10mg", dose: "1 tablet", frequency: "Once daily", startDate: "2025-01-13", endDate: "2025-02-13" },
-  { id: 3, student: "Frank Odhiambo", medication: "Hydrocortisone cream 1%", dose: "Thin layer", frequency: "Twice daily", startDate: "2025-01-10", endDate: "2025-01-24" },
-  { id: 4, student: "Alice Wanjiru", medication: "Omeprazole 20mg", dose: "1 capsule", frequency: "Before breakfast", startDate: "2025-01-11", endDate: "2025-01-25" },
+  { id: 1, student: "Brian Otieno", medication: "Salbutamol inhaler", dose: "2 puffs PRN", frequency: "As needed", startDate: "2025-01-14", endDate: "Ongoing", schoolId: "school-nairobi-high" },
+  { id: 2, student: "Dennis Kamau", medication: "Cetirizine 10mg", dose: "1 tablet", frequency: "Once daily", startDate: "2025-01-13", endDate: "2025-02-13", schoolId: "school-nairobi-high" },
+  { id: 3, student: "Frank Odhiambo", medication: "Hydrocortisone cream 1%", dose: "Thin layer", frequency: "Twice daily", startDate: "2025-01-10", endDate: "2025-01-24", schoolId: "school-nairobi-high" },
+  { id: 4, student: "Alice Wanjiru", medication: "Omeprazole 20mg", dose: "1 capsule", frequency: "Before breakfast", startDate: "2025-01-11", endDate: "2025-01-25", schoolId: "school-nairobi-high" },
 ];
 
 const tabs = ["Health Records", "Clinic Visits", "Medications"];
 
 export default function MedicalPage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("Health Records");
   const [showVisit, setShowVisit] = useState(false);
   const [visitForm, setVisitForm] = useState({ student: "", complaint: "", diagnosis: "", treatment: "" });
+
+  const filteredHealthRecords = healthRecords.filter(r => !user?.schoolId || r.schoolId === user.schoolId);
+  const filteredClinicVisits = clinicVisits.filter(v => !user?.schoolId || v.schoolId === user.schoolId);
+  const filteredMedications = medications.filter(m => !user?.schoolId || m.schoolId === user.schoolId);
 
   const handleVisitSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,7 +114,7 @@ export default function MedicalPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {healthRecords.map(r => (
+                  {filteredHealthRecords.map(r => (
                     <tr key={r.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{r.name}</td>
                       <td className="px-4 py-3 text-sm text-slate-600">{r.class}</td>
@@ -142,7 +148,7 @@ export default function MedicalPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {clinicVisits.map(v => (
+                  {filteredClinicVisits.map(v => (
                     <tr key={v.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{v.student}</td>
                       <td className="px-4 py-3 text-sm text-slate-600">{v.date}</td>
@@ -168,7 +174,7 @@ export default function MedicalPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {medications.map(m => (
+                  {filteredMedications.map(m => (
                     <tr key={m.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{m.student}</td>
                       <td className="px-4 py-3 text-sm text-slate-700">{m.medication}</td>

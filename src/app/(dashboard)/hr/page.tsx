@@ -1,36 +1,37 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { Users, Calendar, Building2, Briefcase, Plus, X, Check } from "lucide-react";
 
 const employees = [
-  { name: "Sarah Wanjiku", id: "EMP001", dept: "Academics", role: "Teacher", joined: "Jan 2020", status: "Active" },
-  { name: "James Otieno", id: "EMP002", dept: "Finance", role: "Accountant", joined: "Mar 2019", status: "Active" },
-  { name: "Grace Muthoni", id: "EMP003", dept: "Academics", role: "Teacher", joined: "Sep 2021", status: "Active" },
-  { name: "Peter Kamau", id: "EMP004", dept: "Academics", role: "Teacher", joined: "Jan 2018", status: "On Leave" },
-  { name: "Joyce Auma", id: "EMP005", dept: "Administration", role: "Receptionist", joined: "Jun 2022", status: "Active" },
-  { name: "David Kipchoge", id: "EMP006", dept: "Transport", role: "Transport Manager", joined: "Apr 2020", status: "Active" },
-  { name: "Fatuma Hassan", id: "EMP007", dept: "Library", role: "Librarian", joined: "Aug 2021", status: "Active" },
-  { name: "Robert Njoroge", id: "EMP008", dept: "Security", role: "Security Officer", joined: "Nov 2019", status: "Active" },
+  { name: "Sarah Wanjiku", id: "EMP001", dept: "Academics", role: "Teacher", joined: "Jan 2020", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "James Otieno", id: "EMP002", dept: "Finance", role: "Accountant", joined: "Mar 2019", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Grace Muthoni", id: "EMP003", dept: "Academics", role: "Teacher", joined: "Sep 2021", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Peter Kamau", id: "EMP004", dept: "Academics", role: "Teacher", joined: "Jan 2018", status: "On Leave", schoolId: "school-nairobi-high" },
+  { name: "Joyce Auma", id: "EMP005", dept: "Administration", role: "Receptionist", joined: "Jun 2022", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "David Kipchoge", id: "EMP006", dept: "Transport", role: "Transport Manager", joined: "Apr 2020", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Fatuma Hassan", id: "EMP007", dept: "Library", role: "Librarian", joined: "Aug 2021", status: "Active", schoolId: "school-nairobi-high" },
+  { name: "Robert Njoroge", id: "EMP008", dept: "Security", role: "Security Officer", joined: "Nov 2019", status: "Active", schoolId: "school-nairobi-high" },
 ];
 
 const leaveRequests = [
-  { employee: "Peter Kamau", dept: "Academics", type: "Sick Leave", from: "Dec 1, 2025", to: "Dec 14, 2025", days: 14, status: "Approved" },
-  { employee: "Grace Muthoni", dept: "Academics", type: "Annual Leave", from: "Jan 6, 2026", to: "Jan 16, 2026", days: 10, status: "Pending" },
-  { employee: "Joyce Auma", dept: "Administration", type: "Maternity Leave", from: "Feb 1, 2026", to: "Apr 30, 2026", days: 90, status: "Approved" },
-  { employee: "Robert Njoroge", dept: "Security", type: "Emergency Leave", from: "Nov 28, 2025", to: "Nov 29, 2025", days: 2, status: "Rejected" },
-  { employee: "Fatuma Hassan", dept: "Library", type: "Annual Leave", from: "Dec 20, 2025", to: "Jan 2, 2026", days: 13, status: "Pending" },
+  { employee: "Peter Kamau", dept: "Academics", type: "Sick Leave", from: "Dec 1, 2025", to: "Dec 14, 2025", days: 14, status: "Approved", schoolId: "school-nairobi-high" },
+  { employee: "Grace Muthoni", dept: "Academics", type: "Annual Leave", from: "Jan 6, 2026", to: "Jan 16, 2026", days: 10, status: "Pending", schoolId: "school-nairobi-high" },
+  { employee: "Joyce Auma", dept: "Administration", type: "Maternity Leave", from: "Feb 1, 2026", to: "Apr 30, 2026", days: 90, status: "Approved", schoolId: "school-nairobi-high" },
+  { employee: "Robert Njoroge", dept: "Security", type: "Emergency Leave", from: "Nov 28, 2025", to: "Nov 29, 2025", days: 2, status: "Rejected", schoolId: "school-nairobi-high" },
+  { employee: "Fatuma Hassan", dept: "Library", type: "Annual Leave", from: "Dec 20, 2025", to: "Jan 2, 2026", days: 13, status: "Pending", schoolId: "school-nairobi-high" },
 ];
 
 const departments = [
-  { name: "Academics", employees: 22, head: "Dr. Mary Wanjiku" },
-  { name: "Finance", employees: 5, head: "James Otieno" },
-  { name: "Administration", employees: 6, head: "Joyce Auma" },
-  { name: "Hostel", employees: 4, head: "Mary Njeri" },
-  { name: "Transport", employees: 7, head: "David Kipchoge" },
-  { name: "Library", employees: 3, head: "Fatuma Hassan" },
-  { name: "Medical", employees: 3, head: "Nurse Alice" },
-  { name: "Security", employees: 5, head: "Robert Njoroge" },
+  { name: "Academics", employees: 22, head: "Dr. Mary Wanjiku", schoolId: "school-nairobi-high" },
+  { name: "Finance", employees: 5, head: "James Otieno", schoolId: "school-nairobi-high" },
+  { name: "Administration", employees: 6, head: "Joyce Auma", schoolId: "school-nairobi-high" },
+  { name: "Hostel", employees: 4, head: "Mary Njeri", schoolId: "school-nairobi-high" },
+  { name: "Transport", employees: 7, head: "David Kipchoge", schoolId: "school-nairobi-high" },
+  { name: "Library", employees: 3, head: "Fatuma Hassan", schoolId: "school-nairobi-high" },
+  { name: "Medical", employees: 3, head: "Nurse Alice", schoolId: "school-nairobi-high" },
+  { name: "Security", employees: 5, head: "Robert Njoroge", schoolId: "school-nairobi-high" },
 ];
 
 const stats = [
@@ -41,11 +42,16 @@ const stats = [
 ];
 
 export default function HRPage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("employees");
   const [showModal, setShowModal] = useState(false);
   const [leaveStatuses, setLeaveStatuses] = useState<Record<number, string>>(
     Object.fromEntries(leaveRequests.map((r, i) => [i, r.status]))
   );
+
+  const filteredEmployees = employees.filter(e => !user?.schoolId || e.schoolId === user.schoolId);
+  const filteredLeaveRequests = leaveRequests.filter(r => !user?.schoolId || r.schoolId === user.schoolId);
+  const filteredDepartments = departments.filter(d => !user?.schoolId || d.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -92,7 +98,7 @@ export default function HRPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {employees.map((e, i) => (
+                {filteredEmployees.map((e, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
@@ -129,7 +135,7 @@ export default function HRPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {leaveRequests.map((r, i) => (
+                {filteredLeaveRequests.map((r, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="py-3 px-4 text-sm font-medium text-slate-800">{r.employee}</td>
                     <td className="py-3 px-4 text-sm text-slate-600">{r.dept}</td>
@@ -165,7 +171,7 @@ export default function HRPage() {
 
       {activeTab === "departments" && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {departments.map((d, i) => (
+          {filteredDepartments.map((d, i) => (
             <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
               <div className="w-10 h-10 rounded-lg bg-teal-100 flex items-center justify-center mb-3">
                 <Building2 className="w-5 h-5 text-teal-600" />

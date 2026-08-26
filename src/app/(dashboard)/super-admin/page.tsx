@@ -26,6 +26,7 @@ type School = {
   plan: string;
   status: string;
   joined: string;
+  schoolId?: string;
 };
 
 const initialSchools: School[] = [];
@@ -51,11 +52,11 @@ const packages = [
 ];
 
 const tickets = [
-  { id: "TKT001", school: "Mombasa Academy", topic: "Unable to export reports", priority: "High", status: "Open", date: "2025-01-14" },
-  { id: "TKT002", school: "Kisumu Lakeside School", topic: "SMS integration not working", priority: "Medium", status: "In Progress", date: "2025-01-13" },
-  { id: "TKT003", school: "Nairobi High School", topic: "Payroll calculations incorrect", priority: "High", status: "Resolved", date: "2025-01-10" },
-  { id: "TKT004", school: "Eldoret International", topic: "Password reset not sending email", priority: "Low", status: "Open", date: "2025-01-12" },
-  { id: "TKT005", school: "Thika Road Academy", topic: "Timetable generator crash", priority: "Medium", status: "In Progress", date: "2025-01-11" },
+  { id: "TKT001", school: "Mombasa Academy", topic: "Unable to export reports", priority: "High", status: "Open", date: "2025-01-14", schoolId: "school-mombasa" },
+  { id: "TKT002", school: "Kisumu Lakeside School", topic: "SMS integration not working", priority: "Medium", status: "In Progress", date: "2025-01-13", schoolId: "school-kisumu" },
+  { id: "TKT003", school: "Nairobi High School", topic: "Payroll calculations incorrect", priority: "High", status: "Resolved", date: "2025-01-10", schoolId: "school-nairobi-high" },
+  { id: "TKT004", school: "Eldoret International", topic: "Password reset not sending email", priority: "Low", status: "Open", date: "2025-01-12", schoolId: "school-eldoret" },
+  { id: "TKT005", school: "Thika Road Academy", topic: "Timetable generator crash", priority: "Medium", status: "In Progress", date: "2025-01-11", schoolId: "school-thika" },
 ];
 
 const tabs = ["Schools", "Registered Users", "Revenue", "Packages", "Support Tickets"];

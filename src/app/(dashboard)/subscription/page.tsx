@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { CreditCard, CheckCircle, Users, HardDrive, Smartphone, TrendingUp } from "lucide-react";
 
 const plans = [
@@ -47,23 +48,27 @@ const plans = [
 ];
 
 const billingHistory = [
-  { date: "Nov 1, 2025", description: "Professional Plan - November 2025", amount: "KES 5,000", status: "Paid", invoice: "INV-2025-011" },
-  { date: "Oct 1, 2025", description: "Professional Plan - October 2025", amount: "KES 5,000", status: "Paid", invoice: "INV-2025-010" },
-  { date: "Sep 1, 2025", description: "Professional Plan - September 2025", amount: "KES 5,000", status: "Paid", invoice: "INV-2025-009" },
-  { date: "Aug 1, 2025", description: "Professional Plan - August 2025", amount: "KES 5,000", status: "Paid", invoice: "INV-2025-008" },
-  { date: "Jul 1, 2025", description: "Starter Plan - July 2025", amount: "KES 2,500", status: "Paid", invoice: "INV-2025-007" },
-  { date: "Jun 1, 2025", description: "Starter Plan - June 2025", amount: "KES 2,500", status: "Paid", invoice: "INV-2025-006" },
+  { date: "Nov 1, 2025", description: "Professional Plan - November 2025", amount: "KES 5,000", status: "Paid", invoice: "INV-2025-011", schoolId: "school-nairobi-high" },
+  { date: "Oct 1, 2025", description: "Professional Plan - October 2025", amount: "KES 5,000", status: "Paid", invoice: "INV-2025-010", schoolId: "school-nairobi-high" },
+  { date: "Sep 1, 2025", description: "Professional Plan - September 2025", amount: "KES 5,000", status: "Paid", invoice: "INV-2025-009", schoolId: "school-nairobi-high" },
+  { date: "Aug 1, 2025", description: "Professional Plan - August 2025", amount: "KES 5,000", status: "Paid", invoice: "INV-2025-008", schoolId: "school-nairobi-high" },
+  { date: "Jul 1, 2025", description: "Starter Plan - July 2025", amount: "KES 2,500", status: "Paid", invoice: "INV-2025-007", schoolId: "school-nairobi-high" },
+  { date: "Jun 1, 2025", description: "Starter Plan - June 2025", amount: "KES 2,500", status: "Paid", invoice: "INV-2025-006", schoolId: "school-nairobi-high" },
 ];
 
 const usage = [
-  { label: "Students", used: 247, total: 500, icon: Users, color: "bg-teal-500" },
-  { label: "Storage", used: 2.4, total: 10, unit: "GB", icon: HardDrive, color: "bg-blue-500" },
-  { label: "SMS Credits", used: 450, total: 1000, icon: Smartphone, color: "bg-purple-500" },
+  { label: "Students", used: 247, total: 500, icon: Users, color: "bg-teal-500", schoolId: "school-nairobi-high" },
+  { label: "Storage", used: 2.4, total: 10, unit: "GB", icon: HardDrive, color: "bg-blue-500", schoolId: "school-nairobi-high" },
+  { label: "SMS Credits", used: 450, total: 1000, icon: Smartphone, color: "bg-purple-500", schoolId: "school-nairobi-high" },
 ];
 
 export default function SubscriptionPage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("plans");
   const [selectedPlan, setSelectedPlan] = useState("Professional");
+
+  const filteredBillingHistory = billingHistory.filter(b => !user?.schoolId || b.schoolId === user.schoolId);
+  const filteredUsage = usage.filter(u => !user?.schoolId || u.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -90,7 +95,7 @@ export default function SubscriptionPage() {
 
       {/* Usage */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {usage.map((u, i) => {
+        {filteredUsage.map((u, i) => {
           const pct = Math.round((u.used / u.total) * 100);
           return (
             <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
@@ -166,8 +171,8 @@ export default function SubscriptionPage() {
                   <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">{h}</th>
                 ))}</tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
-                {billingHistory.map((b, i) => (
+                  <tbody className="divide-y divide-slate-100">
+                    {filteredBillingHistory.map((b, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="py-3 px-4 text-sm text-slate-600">{b.date}</td>
                     <td className="py-3 px-4 text-sm text-slate-800">{b.description}</td>

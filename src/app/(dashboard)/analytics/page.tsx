@@ -43,6 +43,7 @@ const monthlyData = {
       borderColor: '#94A3B8',
       backgroundColor: 'transparent',
       tension: 0.4,
+      schoolId: "school-nairobi-high",
     },
     {
       label: '2025',
@@ -50,6 +51,7 @@ const monthlyData = {
       borderColor: '#0D9488',
       backgroundColor: 'transparent',
       tension: 0.4,
+      schoolId: "school-nairobi-high",
     },
   ],
 };
@@ -62,18 +64,21 @@ const subjectComparison = {
       data: [78, 85, 72, 88, 76, 80, 73, 79],
       backgroundColor: '#0D9488',
       borderRadius: 4,
+      schoolId: "school-nairobi-high",
     },
     {
       label: 'Grade 8',
       data: [72, 80, 68, 82, 71, 75, 69, 74],
       backgroundColor: '#14B8A6',
       borderRadius: 4,
+      schoolId: "school-nairobi-high",
     },
     {
       label: 'School Avg',
       data: [75, 82, 70, 85, 74, 77, 71, 76],
       backgroundColor: '#E2E8F0',
       borderRadius: 4,
+      schoolId: "school-nairobi-high",
     },
   ],
 };
@@ -86,37 +91,40 @@ const performanceByTerm = {
       data: [25, 28, 32, 35],
       backgroundColor: '#22C55E',
       borderRadius: 4,
+      schoolId: "school-nairobi-high",
     },
     {
       label: 'Average',
       data: [45, 48, 50, 52],
       backgroundColor: '#F59E0B',
       borderRadius: 4,
+      schoolId: "school-nairobi-high",
     },
     {
       label: 'Below Average',
       data: [30, 24, 18, 13],
       backgroundColor: '#EF4444',
       borderRadius: 4,
+      schoolId: "school-nairobi-high",
     },
   ],
 };
 
 const topPerformers = [
-  { rank: 1, name: "Michael Park", class: "Grade 9", avg: 94.5, trend: "up" },
-  { rank: 2, name: "Emma Wilson", class: "Grade 9", avg: 92.8, trend: "up" },
-  { rank: 3, name: "David Chen", class: "Grade 8", avg: 91.5, trend: "same" },
-  { rank: 4, name: "Sarah Johnson", class: "Grade 7", avg: 90.2, trend: "up" },
-  { rank: 5, name: "James Lee", class: "Grade 8", avg: 89.8, trend: "down" },
+  { rank: 1, name: "Michael Park", class: "Grade 9", avg: 94.5, trend: "up", schoolId: "school-nairobi-high" },
+  { rank: 2, name: "Emma Wilson", class: "Grade 9", avg: 92.8, trend: "up", schoolId: "school-nairobi-high" },
+  { rank: 3, name: "David Chen", class: "Grade 8", avg: 91.5, trend: "same", schoolId: "school-nairobi-high" },
+  { rank: 4, name: "Sarah Johnson", class: "Grade 7", avg: 90.2, trend: "up", schoolId: "school-nairobi-high" },
+  { rank: 5, name: "James Lee", class: "Grade 8", avg: 89.8, trend: "down", schoolId: "school-nairobi-high" },
 ];
 
   const subjectTrends = [
-  { learningArea: "Mathematics", current: 78, previous: 72, change: "+6", positive: true },
-  { learningArea: "English", current: 82, previous: 80, change: "+2", positive: true },
-  { learningArea: "Integrated Science", current: 71, previous: 75, change: "-4", positive: false },
-  { learningArea: "History", current: 85, previous: 83, change: "+2", positive: true },
-  { learningArea: "Social Studies", current: 76, previous: 74, change: "+2", positive: true },
-  { learningArea: "Pre-Technical Studies", current: 73, previous: 70, change: "+3", positive: true },
+  { learningArea: "Mathematics", current: 78, previous: 72, change: "+6", positive: true, schoolId: "school-nairobi-high" },
+  { learningArea: "English", current: 82, previous: 80, change: "+2", positive: true, schoolId: "school-nairobi-high" },
+  { learningArea: "Integrated Science", current: 71, previous: 75, change: "-4", positive: false, schoolId: "school-nairobi-high" },
+  { learningArea: "History", current: 85, previous: 83, change: "+2", positive: true, schoolId: "school-nairobi-high" },
+  { learningArea: "Social Studies", current: 76, previous: 74, change: "+2", positive: true, schoolId: "school-nairobi-high" },
+  { learningArea: "Pre-Technical Studies", current: 73, previous: 70, change: "+3", positive: true, schoolId: "school-nairobi-high" },
 ];
 
 export default function AnalyticsPage() {
@@ -124,6 +132,9 @@ export default function AnalyticsPage() {
   const schoolName = user?.school || "My School";
   const [timeRange, setTimeRange] = useState("year");
   const [selectedClass, setSelectedClass] = useState("all");
+
+  const filteredTopPerformers = topPerformers.filter(p => !user?.schoolId || p.schoolId === user.schoolId);
+  const filteredSubjectTrends = subjectTrends.filter(t => !user?.schoolId || t.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -242,7 +253,7 @@ export default function AnalyticsPage() {
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
           <h3 className="text-lg font-bold text-slate-800 mb-4">Learning Area Trends</h3>
           <div className="space-y-4">
-            {subjectTrends.map((subject, i) => (
+            {filteredSubjectTrends.map((subject, i) => (
               <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                 <div>
                    <div className="font-medium text-slate-800">{subject.learningArea}</div>
@@ -276,7 +287,7 @@ export default function AnalyticsPage() {
               </tr>
             </thead>
             <tbody>
-              {topPerformers.map((student) => (
+              {filteredTopPerformers.map((student) => (
                 <tr key={student.rank} className="border-b border-slate-100 hover:bg-slate-50">
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${

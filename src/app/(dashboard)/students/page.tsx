@@ -35,6 +35,7 @@ type Student = {
   joined: string;
   avgScore: number;
   attendance: number;
+  schoolId?: string;
 };
 
 const initialStudents: Student[] = [];
@@ -69,7 +70,8 @@ export default function StudentsPage() {
   const filteredStudents = students.filter(student => {
     const matchesSearch = `${student.firstName} ${student.lastName} ${student.admNo}`.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesGrade = selectedGrade === "All Grades" || student.class === selectedGrade;
-    return matchesSearch && matchesGrade;
+    const matchesSchool = !user?.schoolId || student.schoolId === user.schoolId;
+    return matchesSearch && matchesGrade && matchesSchool;
   });
 
   const totalPages = Math.max(1, Math.ceil(filteredStudents.length / itemsPerPage));
@@ -111,6 +113,7 @@ export default function StudentsPage() {
       joined: form.joined,
       avgScore: 0,
       attendance: 0,
+      schoolId: user?.schoolId,
     };
     setStudents(prev => [newStudent, ...prev]);
     setForm(emptyForm);

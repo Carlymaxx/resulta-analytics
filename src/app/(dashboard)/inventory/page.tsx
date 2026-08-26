@@ -1,41 +1,42 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { Package, Plus, X, AlertTriangle } from "lucide-react";
 
 const assets = [
-  { id: 1, name: "Student Desks", category: "Furniture", qty: 480, condition: "Good", location: "Classrooms" },
-  { id: 2, name: "Teacher Chairs", category: "Furniture", qty: 52, condition: "Good", location: "Staffroom" },
-  { id: 3, name: "Desktop Computers", category: "ICT", qty: 40, condition: "Good", location: "Computer Lab" },
-  { id: 4, name: "Projectors", category: "ICT", qty: 12, condition: "Fair", location: "Various Classrooms" },
-  { id: 5, name: "Laboratory Equipment Sets", category: "Science", qty: 30, condition: "Good", location: "Science Labs" },
-  { id: 6, name: "Library Shelves", category: "Furniture", qty: 24, condition: "Good", location: "Library" },
-  { id: 7, name: "Sports Equipment Set", category: "Sports", qty: 8, condition: "Fair", location: "Sports Store" },
-  { id: 8, name: "Musical Instruments", category: "Arts", qty: 15, condition: "Good", location: "Music Room" },
+  { id: 1, name: "Student Desks", category: "Furniture", qty: 480, condition: "Good", location: "Classrooms", schoolId: "school-nairobi-high" },
+  { id: 2, name: "Teacher Chairs", category: "Furniture", qty: 52, condition: "Good", location: "Staffroom", schoolId: "school-nairobi-high" },
+  { id: 3, name: "Desktop Computers", category: "ICT", qty: 40, condition: "Good", location: "Computer Lab", schoolId: "school-nairobi-high" },
+  { id: 4, name: "Projectors", category: "ICT", qty: 12, condition: "Fair", location: "Various Classrooms", schoolId: "school-nairobi-high" },
+  { id: 5, name: "Laboratory Equipment Sets", category: "Science", qty: 30, condition: "Good", location: "Science Labs", schoolId: "school-nairobi-high" },
+  { id: 6, name: "Library Shelves", category: "Furniture", qty: 24, condition: "Good", location: "Library", schoolId: "school-nairobi-high" },
+  { id: 7, name: "Sports Equipment Set", category: "Sports", qty: 8, condition: "Fair", location: "Sports Store", schoolId: "school-nairobi-high" },
+  { id: 8, name: "Musical Instruments", category: "Arts", qty: 15, condition: "Good", location: "Music Room", schoolId: "school-nairobi-high" },
 ];
 
 const stationery = [
-  { id: 1, item: "A4 Printing Paper (Reams)", inStock: 45, minStock: 50, unit: "Reams" },
-  { id: 2, item: "Whiteboard Markers (Box)", inStock: 8, minStock: 20, unit: "Boxes" },
-  { id: 3, item: "Chalk Boxes", inStock: 60, minStock: 30, unit: "Boxes" },
-  { id: 4, item: "Pens (Box of 50)", inStock: 5, minStock: 15, unit: "Boxes" },
-  { id: 5, item: "Exam Answer Booklets", inStock: 0, minStock: 200, unit: "Pieces" },
-  { id: 6, item: "Staples (Box)", inStock: 24, minStock: 10, unit: "Boxes" },
-  { id: 7, item: "Printer Toner Cartridges", inStock: 2, minStock: 6, unit: "Units" },
-  { id: 8, item: "Correction Fluid", inStock: 18, minStock: 20, unit: "Pieces" },
+  { id: 1, item: "A4 Printing Paper (Reams)", inStock: 45, minStock: 50, unit: "Reams", schoolId: "school-nairobi-high" },
+  { id: 2, item: "Whiteboard Markers (Box)", inStock: 8, minStock: 20, unit: "Boxes", schoolId: "school-nairobi-high" },
+  { id: 3, item: "Chalk Boxes", inStock: 60, minStock: 30, unit: "Boxes", schoolId: "school-nairobi-high" },
+  { id: 4, item: "Pens (Box of 50)", inStock: 5, minStock: 15, unit: "Boxes", schoolId: "school-nairobi-high" },
+  { id: 5, item: "Exam Answer Booklets", inStock: 0, minStock: 200, unit: "Pieces", schoolId: "school-nairobi-high" },
+  { id: 6, item: "Staples (Box)", inStock: 24, minStock: 10, unit: "Boxes", schoolId: "school-nairobi-high" },
+  { id: 7, item: "Printer Toner Cartridges", inStock: 2, minStock: 6, unit: "Units", schoolId: "school-nairobi-high" },
+  { id: 8, item: "Correction Fluid", inStock: 18, minStock: 20, unit: "Pieces", schoolId: "school-nairobi-high" },
 ];
 
 const purchases = [
-  { id: 1, item: "A4 Paper", supplier: "Office World Ltd", qty: 100, amount: 15000, date: "2025-01-10", status: "Delivered" },
-  { id: 2, item: "Whiteboard Markers", supplier: "StatMart Kenya", qty: 20, amount: 4000, date: "2025-01-08", status: "Delivered" },
-  { id: 3, item: "Printer Toner", supplier: "TechSupply Co.", qty: 4, amount: 28000, date: "2025-01-12", status: "Pending" },
+  { id: 1, item: "A4 Paper", supplier: "Office World Ltd", qty: 100, amount: 15000, date: "2025-01-10", status: "Delivered", schoolId: "school-nairobi-high" },
+  { id: 2, item: "Whiteboard Markers", supplier: "StatMart Kenya", qty: 20, amount: 4000, date: "2025-01-08", status: "Delivered", schoolId: "school-nairobi-high" },
+  { id: 3, item: "Printer Toner", supplier: "TechSupply Co.", qty: 4, amount: 28000, date: "2025-01-12", status: "Pending", schoolId: "school-nairobi-high" },
 ];
 
 const suppliers = [
-  { id: 1, name: "Office World Ltd", contact: "James Mwangi", phone: "0722-001-001", email: "info@officeworld.co.ke", category: "Stationery" },
-  { id: 2, name: "TechSupply Co.", contact: "Sarah Ndungu", phone: "0722-002-002", email: "sales@techsupply.co.ke", category: "ICT" },
-  { id: 3, name: "StatMart Kenya", contact: "Peter Ochieng", phone: "0722-003-003", email: "orders@statmart.co.ke", category: "Stationery" },
-  { id: 4, name: "Furniture Masters", contact: "Grace Waweru", phone: "0722-004-004", email: "info@furnmasters.co.ke", category: "Furniture" },
+  { id: 1, name: "Office World Ltd", contact: "James Mwangi", phone: "0722-001-001", email: "info@officeworld.co.ke", category: "Stationery", schoolId: "school-nairobi-high" },
+  { id: 2, name: "TechSupply Co.", contact: "Sarah Ndungu", phone: "0722-002-002", email: "sales@techsupply.co.ke", category: "ICT", schoolId: "school-nairobi-high" },
+  { id: 3, name: "StatMart Kenya", contact: "Peter Ochieng", phone: "0722-003-003", email: "orders@statmart.co.ke", category: "Stationery", schoolId: "school-nairobi-high" },
+  { id: 4, name: "Furniture Masters", contact: "Grace Waweru", phone: "0722-004-004", email: "info@furnmasters.co.ke", category: "Furniture", schoolId: "school-nairobi-high" },
 ];
 
 const tabs = ["Assets", "Stationery", "Purchases", "Suppliers"];
@@ -47,11 +48,17 @@ const getStockStatus = (inStock: number, minStock: number) => {
 };
 
 export default function InventoryPage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("Assets");
   const [showAddItem, setShowAddItem] = useState(false);
   const [showPurchase, setShowPurchase] = useState(false);
   const [itemForm, setItemForm] = useState({ name: "", category: "Furniture", qty: "", condition: "Good", location: "" });
   const [purForm, setPurForm] = useState({ item: "", supplier: "", qty: "", amount: "" });
+
+  const filteredAssets = assets.filter(a => !user?.schoolId || a.schoolId === user.schoolId);
+  const filteredStationery = stationery.filter(s => !user?.schoolId || s.schoolId === user.schoolId);
+  const filteredPurchases = purchases.filter(p => !user?.schoolId || p.schoolId === user.schoolId);
+  const filteredSuppliers = suppliers.filter(s => !user?.schoolId || s.schoolId === user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -112,7 +119,7 @@ export default function InventoryPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {assets.map(a => (
+                  {filteredAssets.map(a => (
                     <tr key={a.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{a.name}</td>
                       <td className="px-4 py-3"><span className="px-2 py-1 bg-slate-100 text-slate-600 rounded-full text-xs">{a.category}</span></td>
@@ -139,7 +146,7 @@ export default function InventoryPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {stationery.map(s => {
+                  {filteredStationery.map(s => {
                     const status = getStockStatus(s.inStock, s.minStock);
                     const isLow = s.inStock < s.minStock;
                     return (
@@ -175,7 +182,7 @@ export default function InventoryPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {purchases.map(p => (
+                  {filteredPurchases.map(p => (
                     <tr key={p.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{p.item}</td>
                       <td className="px-4 py-3 text-sm text-slate-600">{p.supplier}</td>
@@ -203,7 +210,7 @@ export default function InventoryPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {suppliers.map(s => (
+                  {filteredSuppliers.map(s => (
                     <tr key={s.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{s.name}</td>
                       <td className="px-4 py-3 text-sm text-slate-600">{s.contact}</td>

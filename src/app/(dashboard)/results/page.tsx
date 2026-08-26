@@ -16,14 +16,14 @@ import {
 } from "lucide-react";
 
 const mockStudents = [
-  { id: 1, name: "Alex Johnson", class: "Grade 9", math: 78, english: 85, science: 72, history: 88, total: 323, avg: 80.75 },
-  { id: 2, name: "Maria Garcia", class: "Grade 9", math: 92, english: 88, science: 85, history: 90, total: 355, avg: 88.75 },
-  { id: 3, name: "James Wilson", class: "Grade 8", math: 65, english: 72, science: 58, history: 70, total: 265, avg: 66.25 },
-  { id: 4, name: "Sarah Lee", class: "Grade 8", math: 88, english: 91, science: 84, history: 86, total: 349, avg: 87.25 },
-  { id: 5, name: "David Brown", class: "Grade 9", math: 55, english: 62, science: 48, history: 58, total: 223, avg: 55.75 },
-  { id: 6, name: "Emily Chen", class: "Grade 7", math: 81, english: 86, science: 79, history: 83, total: 329, avg: 82.25 },
-  { id: 7, name: "Michael Park", class: "Grade 8", math: 94, english: 90, science: 91, history: 87, total: 362, avg: 90.5 },
-  { id: 8, name: "Lisa Thompson", class: "Grade 7", math: 70, english: 75, science: 68, history: 72, total: 285, avg: 71.25 },
+  { id: 1, name: "Alex Johnson", class: "Grade 9", math: 78, english: 85, science: 72, history: 88, total: 323, avg: 80.75, schoolId: "school-nairobi-high" },
+  { id: 2, name: "Maria Garcia", class: "Grade 9", math: 92, english: 88, science: 85, history: 90, total: 355, avg: 88.75, schoolId: "school-nairobi-high" },
+  { id: 3, name: "James Wilson", class: "Grade 8", math: 65, english: 72, science: 58, history: 70, total: 265, avg: 66.25, schoolId: "school-nairobi-high" },
+  { id: 4, name: "Sarah Lee", class: "Grade 8", math: 88, english: 91, science: 84, history: 86, total: 349, avg: 87.25, schoolId: "school-nairobi-high" },
+  { id: 5, name: "David Brown", class: "Grade 9", math: 55, english: 62, science: 48, history: 58, total: 223, avg: 55.75, schoolId: "school-nairobi-high" },
+  { id: 6, name: "Emily Chen", class: "Grade 7", math: 81, english: 86, science: 79, history: 83, total: 329, avg: 82.25, schoolId: "school-nairobi-high" },
+  { id: 7, name: "Michael Park", class: "Grade 8", math: 94, english: 90, science: 91, history: 87, total: 362, avg: 90.5, schoolId: "school-nairobi-high" },
+  { id: 8, name: "Lisa Thompson", class: "Grade 7", math: 70, english: 75, science: 68, history: 72, total: 285, avg: 71.25, schoolId: "school-nairobi-high" },
 ];
 
 const classes = ["All Grades", "Grade 7", "Grade 8", "Grade 9"];
@@ -42,7 +42,8 @@ export default function ResultsPage() {
   const filteredStudents = mockStudents.filter(student => {
     const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesGrade = selectedGrade === "All Grades" || student.class === selectedGrade;
-    return matchesSearch && matchesGrade;
+    const matchesSchool = !user?.schoolId || student.schoolId === user.schoolId;
+    return matchesSearch && matchesGrade && matchesSchool;
   });
 
   const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);

@@ -13,12 +13,12 @@ const certTypes = [
 ];
 
 const history = [
-  { id: "CERT001", student: "John Mwangi", class: "Grade 9", type: "Leaving Certificate", date: "2025-01-10", issuedBy: "Dr. Mary Wanjiku" },
-  { id: "CERT002", student: "Grace Kamau", class: "Grade 9", type: "Achievement Certificate", date: "2025-01-10", issuedBy: "Dr. Mary Wanjiku" },
-  { id: "CERT003", student: "Peter Otieno", class: "Grade 8", type: "Character Certificate", date: "2025-01-08", issuedBy: "Dr. Mary Wanjiku" },
-  { id: "CERT004", student: "Alice Njeri", class: "Grade 9", type: "Leaving Certificate", date: "2024-12-20", issuedBy: "Dr. Mary Wanjiku" },
-  { id: "CERT005", student: "Brian Auma", class: "Grade 7", type: "Completion Certificate", date: "2024-12-18", issuedBy: "Dr. Mary Wanjiku" },
-  { id: "CERT006", student: "Linda Odhiambo", class: "Grade 9", type: "Achievement Certificate", date: "2024-12-15", issuedBy: "Dr. Mary Wanjiku" },
+  { id: "CERT001", student: "John Mwangi", class: "Grade 9", type: "Leaving Certificate", date: "2025-01-10", issuedBy: "Dr. Mary Wanjiku", schoolId: "school-nairobi-high" },
+  { id: "CERT002", student: "Grace Kamau", class: "Grade 9", type: "Achievement Certificate", date: "2025-01-10", issuedBy: "Dr. Mary Wanjiku", schoolId: "school-nairobi-high" },
+  { id: "CERT003", student: "Peter Otieno", class: "Grade 8", type: "Character Certificate", date: "2025-01-08", issuedBy: "Dr. Mary Wanjiku", schoolId: "school-nairobi-high" },
+  { id: "CERT004", student: "Alice Njeri", class: "Grade 9", type: "Leaving Certificate", date: "2024-12-20", issuedBy: "Dr. Mary Wanjiku", schoolId: "school-nairobi-high" },
+  { id: "CERT005", student: "Brian Auma", class: "Grade 7", type: "Completion Certificate", date: "2024-12-18", issuedBy: "Dr. Mary Wanjiku", schoolId: "school-nairobi-high" },
+  { id: "CERT006", student: "Linda Odhiambo", class: "Grade 9", type: "Achievement Certificate", date: "2024-12-15", issuedBy: "Dr. Mary Wanjiku", schoolId: "school-nairobi-high" },
 ];
 
 const templates = [
@@ -46,6 +46,8 @@ export default function CertificatesPage() {
   const [studentName, setStudentName] = useState("");
   const [studentClass, setStudentClass] = useState(levelClasses[levelClasses.length - 1] || "Grade 9");
   const [showPreview, setShowPreview] = useState(false);
+
+  const filteredHistory = history.filter(h => !user?.schoolId || h.schoolId === user.schoolId);
 
   const handlePreview = (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,7 +145,7 @@ export default function CertificatesPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {history.map(c => (
+                  {filteredHistory.map(c => (
                     <tr key={c.id} className="hover:bg-slate-50">
                       <td className="px-4 py-3 text-sm font-mono text-slate-500">{c.id}</td>
                       <td className="px-4 py-3 text-sm font-medium text-slate-800">{c.student}</td>

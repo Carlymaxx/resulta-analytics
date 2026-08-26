@@ -17,6 +17,7 @@ type Teacher = {
   status: string;
   joined: string;
   qualification: string;
+  schoolId?: string;
 };
 
 const initialTeachers: Teacher[] = [];
@@ -32,11 +33,11 @@ export default function TeachersPage() {
   const [viewTeacher, setViewTeacher] = useState<Teacher | null>(null);
   const [form, setForm] = useState({ name: "", empId: "", email: "", phone: "", learningArea: "", gradeAssigned: "", type: "Full-time", qualification: "" });
 
-  const filtered = teachers.filter(t =>
-    t.name.toLowerCase().includes(search.toLowerCase()) ||
-    t.empId.toLowerCase().includes(search.toLowerCase()) ||
-    t.learningArea.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = teachers.filter(t => {
+    const matchesSearch = t.name.toLowerCase().includes(search.toLowerCase()) || t.empId.toLowerCase().includes(search.toLowerCase()) || t.learningArea.toLowerCase().includes(search.toLowerCase());
+    const matchesSchool = !user?.schoolId || t.schoolId === user.schoolId;
+    return matchesSearch && matchesSchool;
+  });
 
   const total = teachers.length;
   const fullTime = teachers.filter(t => t.type === "Full-time").length;
@@ -58,6 +59,7 @@ export default function TeachersPage() {
       status: "Active",
       joined: new Date().toISOString().slice(0, 10),
       qualification: form.qualification,
+      schoolId: user?.schoolId,
     };
     setTeachers(prev => [newTeacher, ...prev]);
     setShowAdd(false);

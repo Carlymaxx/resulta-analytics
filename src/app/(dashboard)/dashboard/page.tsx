@@ -206,12 +206,12 @@ export default function DashboardPage() {
             </thead>
             <tbody>
               {[
-                { name: 'Alex Johnson', class: 'Grade 9', score: '45%', risk: 'High', color: 'bg-red-100 text-red-700' },
-                { name: 'Maria Garcia', class: 'Grade 8', score: '52%', risk: 'High', color: 'bg-red-100 text-red-700' },
-                { name: 'James Wilson', class: 'Grade 7', score: '58%', risk: 'Medium', color: 'bg-amber-100 text-amber-700' },
-                { name: 'Sarah Lee', class: 'Grade 8', score: '61%', risk: 'Medium', color: 'bg-amber-100 text-amber-700' },
-                { name: 'David Brown', class: 'Grade 9', score: '55%', risk: 'High', color: 'bg-red-100 text-red-700' },
-              ].map((student, i) => (
+                { name: 'Alex Johnson', class: 'Grade 9', score: '45%', risk: 'High', color: 'bg-red-100 text-red-700', schoolId: 'school-nairobi-high' },
+                { name: 'Maria Garcia', class: 'Grade 8', score: '52%', risk: 'High', color: 'bg-red-100 text-red-700', schoolId: 'school-nairobi-high' },
+                { name: 'James Wilson', class: 'Grade 7', score: '58%', risk: 'Medium', color: 'bg-amber-100 text-amber-700', schoolId: 'school-nairobi-high' },
+                { name: 'Sarah Lee', class: 'Grade 8', score: '61%', risk: 'Medium', color: 'bg-amber-100 text-amber-700', schoolId: 'school-nairobi-high' },
+                { name: 'David Brown', class: 'Grade 9', score: '55%', risk: 'High', color: 'bg-red-100 text-red-700', schoolId: 'school-nairobi-high' },
+              ].filter(s => !user?.schoolId || s.schoolId === user.schoolId).map((student, i) => (
                 <tr key={i} className="border-b border-slate-100 hover:bg-slate-50">
                   <td className="py-3 px-4 text-sm font-medium text-slate-800">{student.name}</td>
                   <td className="py-3 px-4 text-sm text-slate-600">{student.class}</td>
