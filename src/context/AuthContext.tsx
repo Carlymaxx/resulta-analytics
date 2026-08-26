@@ -57,6 +57,35 @@ interface MockUser {
   schoolPhone?: string;
 }
 
+const toUser = (u: MockUser): User => ({
+  id: u.id,
+  email: u.email,
+  name: u.name,
+  role: u.role,
+  school: u.school,
+  schoolId: u.schoolId,
+  level: u.level,
+  schoolBadge: u.schoolBadge,
+  schoolAddress: u.schoolAddress,
+  schoolBox: u.schoolBox,
+  schoolMotto: u.schoolMotto,
+  schoolPhone: u.schoolPhone,
+});
+
+const findUserByCredentials = (email: string, password: string): User | null => {
+  const builtIn = MOCK_USERS.find(u => u.email === email && u.password === password);
+  if (builtIn) return toUser(builtIn);
+  try {
+    const raw = localStorage.getItem("resulta_signups");
+    if (!raw) return null;
+    const signups: MockUser[] = JSON.parse(raw);
+    const found = signups.find(u => u.email === email && u.password === password);
+    return found ? toUser(found) : null;
+  } catch {
+    return null;
+  }
+};
+
 const MOCK_USERS: MockUser[] = [
   { id: "0", email: "superadmin@msms.com", password: "super123", name: "Super Admin", role: "superadmin" },
   { id: "1", email: "admin@school.edu", password: "admin123", name: "Admin User", role: "admin", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "", schoolAddress: "P.O. Box 123-00100, Nairobi, Kenya", schoolBox: "P.O. Box 123-00100", schoolMotto: "Education for Excellence", schoolPhone: "+254 700 000 000" },
@@ -140,25 +169,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 800));
-    const foundUser = MOCK_USERS.find(u => u.email === email && u.password === password);
+    const foundUser = findUserByCredentials(email, password);
     if (foundUser) {
-       const userData = { id: foundUser.id, email: foundUser.email, name: foundUser.name, role: foundUser.role, school: foundUser.school, schoolId: foundUser.schoolId, level: foundUser.level, schoolBadge: foundUser.schoolBadge, schoolAddress: foundUser.schoolAddress, schoolBox: foundUser.schoolBox, schoolMotto: foundUser.schoolMotto, schoolPhone: foundUser.schoolPhone };
-      setUser(userData);
-      localStorage.setItem("resulta_user", JSON.stringify(userData));
+      setUser(foundUser);
+      localStorage.setItem("resulta_user", JSON.stringify(foundUser));
       setIsLoading(false);
       return { success: true };
-    }
-    const storedUsers = localStorage.getItem("resulta_signups");
-    if (storedUsers) {
-      const signups: MockUser[] = JSON.parse(storedUsers);
-      const signedUpUser = signups.find(u => u.email === email && u.password === password);
-      if (signedUpUser) {
-         const userData = { id: signedUpUser.id, email: signedUpUser.email, name: signedUpUser.name, role: signedUpUser.role, school: signedUpUser.school, schoolId: signedUpUser.schoolId, level: signedUpUser.level, schoolBadge: signedUpUser.schoolBadge, schoolAddress: signedUpUser.schoolAddress, schoolBox: signedUpUser.schoolBox, schoolMotto: signedUpUser.schoolMotto, schoolPhone: signedUpUser.schoolPhone };
-        setUser(userData);
-        localStorage.setItem("resulta_user", JSON.stringify(userData));
-        setIsLoading(false);
-        return { success: true };
-      }
     }
     setIsLoading(false);
     return { success: false, error: "Invalid email or password" };

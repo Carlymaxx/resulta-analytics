@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { BarChart3, Eye, EyeOff, Loader2, Check, Upload } from "lucide-react";
+import { BarChart3, Eye, EyeOff, Loader2, Check, Upload, School } from "lucide-react";
 import { useAuth, EDUCATION_LEVELS, EducationLevel } from "@/context/AuthContext";
 
 export default function SignupPage() {
@@ -35,7 +35,7 @@ export default function SignupPage() {
     setError("");
 
     if (!name || !email || !password || !confirmPassword || !school) {
-      setError("Please fill in all fields");
+      setError("Please fill in all required fields");
       return;
     }
 
@@ -49,7 +49,7 @@ export default function SignupPage() {
       return;
     }
 
-     const result = await signup(name, email, password, role, level, school, schoolBadge, schoolAddress, schoolBox, schoolMotto, schoolPhone);
+    const result = await signup(name, email, password, role, level, school, schoolBadge, schoolAddress, schoolBox, schoolMotto, schoolPhone);
     if (result.success) {
       router.push("/portal");
     } else {
@@ -71,11 +71,12 @@ export default function SignupPage() {
 
         <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
           <h1 className="text-2xl font-bold text-slate-800 mb-2">Create an account</h1>
-          <p className="text-slate-500 mb-8">Join to start analyzing student performance</p>
+          <p className="text-slate-500 mb-8">Set up your school portal</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm flex items-center gap-2">
+                <School className="w-4 h-4" />
                 {error}
               </div>
             )}
@@ -97,7 +98,7 @@ export default function SignupPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="teacher@school.edu"
+                placeholder="admin@school.edu"
                 className="input-field"
               />
             </div>
@@ -128,64 +129,64 @@ export default function SignupPage() {
               <p className="text-xs text-slate-400 mt-1">This determines the portal area you land in after signing in.</p>
             </div>
 
-             <div>
-               <label className="block text-sm font-medium text-slate-700 mb-2">School Badge URL <span className="text-slate-400 font-normal">(optional)</span></label>
-               <div className="relative">
-                 <input
-                   type="text"
-                   value={schoolBadge}
-                   onChange={(e) => setSchoolBadge(e.target.value)}
-                   placeholder="https://example.com/badge.png"
-                   className="input-field pr-10"
-                 />
-                 <Upload className="w-5 h-5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2" />
-               </div>
-               <p className="text-xs text-slate-400 mt-1">Paste a link to your school badge or logo image.</p>
-             </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">School Badge URL <span className="text-slate-400 font-normal">(optional)</span></label>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={schoolBadge}
+                  onChange={(e) => setSchoolBadge(e.target.value)}
+                  placeholder="https://example.com/badge.png"
+                  className="input-field pr-10"
+                />
+                <Upload className="w-5 h-5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2" />
+              </div>
+              <p className="text-xs text-slate-400 mt-1">Paste a link to your school badge or logo image.</p>
+            </div>
 
-             <div>
-               <label className="block text-sm font-medium text-slate-700 mb-2">School Address <span className="text-slate-400 font-normal">(optional)</span></label>
-               <input
-                 type="text"
-                 value={schoolAddress}
-                 onChange={(e) => setSchoolAddress(e.target.value)}
-                 placeholder="e.g. 123 Education Street, Nairobi, Kenya"
-                 className="input-field"
-               />
-             </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">School Address <span className="text-slate-400 font-normal">(optional)</span></label>
+              <input
+                type="text"
+                value={schoolAddress}
+                onChange={(e) => setSchoolAddress(e.target.value)}
+                placeholder="e.g. 123 Education Street, Nairobi, Kenya"
+                className="input-field"
+              />
+            </div>
 
-             <div>
-               <label className="block text-sm font-medium text-slate-700 mb-2">P.O. Box <span className="text-slate-400 font-normal">(optional)</span></label>
-               <input
-                 type="text"
-                 value={schoolBox}
-                 onChange={(e) => setSchoolBox(e.target.value)}
-                 placeholder="e.g. P.O. Box 123-00100, Nairobi"
-                 className="input-field"
-               />
-             </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">P.O. Box <span className="text-slate-400 font-normal">(optional)</span></label>
+              <input
+                type="text"
+                value={schoolBox}
+                onChange={(e) => setSchoolBox(e.target.value)}
+                placeholder="e.g. P.O. Box 123-00100, Nairobi"
+                className="input-field"
+              />
+            </div>
 
-             <div>
-               <label className="block text-sm font-medium text-slate-700 mb-2">School Motto <span className="text-slate-400 font-normal">(optional)</span></label>
-               <input
-                 type="text"
-                 value={schoolMotto}
-                 onChange={(e) => setSchoolMotto(e.target.value)}
-                 placeholder="e.g. Education for Excellence"
-                 className="input-field"
-               />
-             </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">School Motto <span className="text-slate-400 font-normal">(optional)</span></label>
+              <input
+                type="text"
+                value={schoolMotto}
+                onChange={(e) => setSchoolMotto(e.target.value)}
+                placeholder="e.g. Education for Excellence"
+                className="input-field"
+              />
+            </div>
 
-             <div>
-               <label className="block text-sm font-medium text-slate-700 mb-2">School Phone <span className="text-slate-400 font-normal">(optional)</span></label>
-               <input
-                 type="tel"
-                 value={schoolPhone}
-                 onChange={(e) => setSchoolPhone(e.target.value)}
-                 placeholder="e.g. +254 700 000 000"
-                 className="input-field"
-               />
-             </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">School Phone <span className="text-slate-400 font-normal">(optional)</span></label>
+              <input
+                type="tel"
+                value={schoolPhone}
+                onChange={(e) => setSchoolPhone(e.target.value)}
+                placeholder="e.g. +254 700 000 000"
+                className="input-field"
+              />
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">Role</label>

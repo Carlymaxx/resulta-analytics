@@ -8,13 +8,16 @@ import {
   Shield,
   Clock,
   Brain,
-  CheckCircle
+  CheckCircle,
+  Star,
+  Play,
+  ChevronRight
 } from "lucide-react";
 
 export default function Home() {
 
   return (
-    <main>
+    <main className="min-h-screen">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -25,44 +28,51 @@ export default function Home() {
             <span className="text-xl font-bold text-slate-800">Resulta Analytics</span>
           </div>
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-slate-600 hover:text-teal-600 transition-colors">Features</a>
-            <a href="#benefits" className="text-slate-600 hover:text-teal-600 transition-colors">Benefits</a>
-            <a href="#about" className="text-slate-600 hover:text-teal-600 transition-colors">About</a>
+            <a href="#features" className="text-slate-600 hover:text-teal-600 transition-colors text-sm font-medium">Features</a>
+            <a href="#benefits" className="text-slate-600 hover:text-teal-600 transition-colors text-sm font-medium">Benefits</a>
+            <a href="#testimonials" className="text-slate-600 hover:text-teal-600 transition-colors text-sm font-medium">Testimonials</a>
+            <a href="#pricing" className="text-slate-600 hover:text-teal-600 transition-colors text-sm font-medium">Pricing</a>
           </nav>
-          <Link 
-            href="/login"
-            className="bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-700 transition-all hover:scale-105"
-          >
-            Get Started
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/login" className="text-slate-600 hover:text-teal-600 font-medium text-sm hidden sm:block">
+              Sign in
+            </Link>
+            <Link 
+              href="/signup"
+              className="bg-teal-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-teal-700 transition-all hover:scale-105 text-sm"
+            >
+              Get Started
+            </Link>
+          </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6 bg-gradient-to-b from-teal-50 to-white">
+      <section className="pt-32 pb-20 px-6 bg-gradient-to-b from-teal-50 via-white to-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="fade-in">
+            <div>
               <div className="inline-flex items-center gap-2 bg-teal-100 text-teal-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <GraduationCap className="w-4 h-4" />
                 Academic Excellence Platform
               </div>
               <h1 className="text-5xl lg:text-6xl font-bold text-slate-900 leading-tight mb-6">
                 Analyze & Predict
-                <span className="text-teal-600"> Student Performance</span>
+                <span className="text-teal-600 block">Student Performance</span>
               </h1>
               <p className="text-xl text-slate-600 mb-8 leading-relaxed">
                 Transform academic data into actionable insights. Identify at-risk learners early and make data-driven decisions to improve educational outcomes.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-<Link 
-            href="/login"
-            className="inline-flex items-center justify-center gap-2 bg-teal-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-teal-700 transition-all hover:scale-105"
-          >
-            Start Free Trial
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+                <Link 
+                  href="/signup"
+                  className="inline-flex items-center justify-center gap-2 bg-teal-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-teal-700 transition-all hover:scale-105"
+                >
+                  Start Free Trial
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
                 <button className="inline-flex items-center justify-center gap-2 bg-white text-teal-600 border-2 border-teal-600 px-8 py-4 rounded-xl font-semibold hover:bg-teal-50 transition-all">
+                  <Play className="w-5 h-5" />
                   Watch Demo
                 </button>
               </div>
@@ -77,7 +87,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="relative slide-in">
+            <div className="relative">
               <div className="bg-white rounded-2xl shadow-2xl p-6 border border-slate-200">
                 <div className="flex items-center justify-between mb-6">
                   <div>
@@ -88,13 +98,13 @@ export default function Home() {
                 </div>
                 <div className="space-y-4">
                   {[
-                     { learningArea: "Mathematics", score: 78, change: "+5%" },
-                     { learningArea: "English", score: 82, change: "+3%" },
-                     { learningArea: "Science", score: 71, change: "+8%" },
-                     { learningArea: "History", score: 85, change: "+2%" },
+                    { learningArea: "Mathematics", score: 78, change: "+5%" },
+                    { learningArea: "English", score: 82, change: "+3%" },
+                    { learningArea: "Science", score: 71, change: "+8%" },
+                    { learningArea: "History", score: 85, change: "+2%" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-4">
-                       <span className="w-24 text-sm text-slate-600">{item.learningArea}</span>
+                      <span className="w-28 text-sm text-slate-600">{item.learningArea}</span>
                       <div className="flex-1 h-3 bg-slate-100 rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-teal-500 rounded-full transition-all duration-1000" 
@@ -140,7 +150,7 @@ export default function Home() {
               {
                 icon: TrendingUp,
                 title: "Trend Analysis",
-                 desc: "Identify patterns in student performance across learning areas, grades, and time periods."
+                desc: "Identify patterns in student performance across learning areas, grades, and time periods."
               },
               {
                 icon: Users,
@@ -218,7 +228,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 px-6 bg-slate-50">
+      <section id="testimonials" className="py-20 px-6 bg-slate-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-900 mb-4">What Educators Say</h2>
@@ -233,9 +243,7 @@ export default function Home() {
               <div key={i} className="bg-white p-8 rounded-2xl shadow-lg">
                 <div className="flex gap-1 mb-4">
                   {[1,2,3,4,5].map((star) => (
-                    <svg key={star} className="w-5 h-5 text-amber-400 fill-amber-400" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
+                    <Star key={star} className="w-5 h-5 text-amber-400 fill-amber-400" />
                   ))}
                 </div>
                 <p className="text-slate-600 mb-6 italic">&quot;{testimonial.quote}&quot;</p>
@@ -272,11 +280,7 @@ export default function Home() {
               <details key={i} className="group bg-slate-50 rounded-xl p-6 cursor-pointer">
                 <summary className="flex items-center justify-between font-semibold text-slate-800">
                   <span>{faq.q}</span>
-                  <span className="transition-transform group-open:rotate-180">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </span>
+                  <ChevronRight className="w-5 h-5 transition-transform group-open:rotate-90" />
                 </summary>
                 <p className="text-slate-600 mt-4">{faq.a}</p>
               </details>
@@ -295,7 +299,7 @@ export default function Home() {
             Join hundreds of schools already using Resulta Analytics to improve educational outcomes.
           </p>
           <Link 
-            href="/login"
+            href="/signup"
             className="inline-flex items-center gap-2 bg-teal-500 text-white px-10 py-4 rounded-xl font-semibold hover:bg-teal-400 transition-all hover:scale-105 text-lg"
           >
             Get Started Free
@@ -305,25 +309,46 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 text-slate-300 py-8">
+      <footer className="bg-slate-950 text-slate-300 py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap justify-center gap-6 text-sm">
-            <a href="/dashboard" className="hover:text-teal-400 transition-colors">Dashboard</a>
-            <a href="/results" className="hover:text-teal-400 transition-colors">Results</a>
-            <a href="/analytics" className="hover:text-teal-400 transition-colors">Analytics</a>
-            <a href="/predictions" className="hover:text-teal-400 transition-colors">Predictions</a>
-            <a href="/reports" className="hover:text-teal-400 transition-colors">Reports</a>
-            <a href="/classes" className="hover:text-teal-400 transition-colors">Classes</a>
-            <a href="/students" className="hover:text-teal-400 transition-colors">Students</a>
-            <a href="/attendance" className="hover:text-teal-400 transition-colors">Attendance</a>
-            <a href="/notifications" className="hover:text-teal-400 transition-colors">Notifications</a>
-            <a href="/activity" className="hover:text-teal-400 transition-colors">Activity</a>
-            <a href="/about" className="hover:text-teal-400 transition-colors">About</a>
-            <a href="/pricing" className="hover:text-teal-400 transition-colors">Pricing</a>
-            <a href="/contact" className="hover:text-teal-400 transition-colors">Contact</a>
-            <a href="/settings" className="hover:text-teal-400 transition-colors">Settings</a>
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-lg font-bold text-white">Resulta Analytics</span>
+              </div>
+              <p className="text-sm text-slate-400">
+                Empowering schools with data-driven insights for better educational outcomes.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-white mb-4">Product</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#features" className="hover:text-teal-400 transition-colors">Features</a></li>
+                <li><a href="#pricing" className="hover:text-teal-400 transition-colors">Pricing</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Integrations</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-white mb-4">Company</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="/about" className="hover:text-teal-400 transition-colors">About</a></li>
+                <li><a href="/contact" className="hover:text-teal-400 transition-colors">Contact</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Careers</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-white mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Terms of Service</a></li>
+                <li><a href="#" className="hover:text-teal-400 transition-colors">Cookie Policy</a></li>
+              </ul>
+            </div>
           </div>
-          <div className="mt-6 pt-6 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-lg bg-teal-600 flex items-center justify-center">
                 <BarChart3 className="w-4 h-4 text-white" />
