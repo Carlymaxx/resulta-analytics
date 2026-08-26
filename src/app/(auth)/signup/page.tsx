@@ -49,6 +49,16 @@ export default function SignupPage() {
       return;
     }
 
+    if (!/[A-Z]/.test(password)) {
+      setError("Password must contain at least one uppercase letter");
+      return;
+    }
+
+    if (!/[0-9]/.test(password)) {
+      setError("Password must contain at least one number");
+      return;
+    }
+
     const result = await signup(name, email, password, role, level, school, schoolBadge, schoolAddress, schoolBox, schoolMotto, schoolPhone);
     if (result.success) {
       router.push("/portal");

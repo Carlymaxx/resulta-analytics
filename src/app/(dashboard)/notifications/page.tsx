@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 const mockNotifications = [
-  { id: 1, type: "alert", title: "At-Risk Student Detected", message: "Alex Johnson from Grade 10-A has dropped below passing grade in Mathematics", time: "5 min ago", read: false, schoolId: "school-nairobi-high" },
+  { id: 1, type: "alert", title: "At-Risk Student Detected", message: "Alex Johnson from Form 4 has dropped below passing grade in Mathematics", time: "5 min ago", read: false, schoolId: "school-nairobi-high" },
   { id: 2, type: "success", title: "Results Imported Successfully", message: "245 student results have been imported from the spreadsheet", time: "1 hour ago", read: false, schoolId: "school-nairobi-high" },
   { id: 3, type: "info", title: "Weekly Report Ready", message: "Your weekly performance report is ready to view", time: "2 hours ago", read: true, schoolId: "school-nairobi-high" },
   { id: 4, type: "alert", title: "Low Attendance Alert", message: "Maria Garcia has below 75% attendance this month", time: "3 hours ago", read: true, schoolId: "school-nairobi-high" },

@@ -45,6 +45,7 @@ export default function ClassesPage() {
     learningAreas: levelLearningAreas.length,
     avgScore: 68 + idx * 3.5 + (currentLevel === "secondary" ? 5 : currentLevel === "junior" ? 8 : 0),
     status: "Active",
+    schoolId: user?.schoolId || "school-nairobi-high",
   }));
 
   const filteredClasses = mockClasses.filter((c) =>

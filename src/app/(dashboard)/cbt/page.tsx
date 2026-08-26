@@ -120,7 +120,7 @@ export default function CBTPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-slate-50 border-b border-slate-200">
-                <tr>{["Title", "Learning Area", "Grade", "Date", "Duration", "Questions", "Status"].map(h => (
+                <tr>{["Title", "Learning Area", "Class", "Date", "Duration", "Questions", "Status"].map(h => (
                   <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">{h}</th>
                 ))}</tr>
               </thead>
@@ -214,7 +214,7 @@ export default function CBTPage() {
               <button onClick={() => setShowModal(false)} className="p-2 hover:bg-slate-100 rounded-lg"><X className="w-5 h-5 text-slate-500" /></button>
             </div>
             <div className="p-6 space-y-4">
-                  {[["Exam Title", "text"], ["Learning Area", "select-subj"], ["Grade", "select-class"], ["Exam Date", "date"], ["Duration (minutes)", "number"], ["Total Questions", "number"], ["Instructions", "textarea"]].map(([label, type]) => (
+                  {[["Exam Title", "text"], ["Learning Area", "select-subj"], ["Class", "select-class"], ["Exam Date", "date"], ["Duration (minutes)", "number"], ["Total Questions", "number"], ["Instructions", "textarea"]].map(([label, type]) => (
                 <div key={label as string}>
                   <label className="block text-sm font-medium text-slate-700 mb-1">{label as string}</label>
                   {type === "select-subj" ? (

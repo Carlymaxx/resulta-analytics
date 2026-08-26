@@ -47,6 +47,17 @@ The application has been updated with the following changes:
   - `predictions/page.tsx`: dynamic class options and mock prediction data per level
   - `teachers/page.tsx`: learning area dropdown uses `LEARNING_AREAS_BY_LEVEL[currentLevel]`
   - Verified typecheck and lint pass cleanly
+- [x] Final audit and fix pass on all dashboard pages:
+  - Ensured all data arrays have `schoolId` field
+  - Ensured all filtering logic includes `!user?.schoolId || item.schoolId === user.schoolId`
+  - Ensured all forms that create records include `schoolId: user?.schoolId`
+  - Ensured all dropdowns/selects use `CLASSES_BY_LEVEL[currentLevel]` or `LEARNING_AREAS_BY_LEVEL[currentLevel]`
+  - Removed invalid terminology like "Grade 10-A" and replaced with valid level-appropriate class names
+  - Standardized "Class" terminology in table headers and form labels instead of "Grade"
+  - Fixed demo account passwords in login page to match actual mock users
+  - Added missing password validation rules (uppercase + number) in signup page
+  - Fixed SMS recipient dropdown in communication page to use dynamic class options
+  - Added `schoolId` to super-admin school creation form
 
 ## Current Structure
 

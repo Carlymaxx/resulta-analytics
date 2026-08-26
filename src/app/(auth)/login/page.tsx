@@ -36,8 +36,8 @@ export default function LoginPage() {
     { email: "superadmin@msms.com", role: "Super Admin", icon: Shield, desc: "Platform-wide access" },
     { email: "admin@school.edu", role: "School Admin", icon: School, desc: "Nairobi High School" },
     { email: "principal@school.edu", role: "Principal", icon: GraduationCap, desc: "Academic leadership" },
-    { email: "teacher@school.edu", role: "Teacher", icon: Users, desc: "Classroom instructor" },
     { email: "student@school.edu", role: "Student", icon: GraduationCap, desc: "Learner account" },
+    { email: "accountant@school.edu", role: "Accountant", icon: Users, desc: "Finance officer" },
     { email: "parent@school.edu", role: "Parent", icon: Users, desc: "Guardian access" },
   ];
 
@@ -45,7 +45,15 @@ export default function LoginPage() {
     setIsFilling(true);
     await new Promise(resolve => setTimeout(resolve, 300));
     setEmail(demoEmail);
-    setPassword("super123");
+    const passwords: Record<string, string> = {
+      "superadmin@msms.com": "super123",
+      "admin@school.edu": "admin123",
+      "principal@school.edu": "principal123",
+      "student@school.edu": "student123",
+      "accountant@school.edu": "account123",
+      "parent@school.edu": "parent123",
+    };
+    setPassword(passwords[demoEmail] || "super123");
     setError("");
     setIsFilling(false);
   };

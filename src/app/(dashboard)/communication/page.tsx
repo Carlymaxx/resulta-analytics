@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { CLASSES_BY_LEVEL } from "@/lib/grading";
 import { MessageSquare, Smartphone, Mail, Bell, Megaphone, Send, X } from "lucide-react";
 
 export default function CommunicationPage() {
-  const { user } = useAuth();
+  const { user, currentLevel } = useAuth();
   const schoolName = user?.school || "My School";
+  const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
   const [activeTab, setActiveTab] = useState("messages");
   const [selectedMessage, setSelectedMessage] = useState(0);
   const [smsRecipient, setSmsRecipient] = useState("All Students");
@@ -166,13 +168,14 @@ export default function CommunicationPage() {
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Recipient</label>
-                  <select value={smsRecipient} onChange={e => setSmsRecipient(e.target.value)} className="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white text-sm outline-none focus:border-teal-500">
-                    <option>All Students</option>
-                    <option>All Parents</option>
-                    <option>Grade 9 Parents</option>
-                    <option>Grade 7 Parents</option>
-                    <option>All Staff</option>
-                  </select>
+                   <select value={smsRecipient} onChange={e => setSmsRecipient(e.target.value)} className="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white text-sm outline-none focus:border-teal-500">
+                     <option>All Students</option>
+                     <option>All Parents</option>
+                     {levelClasses.map(c => (
+                       <option key={c}>{c} Parents</option>
+                     ))}
+                     <option>All Staff</option>
+                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Message</label>

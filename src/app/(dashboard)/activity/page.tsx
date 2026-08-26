@@ -26,7 +26,7 @@ export default function ActivityLogPage() {
 
   const activities = [
     { id: 1, action: "Added new student", details: "John Smith added to Grade 9-B", user: schoolName, time: "2 minutes ago", icon: User, type: "create", schoolId: "school-nairobi-high" },
-    { id: 2, action: "Updated results", details: "Mathematics scores for Grade 10-A", user: schoolName, time: "15 minutes ago", icon: FileText, type: "update", schoolId: "school-nairobi-high" },
+     { id: 2, action: "Updated results", details: "Mathematics scores for Form 4", user: schoolName, time: "15 minutes ago", icon: FileText, type: "update", schoolId: "school-nairobi-high" },
     { id: 3, action: "Generated report", details: "Q1 2025 Performance Report", user: schoolName, time: "1 hour ago", icon: FileText, type: "export", schoolId: "school-nairobi-high" },
     { id: 4, action: "Logged in", details: "Successful login from Chrome on Windows", user: schoolName, time: "2 hours ago", icon: LogIn, type: "login", schoolId: "school-nairobi-high" },
     { id: 5, action: "Modified settings", details: "Updated notification preferences", user: schoolName, time: "3 hours ago", icon: Settings, type: "update", schoolId: "school-nairobi-high" },

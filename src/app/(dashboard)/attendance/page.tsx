@@ -53,11 +53,11 @@ const getAttendanceDataForLevel = (level: string) => {
 };
 
 const dailyAttendance = [
-  { day: "Mon", present: 245, absent: 12, late: 8 },
-  { day: "Tue", present: 248, absent: 8, late: 5 },
-  { day: "Wed", present: 252, absent: 5, late: 3 },
-  { day: "Thu", present: 240, absent: 15, late: 10 },
-  { day: "Fri", present: 238, absent: 18, late: 12 },
+  { day: "Mon", present: 245, absent: 12, late: 8, schoolId: "school-nairobi-high" },
+  { day: "Tue", present: 248, absent: 8, late: 5, schoolId: "school-nairobi-high" },
+  { day: "Wed", present: 252, absent: 5, late: 3, schoolId: "school-nairobi-high" },
+  { day: "Thu", present: 240, absent: 15, late: 10, schoolId: "school-nairobi-high" },
+  { day: "Fri", present: 238, absent: 18, late: 12, schoolId: "school-nairobi-high" },
 ];
 
 export default function AttendancePage() {
@@ -194,7 +194,7 @@ export default function AttendancePage() {
             onChange={(e) => setSelectedClass(e.target.value)}
             className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white"
           >
-             <option value="all">All Grades</option>
+              <option value="all">All Classes</option>
              {levelClasses.map(c => (
                <option key={c} value={c}>{c}</option>
              ))}
@@ -208,7 +208,7 @@ export default function AttendancePage() {
           <thead className="bg-slate-50 dark:bg-slate-700">
             <tr>
               <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600 dark:text-slate-300">Student</th>
-               <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Grade</th>
+               <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Class</th>
               <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Present</th>
               <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Absent</th>
               <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Late</th>

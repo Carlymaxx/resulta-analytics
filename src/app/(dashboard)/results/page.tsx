@@ -75,11 +75,11 @@ export default function ResultsPage() {
   const { user, currentLevel } = useAuth();
   const schoolName = user?.school || "My School";
   const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
-  const classOptions = ["All Grades", ...levelClasses];
+  const classOptions = ["All Classes", ...levelClasses];
   const levelLearningAreas = LEARNING_AREAS_BY_LEVEL[currentLevel] || LEARNING_AREAS_BY_LEVEL.junior;
   const mockStudents = getMockStudentsForLevel(currentLevel);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedGrade, setSelectedGrade] = useState("All Grades");
+  const [selectedGrade, setSelectedGrade] = useState("All Classes");
   const [showAddModal, setShowAddModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -162,7 +162,7 @@ export default function ResultsPage() {
             <thead className="bg-slate-50">
               <tr>
                 <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600">Student</th>
-                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Grade</th>
+                 <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Class</th>
                  {levelLearningAreas.slice(0, 4).map(area => (
                    <th key={area} className="text-center py-4 px-4 text-sm font-semibold text-slate-600">{area}</th>
                  ))}
@@ -272,7 +272,7 @@ export default function ResultsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Grade</label>
+                   <label className="block text-sm font-medium text-slate-700 mb-2">Class</label>
                   <select className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
                     <option value="">Select Grade</option>
                     {levelClasses.map(c => (

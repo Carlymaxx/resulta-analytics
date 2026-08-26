@@ -119,7 +119,7 @@ export default function TeachersPage() {
           <table className="w-full">
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
-                {["Name", "Employee ID", "Learning Area", "Grade Assigned", "Type", "Status", "Actions"].map(h => (
+                 {["Name", "Employee ID", "Learning Area", "Class Assigned", "Type", "Status", "Actions"].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
@@ -206,7 +206,7 @@ export default function TeachersPage() {
                    </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Grade Assigned</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Class Assigned</label>
                   <select value={form.gradeAssigned} onChange={e => setForm({ ...form, gradeAssigned: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
                     <option value="">Select grade</option>
                      {levelClasses.map(c => <option key={c} value={c}>{c}</option>)}

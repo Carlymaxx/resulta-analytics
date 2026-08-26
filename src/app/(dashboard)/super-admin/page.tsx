@@ -106,6 +106,7 @@ export default function SuperAdminPage() {
       plan: schoolForm.plan,
       status: "Active",
       joined: new Date().toISOString().slice(0, 10),
+      schoolId: `school-${Date.now()}`,
     };
     setSchools(prev => [newSchool, ...prev]);
     setSchoolForm({ name: "", city: "", students: "", plan: "Free" });

@@ -98,9 +98,9 @@ export default function ReportsPage() {
           </div>
           
             <div>
-               <label className="block text-sm font-medium text-slate-700 mb-2">Grade</label>
-               <select className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white">
-                 <option value="">All Grades</option>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Class</label>
+                <select className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white">
+                  <option value="">All Classes</option>
                  {levelClasses.map(c => (
                    <option key={c} value={c}>{c}</option>
                  ))}

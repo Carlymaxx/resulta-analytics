@@ -167,7 +167,7 @@ export default function FinancePage() {
               <table className="w-full">
                 <thead className="bg-slate-50">
                   <tr>
-                     {["Student", "Grade", "Amount", "Date", "Method", "Receipt", "Status"].map(h => (
+                      {["Student", "Class", "Amount", "Date", "Method", "Receipt", "Status"].map(h => (
                       <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
                     ))}
                   </tr>

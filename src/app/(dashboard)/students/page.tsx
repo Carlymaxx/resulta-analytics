@@ -60,7 +60,7 @@ export default function StudentsPage() {
   const classes = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
   const [students, setStudents] = useState<Student[]>(initialStudents);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedGrade, setSelectedGrade] = useState("All Grades");
+  const [selectedGrade, setSelectedGrade] = useState("All Classes");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -185,7 +185,7 @@ export default function StudentsPage() {
                onChange={(e) => setSelectedGrade(e.target.value)}
               className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
-              <option value="All Grades">All Grades</option>
+               <option value="All Classes">All Classes</option>
               {classes.map(c => (
                 <option key={c} value={c}>{c}</option>
               ))}
@@ -210,7 +210,7 @@ export default function StudentsPage() {
               <tr>
                 <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600 dark:text-slate-300">Student</th>
                 <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Adm No</th>
-                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Grade</th>
+                 <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Class</th>
                 <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Gender</th>
                 <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Guardian</th>
                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Attendance</th>
@@ -359,7 +359,7 @@ export default function StudentsPage() {
                   <input type="date" value={form.dob} onChange={(e) => setForm({ ...form, dob: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Grade</label>
+                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Class</label>
                   <select value={form.class} onChange={(e) => setForm({ ...form, class: e.target.value })} className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
                     {classes.map(c => (
                       <option key={c} value={c}>{c}</option>
