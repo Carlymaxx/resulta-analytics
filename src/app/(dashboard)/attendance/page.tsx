@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { CLASSES_BY_LEVEL } from "@/lib/grading";
 import { 
   Calendar, 
   Users, 
@@ -15,14 +16,41 @@ import {
   TrendingDown
 } from "lucide-react";
 
-const attendanceData = [
-  { id: 1, name: "Alex Johnson", class: "Grade 9", present: 18, absent: 2, late: 1, percentage: 90, trend: "up", schoolId: "school-nairobi-high" },
-  { id: 2, name: "Maria Garcia", class: "Grade 9", present: 20, absent: 0, late: 1, percentage: 95, trend: "up", schoolId: "school-nairobi-high" },
-  { id: 3, name: "James Wilson", class: "Grade 8", present: 15, absent: 4, late: 2, percentage: 71, trend: "down", schoolId: "school-nairobi-high" },
-  { id: 4, name: "Sarah Lee", class: "Grade 8", present: 19, absent: 1, late: 0, percentage: 95, trend: "same", schoolId: "school-nairobi-high" },
-  { id: 5, name: "David Brown", class: "Grade 9", present: 14, absent: 5, late: 2, percentage: 67, trend: "down", schoolId: "school-nairobi-high" },
-  { id: 6, name: "Emily Chen", class: "Grade 7", present: 20, absent: 0, late: 0, percentage: 100, trend: "up", schoolId: "school-nairobi-high" },
-];
+const getAttendanceDataForLevel = (level: string) => {
+  const schoolId = "school-nairobi-high";
+  const make = (id: number, name: string, cls: string) => ({
+    id, name, class: cls, present: 18 + (id % 4), absent: 2 - (id % 3), late: 1 + (id % 2),
+    percentage: 85 + (id % 10), trend: id % 3 === 0 ? "down" : id % 3 === 1 ? "up" : "same", schoolId
+  });
+  if (level === "primary") {
+    return [
+      make(1, "Alex Johnson", "Grade 1"),
+      make(2, "Maria Garcia", "Grade 2"),
+      make(3, "James Wilson", "Grade 3"),
+      make(4, "Sarah Lee", "Grade 4"),
+      make(5, "David Brown", "Grade 5"),
+      make(6, "Emily Chen", "Grade 6"),
+    ];
+  }
+  if (level === "secondary") {
+    return [
+      make(1, "Alex Johnson", "Form 4"),
+      make(2, "Maria Garcia", "Form 4"),
+      make(3, "James Wilson", "Form 3"),
+      make(4, "Sarah Lee", "Form 3"),
+      make(5, "David Brown", "Form 4"),
+      make(6, "Emily Chen", "Form 1"),
+    ];
+  }
+  return [
+    make(1, "Alex Johnson", "Grade 9"),
+    make(2, "Maria Garcia", "Grade 9"),
+    make(3, "James Wilson", "Grade 8"),
+    make(4, "Sarah Lee", "Grade 8"),
+    make(5, "David Brown", "Grade 9"),
+    make(6, "Emily Chen", "Grade 7"),
+  ];
+};
 
 const dailyAttendance = [
   { day: "Mon", present: 245, absent: 12, late: 8 },
@@ -33,8 +61,10 @@ const dailyAttendance = [
 ];
 
 export default function AttendancePage() {
-  const { user } = useAuth();
+  const { user, currentLevel } = useAuth();
   const schoolName = user?.school || "My School";
+  const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
+  const attendanceData = getAttendanceDataForLevel(currentLevel);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClass, setSelectedClass] = useState("all");
 
@@ -165,9 +195,9 @@ export default function AttendancePage() {
             className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white"
           >
              <option value="all">All Grades</option>
-            <option value="Grade 7">Grade 7</option>
-            <option value="Grade 8">Grade 8</option>
-            <option value="Grade 9">Grade 9</option>
+             {levelClasses.map(c => (
+               <option key={c} value={c}>{c}</option>
+             ))}
           </select>
         </div>
       </div>

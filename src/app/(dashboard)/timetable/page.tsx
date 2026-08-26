@@ -128,13 +128,17 @@ export default function TimetablePage() {
   const [selectedClass, setSelectedClass] = useState(levelClasses[0] || "Grade 7");
 
   const timetable = useMemo(() => {
+    if (currentLevel !== "junior") return {};
     if (selectedClass.includes("Grade 8")) return grade8Timetable;
     if (selectedClass.includes("Grade 9")) return grade9Timetable;
     return grade7Timetable;
-  }, [selectedClass]);
+  }, [selectedClass, currentLevel]);
 
   const generateTimetable = () => {
-    // Timetable auto-updates based on selectedClass via useMemo
+    if (currentLevel !== "junior") {
+      alert("Timetable generation is only available for Junior School level.");
+      return;
+    }
   };
 
   return (
@@ -212,7 +216,11 @@ export default function TimetablePage() {
             </tbody>
           </table>
         </div>
-        {Object.keys(timetable).length === 0 && (
+        {currentLevel !== "junior" ? (
+          <div className="p-8 text-center text-slate-400 text-sm">
+            Timetable management is available for Junior School (Grade 7-9). Please switch to Junior School level to view and generate timetables.
+          </div>
+        ) : Object.keys(timetable).length === 0 && (
           <div className="p-8 text-center text-slate-400 text-sm">
             No timetable data available for {selectedClass}. Click Generate Timetable to create one.
           </div>

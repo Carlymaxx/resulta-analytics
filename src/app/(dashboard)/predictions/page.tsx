@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { CLASSES_BY_LEVEL } from "@/lib/grading";
 import { 
   Brain, 
   AlertTriangle, 
@@ -36,16 +37,22 @@ ChartJS.register(
   Legend
 );
 
-const predictedStudents = [
-  { id: 1, name: "Alex Johnson", class: "Grade 9", current: 45, predicted: 52, risk: "High", confidence: 85, trend: "down", schoolId: "school-nairobi-high" },
-  { id: 2, name: "Maria Garcia", class: "Grade 9", current: 52, predicted: 58, risk: "High", confidence: 78, trend: "down", schoolId: "school-nairobi-high" },
-  { id: 3, name: "James Wilson", class: "Grade 8", current: 58, predicted: 72, risk: "Medium", confidence: 82, trend: "up", schoolId: "school-nairobi-high" },
-  { id: 4, name: "Sarah Lee", class: "Grade 8", current: 61, predicted: 75, risk: "Medium", confidence: 88, trend: "up", schoolId: "school-nairobi-high" },
-  { id: 5, name: "David Brown", class: "Grade 9", current: 55, predicted: 61, risk: "High", confidence: 75, trend: "down", schoolId: "school-nairobi-high" },
-  { id: 6, name: "Emily Chen", class: "Grade 7", current: 82, predicted: 86, risk: "Low", confidence: 92, trend: "up", schoolId: "school-nairobi-high" },
-  { id: 7, name: "Michael Park", class: "Grade 8", current: 90, predicted: 92, risk: "Low", confidence: 95, trend: "up", schoolId: "school-nairobi-high" },
-  { id: 8, name: "Lisa Thompson", class: "Grade 7", current: 71, predicted: 74, risk: "Low", confidence: 80, trend: "up", schoolId: "school-nairobi-high" },
-];
+const getPredictedStudents = (level: string) => {
+  const schoolId = "school-nairobi-high";
+  const topCls = level === "primary" ? "Grade 6" : level === "secondary" ? "Form 4" : "Grade 9";
+  const midCls = level === "primary" ? "Grade 4" : level === "secondary" ? "Form 2" : "Grade 8";
+  const lowCls = level === "primary" ? "Grade 2" : level === "secondary" ? "Form 1" : "Grade 7";
+  return [
+    { id: 1, name: "Alex Johnson", class: topCls, current: 45, predicted: 52, risk: "High", confidence: 85, trend: "down", schoolId },
+    { id: 2, name: "Maria Garcia", class: topCls, current: 52, predicted: 58, risk: "High", confidence: 78, trend: "down", schoolId },
+    { id: 3, name: "James Wilson", class: midCls, current: 58, predicted: 72, risk: "Medium", confidence: 82, trend: "up", schoolId },
+    { id: 4, name: "Sarah Lee", class: midCls, current: 61, predicted: 75, risk: "Medium", confidence: 88, trend: "up", schoolId },
+    { id: 5, name: "David Brown", class: topCls, current: 55, predicted: 61, risk: "High", confidence: 75, trend: "down", schoolId },
+    { id: 6, name: "Emily Chen", class: lowCls, current: 82, predicted: 86, risk: "Low", confidence: 92, trend: "up", schoolId },
+    { id: 7, name: "Michael Park", class: midCls, current: 90, predicted: 92, risk: "Low", confidence: 95, trend: "up", schoolId },
+    { id: 8, name: "Lisa Thompson", class: lowCls, current: 71, predicted: 74, risk: "Low", confidence: 80, trend: "up", schoolId },
+  ];
+};
 
 const predictionChartData = {
   labels: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'],
@@ -91,9 +98,12 @@ const modelAccuracy = {
 };
 
 export default function PredictionsPage() {
-  const { user } = useAuth();
+  const { user, currentLevel } = useAuth();
   const schoolName = user?.school || "My School";
+  const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
+  const predictedStudents = getPredictedStudents(currentLevel);
   const [selectedRisk, setSelectedRisk] = useState("all");
+  const [selectedClass, setSelectedClass] = useState("all");
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
@@ -105,7 +115,8 @@ export default function PredictionsPage() {
   };
 
   const filteredStudents = predictedStudents.filter(s => !user?.schoolId || s.schoolId === user.schoolId)
-    .filter(s => selectedRisk === "all" || s.risk === selectedRisk);
+    .filter(s => selectedRisk === "all" || s.risk === selectedRisk)
+    .filter(s => selectedClass === "all" || s.class === selectedClass);
   const filteredInterventions = interventionRecommendations.filter(r => !user?.schoolId || r.schoolId === user.schoolId);
 
   return (
@@ -186,16 +197,26 @@ export default function PredictionsPage() {
         <div className="p-6 border-b border-slate-200">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-bold text-slate-800">Student Predictions</h3>
-            <select
-              value={selectedRisk}
-              onChange={(e) => setSelectedRisk(e.target.value)}
-              className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-            >
-              <option value="all">All Risk Levels</option>
-              <option value="High">High Risk</option>
-              <option value="Medium">Medium Risk</option>
-              <option value="Low">Low Risk</option>
-            </select>
+          <select
+               value={selectedClass}
+               onChange={(e) => setSelectedClass(e.target.value)}
+               className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+             >
+               <option value="all">All Grades</option>
+               {levelClasses.map(c => (
+                 <option key={c} value={c}>{c}</option>
+               ))}
+             </select>
+             <select
+               value={selectedRisk}
+               onChange={(e) => setSelectedRisk(e.target.value)}
+               className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+             >
+               <option value="all">All Risk Levels</option>
+               <option value="High">High Risk</option>
+               <option value="Medium">Medium Risk</option>
+               <option value="Low">Low Risk</option>
+             </select>
           </div>
         </div>
         <div className="overflow-x-auto">

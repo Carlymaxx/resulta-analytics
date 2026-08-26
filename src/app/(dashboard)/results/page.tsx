@@ -14,25 +14,70 @@ import {
   ChevronRight,
   X
 } from "lucide-react";
+import { 
+  CLASSES_BY_LEVEL,
+  LEARNING_AREAS_BY_LEVEL,
+} from "@/lib/grading";
 
-const mockStudents = [
-  { id: 1, name: "Alex Johnson", class: "Grade 9", math: 78, english: 85, science: 72, history: 88, total: 323, avg: 80.75, schoolId: "school-nairobi-high" },
-  { id: 2, name: "Maria Garcia", class: "Grade 9", math: 92, english: 88, science: 85, history: 90, total: 355, avg: 88.75, schoolId: "school-nairobi-high" },
-  { id: 3, name: "James Wilson", class: "Grade 8", math: 65, english: 72, science: 58, history: 70, total: 265, avg: 66.25, schoolId: "school-nairobi-high" },
-  { id: 4, name: "Sarah Lee", class: "Grade 8", math: 88, english: 91, science: 84, history: 86, total: 349, avg: 87.25, schoolId: "school-nairobi-high" },
-  { id: 5, name: "David Brown", class: "Grade 9", math: 55, english: 62, science: 48, history: 58, total: 223, avg: 55.75, schoolId: "school-nairobi-high" },
-  { id: 6, name: "Emily Chen", class: "Grade 7", math: 81, english: 86, science: 79, history: 83, total: 329, avg: 82.25, schoolId: "school-nairobi-high" },
-  { id: 7, name: "Michael Park", class: "Grade 8", math: 94, english: 90, science: 91, history: 87, total: 362, avg: 90.5, schoolId: "school-nairobi-high" },
-  { id: 8, name: "Lisa Thompson", class: "Grade 7", math: 70, english: 75, science: 68, history: 72, total: 285, avg: 71.25, schoolId: "school-nairobi-high" },
-];
-
-const classes = ["All Grades", "Grade 7", "Grade 8", "Grade 9"];
-const subjects = ["Math", "English", "Integrated Science", "History", "Creative Arts and Sports", "Pre-Technical Studies"];
-const learningAreas = ["Math", "English", "Integrated Science", "History", "Creative Arts and Sports", "Pre-Technical Studies"];
+const getMockStudentsForLevel = (level: string) => {
+  const schoolId = "school-nairobi-high";
+  const make = (id: number, name: string, cls: string, marks: { subject: string; score: number }[]) => {
+    const total = marks.reduce((s, m) => s + m.score, 0);
+    const avg = total / marks.length;
+    return { id, name, class: cls, marks, total, avg, schoolId };
+  };
+  const primaryMarks = [
+    { subject: "Mathematics", score: 78 }, { subject: "English", score: 85 },
+    { subject: "Kiswahili", score: 72 }, { subject: "Science", score: 88 },
+  ];
+  const juniorMarks = [
+    { subject: "Mathematics", score: 78 }, { subject: "English", score: 85 },
+    { subject: "Integrated Science", score: 72 }, { subject: "Social Studies", score: 88 },
+  ];
+  const secondaryMarks = [
+    { subject: "Mathematics", score: 78 }, { subject: "English", score: 85 },
+    { subject: "Biology", score: 72 }, { subject: "History", score: 88 },
+  ];
+  const primary = [
+    make(1, "Alex Johnson", "Grade 1", primaryMarks),
+    make(2, "Maria Garcia", "Grade 2", primaryMarks.map(m => ({ ...m, score: m.score + 5 }))),
+    make(3, "James Wilson", "Grade 3", primaryMarks.map(m => ({ ...m, score: m.score - 5 }))),
+    make(4, "Sarah Lee", "Grade 4", primaryMarks.map(m => ({ ...m, score: m.score + 10 }))),
+    make(5, "David Brown", "Grade 5", primaryMarks.map(m => ({ ...m, score: m.score - 10 }))),
+    make(6, "Emily Chen", "Grade 6", primaryMarks.map(m => ({ ...m, score: m.score + 2 }))),
+  ];
+  const junior = [
+    make(1, "Alex Johnson", "Grade 9", juniorMarks),
+    make(2, "Maria Garcia", "Grade 9", juniorMarks.map(m => ({ ...m, score: m.score + 5 }))),
+    make(3, "James Wilson", "Grade 8", juniorMarks.map(m => ({ ...m, score: m.score - 5 }))),
+    make(4, "Sarah Lee", "Grade 8", juniorMarks.map(m => ({ ...m, score: m.score + 10 }))),
+    make(5, "David Brown", "Grade 9", juniorMarks.map(m => ({ ...m, score: m.score - 10 }))),
+    make(6, "Emily Chen", "Grade 7", juniorMarks.map(m => ({ ...m, score: m.score + 2 }))),
+    make(7, "Michael Park", "Grade 8", juniorMarks.map(m => ({ ...m, score: m.score + 8 }))),
+    make(8, "Lisa Thompson", "Grade 7", juniorMarks.map(m => ({ ...m, score: m.score - 3 }))),
+  ];
+  const secondary = [
+    make(1, "Alex Johnson", "Form 4", secondaryMarks),
+    make(2, "Maria Garcia", "Form 4", secondaryMarks.map(m => ({ ...m, score: m.score + 5 }))),
+    make(3, "James Wilson", "Form 3", secondaryMarks.map(m => ({ ...m, score: m.score - 5 }))),
+    make(4, "Sarah Lee", "Form 3", secondaryMarks.map(m => ({ ...m, score: m.score + 10 }))),
+    make(5, "David Brown", "Form 4", secondaryMarks.map(m => ({ ...m, score: m.score - 10 }))),
+    make(6, "Emily Chen", "Form 1", secondaryMarks.map(m => ({ ...m, score: m.score + 2 }))),
+    make(7, "Michael Park", "Form 2", secondaryMarks.map(m => ({ ...m, score: m.score + 8 }))),
+    make(8, "Lisa Thompson", "Form 1", secondaryMarks.map(m => ({ ...m, score: m.score - 3 }))),
+  ];
+  if (level === "primary") return primary;
+  if (level === "secondary") return secondary;
+  return junior;
+};
 
 export default function ResultsPage() {
-  const { user } = useAuth();
+  const { user, currentLevel } = useAuth();
   const schoolName = user?.school || "My School";
+  const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
+  const classOptions = ["All Grades", ...levelClasses];
+  const levelLearningAreas = LEARNING_AREAS_BY_LEVEL[currentLevel] || LEARNING_AREAS_BY_LEVEL.junior;
+  const mockStudents = getMockStudentsForLevel(currentLevel);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGrade, setSelectedGrade] = useState("All Grades");
   const [showAddModal, setShowAddModal] = useState(false);
@@ -94,7 +139,7 @@ export default function ResultsPage() {
                onChange={(e) => setSelectedGrade(e.target.value)}
               className="px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
-              {classes.map(c => (
+              {classOptions.map(c => (
                 <option key={c} value={c}>{c}</option>
               ))}
             </select>
@@ -118,10 +163,9 @@ export default function ResultsPage() {
               <tr>
                 <th className="text-left py-4 px-6 text-sm font-semibold text-slate-600">Student</th>
                 <th className="text-left py-4 px-4 text-sm font-semibold text-slate-600">Grade</th>
-                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Math</th>
-                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">English</th>
-                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Integrated Science</th>
-                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">History</th>
+                 {levelLearningAreas.slice(0, 4).map(area => (
+                   <th key={area} className="text-center py-4 px-4 text-sm font-semibold text-slate-600">{area}</th>
+                 ))}
                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Average</th>
                 <th className="text-center py-4 px-4 text-sm font-semibold text-slate-600">Actions</th>
               </tr>
@@ -138,10 +182,12 @@ export default function ResultsPage() {
                     </div>
                   </td>
                   <td className="py-4 px-4 text-slate-600">{student.class}</td>
-                  <td className="py-4 px-4 text-center font-mono text-slate-800">{student.math}</td>
-                  <td className="py-4 px-4 text-center font-mono text-slate-800">{student.english}</td>
-                  <td className="py-4 px-4 text-center font-mono text-slate-800">{student.science}</td>
-                  <td className="py-4 px-4 text-center font-mono text-slate-800">{student.history}</td>
+                  {levelLearningAreas.slice(0, 4).map(area => {
+                    const mark = student.marks.find(m => m.subject === area);
+                    return (
+                      <td key={area} className="py-4 px-4 text-center font-mono text-slate-800">{mark ? mark.score : "—"}</td>
+                    );
+                  })}
                   <td className={`py-4 px-4 text-center font-mono font-semibold ${getGradeColor(student.avg)}`}>
                     {student.avg.toFixed(1)}%
                   </td>
@@ -229,30 +275,30 @@ export default function ResultsPage() {
                   <label className="block text-sm font-medium text-slate-700 mb-2">Grade</label>
                   <select className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
                     <option value="">Select Grade</option>
-                    {classes.filter(c => c !== "All Grades").map(c => (
+                    {levelClasses.map(c => (
                       <option key={c} value={c}>{c}</option>
                     ))}
                   </select>
                 </div>
               </div>
               
-              <div className="border-t border-slate-200 pt-6">
-                <h3 className="text-sm font-semibold text-slate-800 mb-4">Learning Area Scores</h3>
-                <div className="grid md:grid-cols-3 gap-4">
-                  {learningAreas.slice(0, 4).map(learningArea => (
-                     <div key={learningArea}>
-                       <label className="block text-sm font-medium text-slate-700 mb-2">{learningArea}</label>
-                      <input 
-                        type="number" 
-                        min="0" 
-                        max="100"
-                        placeholder="0-100"
-                        className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
+               <div className="border-t border-slate-200 pt-6">
+                 <h3 className="text-sm font-semibold text-slate-800 mb-4">Learning Area Scores</h3>
+                 <div className="grid md:grid-cols-3 gap-4">
+                   {levelLearningAreas.slice(0, 4).map(learningArea => (
+                      <div key={learningArea}>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">{learningArea}</label>
+                       <input 
+                         type="number" 
+                         min="0" 
+                         max="100"
+                         placeholder="0-100"
+                         className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                       />
+                     </div>
+                   ))}
+                 </div>
+               </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Exam Date</label>

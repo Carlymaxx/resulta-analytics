@@ -22,6 +22,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
+import { CLASSES_BY_LEVEL, LEARNING_AREAS_BY_LEVEL } from "@/lib/grading";
 
 ChartJS.register(
   CategoryScale,
@@ -56,31 +57,33 @@ const monthlyData = {
   ],
 };
 
-const subjectComparison = {
-  labels: ['Math', 'English', 'Integrated Science', 'History', 'Geography', 'CRE', 'Agriculture', 'Pre-Technical Studies'],
-  datasets: [
-    {
-      label: 'Grade 9',
-      data: [78, 85, 72, 88, 76, 80, 73, 79],
-      backgroundColor: '#0D9488',
-      borderRadius: 4,
-      schoolId: "school-nairobi-high",
-    },
-    {
-      label: 'Grade 8',
-      data: [72, 80, 68, 82, 71, 75, 69, 74],
-      backgroundColor: '#14B8A6',
-      borderRadius: 4,
-      schoolId: "school-nairobi-high",
-    },
-    {
-      label: 'School Avg',
-      data: [75, 82, 70, 85, 74, 77, 71, 76],
-      backgroundColor: '#E2E8F0',
-      borderRadius: 4,
-      schoolId: "school-nairobi-high",
-    },
-  ],
+const subjectComparison = (levelClasses: string[], learningAreas: string[]) => {
+  const labels = learningAreas.slice(0, 8);
+  const classLabel = levelClasses[levelClasses.length - 1] || "Grade 9";
+  const midLabel = levelClasses.length > 1 ? levelClasses[Math.floor(levelClasses.length / 2)] : "Grade 8";
+  return {
+    labels,
+    datasets: [
+      {
+        label: classLabel,
+        data: labels.map(() => 70 + Math.floor(Math.random() * 25)),
+        backgroundColor: '#0D9488',
+        borderRadius: 4,
+      },
+      {
+        label: midLabel,
+        data: labels.map(() => 65 + Math.floor(Math.random() * 25)),
+        backgroundColor: '#14B8A6',
+        borderRadius: 4,
+      },
+      {
+        label: 'School Avg',
+        data: labels.map(() => 68 + Math.floor(Math.random() * 25)),
+        backgroundColor: '#E2E8F0',
+        borderRadius: 4,
+      },
+    ],
+  };
 };
 
 const performanceByTerm = {
@@ -110,31 +113,46 @@ const performanceByTerm = {
   ],
 };
 
-const topPerformers = [
-  { rank: 1, name: "Michael Park", class: "Grade 9", avg: 94.5, trend: "up", schoolId: "school-nairobi-high" },
-  { rank: 2, name: "Emma Wilson", class: "Grade 9", avg: 92.8, trend: "up", schoolId: "school-nairobi-high" },
-  { rank: 3, name: "David Chen", class: "Grade 8", avg: 91.5, trend: "same", schoolId: "school-nairobi-high" },
-  { rank: 4, name: "Sarah Johnson", class: "Grade 7", avg: 90.2, trend: "up", schoolId: "school-nairobi-high" },
-  { rank: 5, name: "James Lee", class: "Grade 8", avg: 89.8, trend: "down", schoolId: "school-nairobi-high" },
-];
+const getTopPerformers = (level: string) => {
+  const schoolId = "school-nairobi-high";
+  const cls = level === "primary" ? "Grade 6" : level === "secondary" ? "Form 4" : "Grade 9";
+  const mid = level === "primary" ? "Grade 4" : level === "secondary" ? "Form 2" : "Grade 8";
+  const low = level === "primary" ? "Grade 2" : level === "secondary" ? "Form 1" : "Grade 7";
+  return [
+    { rank: 1, name: "Michael Park", class: cls, avg: 94.5, trend: "up", schoolId },
+    { rank: 2, name: "Emma Wilson", class: cls, avg: 92.8, trend: "up", schoolId },
+    { rank: 3, name: "David Chen", class: mid, avg: 91.5, trend: "same", schoolId },
+    { rank: 4, name: "Sarah Johnson", class: low, avg: 90.2, trend: "up", schoolId },
+    { rank: 5, name: "James Lee", class: mid, avg: 89.8, trend: "down", schoolId },
+  ];
+};
 
-  const subjectTrends = [
-  { learningArea: "Mathematics", current: 78, previous: 72, change: "+6", positive: true, schoolId: "school-nairobi-high" },
-  { learningArea: "English", current: 82, previous: 80, change: "+2", positive: true, schoolId: "school-nairobi-high" },
-  { learningArea: "Integrated Science", current: 71, previous: 75, change: "-4", positive: false, schoolId: "school-nairobi-high" },
-  { learningArea: "History", current: 85, previous: 83, change: "+2", positive: true, schoolId: "school-nairobi-high" },
-  { learningArea: "Social Studies", current: 76, previous: 74, change: "+2", positive: true, schoolId: "school-nairobi-high" },
-  { learningArea: "Pre-Technical Studies", current: 73, previous: 70, change: "+3", positive: true, schoolId: "school-nairobi-high" },
-];
+const getSubjectTrends = (level: string) => {
+  const schoolId = "school-nairobi-high";
+  const areas = LEARNING_AREAS_BY_LEVEL[level] || LEARNING_AREAS_BY_LEVEL.junior;
+  return areas.slice(0, 6).map(learningArea => ({
+    learningArea,
+    current: 70 + Math.floor(Math.random() * 20),
+    previous: 65 + Math.floor(Math.random() * 20),
+    change: (Math.random() > 0.5 ? "+" : "-") + Math.floor(Math.random() * 8),
+    positive: Math.random() > 0.4,
+    schoolId,
+  }));
+};
 
 export default function AnalyticsPage() {
-  const { user } = useAuth();
+  const { user, currentLevel } = useAuth();
   const schoolName = user?.school || "My School";
+  const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
+  const levelLearningAreas = LEARNING_AREAS_BY_LEVEL[currentLevel] || LEARNING_AREAS_BY_LEVEL.junior;
   const [timeRange, setTimeRange] = useState("year");
   const [selectedClass, setSelectedClass] = useState("all");
 
+  const topPerformers = getTopPerformers(currentLevel);
+  const subjectTrends = getSubjectTrends(currentLevel);
   const filteredTopPerformers = topPerformers.filter(p => !user?.schoolId || p.schoolId === user.schoolId);
   const filteredSubjectTrends = subjectTrends.filter(t => !user?.schoolId || t.schoolId === user.schoolId);
+  const dynamicSubjectComparison = subjectComparison(levelClasses, levelLearningAreas);
 
   return (
     <div className="space-y-6">
@@ -160,9 +178,9 @@ export default function AnalyticsPage() {
               className="px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
             >
               <option value="all">All Classes</option>
-              <option value="Grade 9">Grade 9</option>
-              <option value="Grade 8">Grade 8</option>
-              <option value="Grade 7">Grade 7</option>
+              {levelClasses.map(c => (
+                <option key={c} value={c}>{c}</option>
+              ))}
             </select>
           <button className="inline-flex items-center gap-2 px-4 py-2.5 border border-slate-200 rounded-lg hover:bg-slate-50">
             <Download className="w-4 h-4" />
@@ -215,7 +233,7 @@ export default function AnalyticsPage() {
           <h3 className="text-lg font-bold text-slate-800 mb-4">Learning Area Comparison</h3>
           <div className="h-72">
             <Bar 
-              data={subjectComparison}
+              data={dynamicSubjectComparison}
               options={{
                 responsive: true,
                 maintainAspectRatio: false,

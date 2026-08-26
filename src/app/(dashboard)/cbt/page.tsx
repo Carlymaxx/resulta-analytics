@@ -3,29 +3,45 @@
 import { useState } from "react";
 import { ClipboardList, Zap, CheckCircle, Database, Plus, X, AlertTriangle } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { CLASSES_BY_LEVEL } from "@/lib/grading";
+import { CLASSES_BY_LEVEL, LEARNING_AREAS_BY_LEVEL } from "@/lib/grading";
 
-const exams = [
-  { title: "Mathematics Mid-Term Exam", subject: "Mathematics", class: "Grade 9", date: "Dec 10, 2025", duration: 90, questions: 40, status: "Upcoming", schoolId: "school-nairobi-high" },
-  { title: "English Comprehension Test", subject: "English", class: "Grade 8", date: "Dec 5, 2025", duration: 60, questions: 30, status: "Active", schoolId: "school-nairobi-high" },
-  { title: "Integrated Science End of Term", subject: "Integrated Science", class: "Grade 9", date: "Dec 12, 2025", duration: 120, questions: 50, status: "Upcoming", schoolId: "school-nairobi-high" },
-  { title: "Pre-Technical Studies Quiz", subject: "Pre-Technical Studies", class: "Grade 8", date: "Nov 28, 2025", duration: 45, questions: 20, status: "Active", schoolId: "school-nairobi-high" },
-  { title: "CRE CAT 2", subject: "CRE", class: "Grade 7", date: "Nov 20, 2025", duration: 60, questions: 25, status: "Completed", schoolId: "school-nairobi-high" },
-  { title: "Social Studies Term Test", subject: "Social Studies", class: "Grade 8", date: "Nov 15, 2025", duration: 60, questions: 30, status: "Completed", schoolId: "school-nairobi-high" },
-];
+const getExamsForLevel = (level: string) => {
+  const schoolId = "school-nairobi-high";
+  const cls = level === "primary" ? "Grade 4" : level === "secondary" ? "Form 3" : "Grade 8";
+  const cls2 = level === "primary" ? "Grade 5" : level === "secondary" ? "Form 4" : "Grade 9";
+  const areas = LEARNING_AREAS_BY_LEVEL[level] || LEARNING_AREAS_BY_LEVEL.junior;
+  const area1 = areas[0] || "Mathematics";
+  const area2 = areas[1] || "English";
+  const area3 = areas[2] || "Science";
+  const area4 = areas[3] || "Social Studies";
+  return [
+    { title: `${area1} Mid-Term Exam`, subject: area1, class: cls2, date: "Dec 10, 2025", duration: 90, questions: 40, status: "Upcoming", schoolId },
+    { title: `${area2} Comprehension Test`, subject: area2, class: cls, date: "Dec 5, 2025", duration: 60, questions: 30, status: "Active", schoolId },
+    { title: `${area3} End of Term`, subject: area3, class: cls2, date: "Dec 12, 2025", duration: 120, questions: 50, status: "Upcoming", schoolId },
+    { title: `${area4} Quiz`, subject: area4, class: cls, date: "Nov 28, 2025", duration: 45, questions: 20, status: "Active", schoolId },
+  ];
+};
 
-const questionBank = [
-  { learningArea: "Mathematics", count: 120, topics: ["Algebra", "Geometry", "Calculus", "Statistics"], schoolId: "school-nairobi-high" },
-  { learningArea: "English", count: 85, topics: ["Grammar", "Comprehension", "Essay Writing", "Literature"], schoolId: "school-nairobi-high" },
-  { learningArea: "Biology", count: 95, topics: ["Cell Biology", "Genetics", "Ecology", "Human Physiology"], schoolId: "school-nairobi-high" },
-  { learningArea: "Physics", count: 80, topics: ["Mechanics", "Electricity", "Waves", "Optics"], schoolId: "school-nairobi-high" },
-  { learningArea: "History", count: 70, topics: ["African History", "World Wars", "Kenya History", "Independence"], schoolId: "school-nairobi-high" },
-];
+const getQuestionBankForLevel = (level: string) => {
+  const schoolId = "school-nairobi-high";
+  const areas = LEARNING_AREAS_BY_LEVEL[level] || LEARNING_AREAS_BY_LEVEL.junior;
+  return areas.slice(0, 5).map(learningArea => ({
+    learningArea,
+    count: 50 + Math.floor(Math.random() * 100),
+    topics: ["Topic A", "Topic B", "Topic C", "Topic D"],
+    schoolId,
+  }));
+};
 
-const completedResults = [
-  { exam: "CRE CAT 2", class: "Grade 7", students: 45, avg: 72, highest: 96, lowest: 38, date: "Nov 20, 2025", schoolId: "school-nairobi-high" },
-  { exam: "Social Studies Term Test", class: "Grade 8", students: 52, avg: 68, highest: 92, lowest: 42, date: "Nov 15, 2025", schoolId: "school-nairobi-high" },
-];
+const getCompletedResultsForLevel = (level: string) => {
+  const schoolId = "school-nairobi-high";
+  const cls = level === "primary" ? "Grade 4" : level === "secondary" ? "Form 3" : "Grade 8";
+  const area = (LEARNING_AREAS_BY_LEVEL[level] || LEARNING_AREAS_BY_LEVEL.junior)[0] || "Mathematics";
+  return [
+    { exam: `${area} CAT 2`, class: cls, students: 45, avg: 72, highest: 96, lowest: 38, date: "Nov 20, 2025", schoolId },
+    { exam: `${area} Term Test`, class: cls, students: 52, avg: 68, highest: 92, lowest: 42, date: "Nov 15, 2025", schoolId },
+  ];
+};
 
 const stats = [
   { label: "Total Exams", value: "18", icon: ClipboardList, color: "bg-teal-100 text-teal-600" },
@@ -37,6 +53,10 @@ const stats = [
 export default function CBTPage() {
   const { currentLevel, user } = useAuth();
   const levelClasses = CLASSES_BY_LEVEL[currentLevel] || CLASSES_BY_LEVEL.junior;
+  const levelLearningAreas = LEARNING_AREAS_BY_LEVEL[currentLevel] || LEARNING_AREAS_BY_LEVEL.junior;
+  const exams = getExamsForLevel(currentLevel);
+  const questionBank = getQuestionBankForLevel(currentLevel);
+  const completedResults = getCompletedResultsForLevel(currentLevel);
   const [activeTab, setActiveTab] = useState("exams");
   const [showModal, setShowModal] = useState(false);
   const [expandedLearningArea, setExpandedLearningArea] = useState<string | null>(null);
@@ -199,7 +219,7 @@ export default function CBTPage() {
                   <label className="block text-sm font-medium text-slate-700 mb-1">{label as string}</label>
                   {type === "select-subj" ? (
                     <select className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-                      {questionBank.map(q => <option key={q.learningArea}>{q.learningArea}</option>)}
+                      {levelLearningAreas.map(area => <option key={area} value={area}>{area}</option>)}
                     </select>
                   ) : type === "select-class" ? (
                     <select className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">

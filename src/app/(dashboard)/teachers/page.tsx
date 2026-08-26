@@ -200,7 +200,10 @@ export default function TeachersPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Learning Area</label>
-                   <input value={form.learningArea} onChange={e => setForm({ ...form, learningArea: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500" placeholder="Mathematics" />
+                   <select value={form.learningArea} onChange={e => setForm({ ...form, learningArea: e.target.value })} required className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-teal-500">
+                     <option value="">Select learning area</option>
+                     {levelLearningAreas.map(area => <option key={area} value={area}>{area}</option>)}
+                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Grade Assigned</label>

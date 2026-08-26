@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Status**: ✅ Multi-tenant school-aware filtering implemented across all dashboard pages
+**Status**: ✅ All dashboard pages use dynamic, level-appropriate classes and learning areas
 
 The application has been updated with the following changes:
 - Added grade ratings: Exceeding Expectations (80-100), Meeting Expectations (50-70), Approaching Expectations (30-50), Below Expectations (1-29)
@@ -12,6 +12,11 @@ The application has been updated with the following changes:
 - Fixed timetable generation to support Grade 7, Grade 8, and Grade 9 with functional Generate Timetable button
 - Changed many "Class" UI labels to "Grade" where referring to grade levels
 - Made all dashboard pages school-aware (multi-tenant): each logged-in school only sees their own data via `user?.schoolId` filtering
+- Made all dashboard pages fully dynamic using `CLASSES_BY_LEVEL[currentLevel]` and `LEARNING_AREAS_BY_LEVEL[currentLevel]`
+- Each level now displays appropriate mock data: Grade 1-6 for primary, Grade 7-9 for junior, Form 1-4 for secondary
+- Timetable shows empty state for primary/secondary (junior-only feature)
+- Teachers page uses dynamic learning area dropdown
+- CBT, E-Learning, Analytics, Reports, Predictions all use level-appropriate data
 
 ## Recently Completed
 
@@ -31,6 +36,17 @@ The application has been updated with the following changes:
   - Added `schoolId?: string` to type definitions where applicable
   - Added `schoolId: user?.schoolId` to form submissions for new records
   - Verified typecheck passes cleanly (0 errors)
+- [x] Made all dashboard pages fully dynamic with level-appropriate classes and learning areas:
+  - `results/page.tsx`: dynamic class options, learning areas, mock students per level, dynamic table columns, dynamic Add Result modal
+  - `attendance/page.tsx`: dynamic class dropdown and mock attendance data per level
+  - `analytics/page.tsx`: dynamic class options, chart labels, top performers, and subject trends per level
+  - `reports/page.tsx`: dynamic grade dropdown for report generation
+  - `timetable/page.tsx`: empty state for primary/secondary, junior-only timetable generation
+  - `cbt/page.tsx`: dynamic exams, question bank, and completed results per level
+  - `elearning/page.tsx`: dynamic courses, assignments, notes, and videos per level
+  - `predictions/page.tsx`: dynamic class options and mock prediction data per level
+  - `teachers/page.tsx`: learning area dropdown uses `LEARNING_AREAS_BY_LEVEL[currentLevel]`
+  - Verified typecheck and lint pass cleanly
 
 ## Current Structure
 
@@ -82,3 +98,4 @@ The system now uses:
 |------|---------|
 | 2026-08-26 | Added grade ratings, changed primary classes to Grade 1-6, replaced Subjects with Learning Areas across all pages, removed Remarks section from report cards, fixed timetable generation for Grade 7/8/9, changed Class to Grade in UI labels |
 | 2026-08-26 | Implemented multi-tenant school-aware filtering across all dashboard pages with mock data, added schoolId to types and data items, added filtering by user?.schoolId, verified typecheck passes cleanly |
+| 2026-08-26 | Made all dashboard pages fully dynamic with level-appropriate classes and learning areas using CLASSES_BY_LEVEL and LEARNING_AREAS_BY_LEVEL from grading.ts. Updated results, attendance, analytics, reports, timetable, CBT, e-learning, predictions, and teachers pages. Verified typecheck and lint pass cleanly. |
