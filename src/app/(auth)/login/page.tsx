@@ -33,7 +33,7 @@ export default function LoginPage() {
   };
 
   const demoAccounts = [
-    { email: "superadmin@msms.com", role: "Super Admin", icon: Shield, desc: "Platform-wide access" },
+    { email: "maxxtechxmd@gmail.com", role: "Super Admin", icon: Shield, desc: "Platform-wide access" },
     { email: "admin@school.edu", role: "School Admin", icon: School, desc: "Nairobi High School" },
     { email: "principal@school.edu", role: "Principal", icon: GraduationCap, desc: "Academic leadership" },
     { email: "student@school.edu", role: "Student", icon: GraduationCap, desc: "Learner account" },
@@ -46,7 +46,7 @@ export default function LoginPage() {
     await new Promise(resolve => setTimeout(resolve, 300));
     setEmail(demoEmail);
     const passwords: Record<string, string> = {
-      "superadmin@msms.com": "super123",
+      "maxxtechxmd@gmail.com": "super123",
       "admin@school.edu": "admin123",
       "principal@school.edu": "principal123",
       "student@school.edu": "student123",

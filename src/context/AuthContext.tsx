@@ -87,7 +87,7 @@ const findUserByCredentials = (email: string, password: string): User | null => 
 };
 
 const MOCK_USERS: MockUser[] = [
-  { id: "0", email: "superadmin@msms.com", password: "super123", name: "Super Admin", role: "superadmin" },
+  { id: "0", email: "maxxtechxmd@gmail.com", password: "super123", name: "Super Admin", role: "superadmin" },
   { id: "1", email: "admin@school.edu", password: "admin123", name: "Admin User", role: "admin", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "", schoolAddress: "P.O. Box 123-00100, Nairobi, Kenya", schoolBox: "P.O. Box 123-00100", schoolMotto: "Education for Excellence", schoolPhone: "+254 700 000 000" },
   { id: "3", email: "student@school.edu", password: "student123", name: "Student John", role: "student", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "" },
   { id: "4", email: "principal@school.edu", password: "principal123", name: "Dr. Mary Wanjiku", role: "principal", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "" },

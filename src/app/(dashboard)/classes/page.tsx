@@ -25,7 +25,7 @@ const LEVEL_DROPDOWN = [
 ] as const;
 
 export default function ClassesPage() {
-  const { currentLevel, setCurrentLevel } = useAuth();
+  const { user, currentLevel, setCurrentLevel } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
