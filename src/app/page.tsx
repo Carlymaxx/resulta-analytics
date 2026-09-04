@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { 
-  BarChart3, 
-  TrendingUp, 
-  Users, 
+import { getModelMetrics } from "@/lib/schoolStore";
+import {
+  BarChart3,
+  TrendingUp,
+  Users,
   GraduationCap,
   ArrowRight,
   Shield,
@@ -117,10 +118,10 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <div className="absolute -bottom-6 -right-6 bg-teal-600 text-white p-6 rounded-2xl shadow-xl">
-                <div className="text-3xl font-bold">94%</div>
-                <div className="text-teal-200 text-sm">Prediction Accuracy</div>
-              </div>
+            <div className="absolute -bottom-6 -right-6 bg-teal-600 text-white p-6 rounded-2xl shadow-xl">
+              <div className="text-3xl font-bold">{Math.round(getModelMetrics().accuracy)}%</div>
+              <div className="text-teal-200 text-sm">Prediction Accuracy (Model v{getModelMetrics().version})</div>
+            </div>
             </div>
           </div>
         </div>
@@ -210,10 +211,10 @@ export default function Home() {
                 <h3 className="text-2xl font-bold mb-6">Impact Summary</h3>
                 <div className="grid grid-cols-2 gap-6">
                   {[
-                    { value: "2,500+", label: "Students Tracked" },
-                    { value: "85%", label: "Accuracy Rate" },
-                    { value: "40%", label: "Faster Insights" },
-                    { value: "60%", label: "Early Interventions" }
+                    { value: "Demo", label: "Schools Onboarded" },
+                    { value: "Demo", label: "Students Tracked" },
+                    { value: `${getModelMetrics().accuracy}%`, label: "Model Accuracy" },
+                    { value: `${getModelMetrics().lastEvaluated}`, label: "Last Evaluated" }
                   ].map((stat, i) => (
                     <div key={i} className="bg-white/10 rounded-xl p-4">
                       <div className="text-3xl font-bold">{stat.value}</div>
@@ -232,7 +233,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-900 mb-4">What Educators Say</h2>
-            <p className="text-xl text-slate-600">Trusted by schools around the world</p>
+            <p className="text-xl text-slate-600">Sample feedback from a demo environment</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -293,10 +294,10 @@ export default function Home() {
       <section className="py-20 px-6 bg-slate-900">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to Transform Your School&apos;s Performance?
+            Try the Resulta Analytics Demo
           </h2>
           <p className="text-xl text-slate-300 mb-10">
-            Join hundreds of schools already using Resulta Analytics to improve educational outcomes.
+            This is a working demo with sample data. Sign up to explore the features with your own school data.
           </p>
           <Link 
             href="/signup"

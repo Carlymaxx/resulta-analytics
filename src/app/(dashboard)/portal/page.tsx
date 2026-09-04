@@ -19,11 +19,12 @@ export default function PortalPage() {
   const { user, currentLevel, setCurrentLevel } = useAuth();
   const [showSwitcher, setShowSwitcher] = useState(false);
 
-  const today = new Date().toLocaleDateString("en-US", {
+  const today = new Date().toLocaleDateString("en-GB", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: "Africa/Nairobi",
   });
 
   return (
