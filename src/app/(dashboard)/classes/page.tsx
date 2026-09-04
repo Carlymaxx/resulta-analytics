@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   Plus,
   Search,
@@ -16,6 +15,7 @@ import {
 } from "lucide-react";
 import { CLASSES_BY_LEVEL, LEVEL_LABELS, LEARNING_AREAS_BY_LEVEL } from "@/lib/grading";
 import { useAuth } from "@/context/AuthContext";
+import { loadStudents } from "@/lib/schoolStore";
 
 const LEVEL_DROPDOWN = [
   { value: "primary", label: "Primary" },
@@ -37,15 +37,21 @@ export default function ClassesPage() {
   const levelLearningAreas = LEARNING_AREAS_BY_LEVEL[currentLevel] || [];
   const levelLabels = LEVEL_LABELS[currentLevel];
 
-  // Generate deterministic mock stats per class so totals stay consistent when switching levels
+  // Real stats from unified student store
+  const realStudents = loadStudents(user?.schoolId);
+  const classStudentCounts: Record<string, number> = {};
+  levelClasses.forEach(name => {
+    classStudentCounts[name] = realStudents.filter(s => s.class === name && s.status === "Active").length;
+  });
+
   const mockClasses = levelClasses.map((name, idx) => ({
     id: idx + 1,
     name,
-    students: 35 + (idx * 7) + (currentLevel === "primary" ? 10 : currentLevel === "secondary" ? 25 : 0),
+    students: classStudentCounts[name] || 0,
     learningAreas: levelLearningAreas.length,
-    avgScore: 68 + idx * 3.5 + (currentLevel === "secondary" ? 5 : currentLevel === "junior" ? 8 : 0),
+    avgScore: 0,
     status: "Active",
-    schoolId: user?.schoolId || "school-nairobi-high",
+    schoolId: user?.schoolId,
   }));
 
   const filteredClasses = mockClasses.filter((c) =>

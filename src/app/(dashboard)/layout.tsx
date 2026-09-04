@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { canAccess, logAudit } from "@/lib/schoolStore";
+import { AuthGuard } from "@/components/AuthGuard";
 import {
   BarChart3, TrendingUp, Users, GraduationCap, FileText, Brain, Settings, LogOut,
   Menu, X, Moon, Sun, Bell, Search, BookOpen, Contact, Info, Tag, BellRing, Calendar,
@@ -94,10 +96,30 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
-  const handleLogout = () => { logout(); router.push("/"); };
+  const handleLogout = () => {
+    if (user) {
+      logAudit(
+        {
+          userId: user.id,
+          userName: user.name,
+          userRole: user.role,
+          action: "LOGOUT",
+          module: "auth",
+          details: "User logged out",
+        },
+        user.schoolId
+      );
+    }
+    logout();
+    router.push("/");
+  };
   const getInitials = (name: string) => name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+  const visibleGroups = navGroups
+    .map((g) => ({ ...g, items: g.items.filter((i) => canAccess(user?.role, i.href.replace("/", ""))) }))
+    .filter((g) => g.items.length > 0);
 
   return (
+    <AuthGuard>
     <div className={darkMode ? "dark" : ""}>
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
         {/* Header */}
@@ -145,7 +167,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Sidebar */}
         <aside className={`fixed top-16 left-0 bottom-0 w-64 bg-slate-800 dark:bg-slate-950 text-white z-40 transform transition-transform duration-300 overflow-y-auto ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}>
           <nav className="p-3 pb-20">
-            {navGroups.map((group) => (
+            {visibleGroups.map((group) => (
               <div key={group.label} className="mb-3">
                 <div className="px-3 py-1.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">{group.label}</div>
                 <div className="space-y-0.5">
@@ -180,5 +202,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {sidebarOpen && <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />}
       </div>
     </div>
+    </AuthGuard>
   );
 }
