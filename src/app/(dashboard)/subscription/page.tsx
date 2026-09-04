@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { CreditCard, CheckCircle, Users, HardDrive, Smartphone } from "lucide-react";
+import { CreditCard, CheckCircle, Users, HardDrive, Smartphone, ExternalLink } from "lucide-react";
 import { getStudentCount } from "@/lib/schoolStore";
+
+const PAYSTACK_LINK = "https://paystack.shop/pay/carlymaxx";
 
 const plans = [
   {
@@ -13,6 +15,7 @@ const plans = [
     students: 50,
     color: "border-slate-200",
     badge: "bg-slate-100 text-slate-700",
+    current: true,
     features: ["Up to 50 students", "Basic attendance", "Basic results entry", "Email support", "1 admin account"],
   },
   {
@@ -68,8 +71,8 @@ export default function SubscriptionPage() {
         <button className="border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm font-medium">Manage Billing</button>
       </div>
 
-      <div className="bg-teal-600 text-white rounded-xl p-5 flex items-center gap-4">
-        <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+      <div className="bg-teal-600 text-white rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
           <CreditCard className="w-6 h-6 text-white" />
         </div>
         <div className="flex-1">
@@ -77,7 +80,9 @@ export default function SubscriptionPage() {
           <div className="text-xl font-bold">Free Trial — 14 days</div>
           <div className="text-sm text-teal-100">Next billing: {nextBillingStr}</div>
         </div>
-        <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors">Upgrade</button>
+        <a href={PAYSTACK_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-white text-teal-700 hover:bg-teal-50 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+          <CreditCard className="w-4 h-4" /> Pay with Paystack <ExternalLink className="w-3 h-3" />
+        </a>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -153,10 +158,10 @@ export default function SubscriptionPage() {
                   </div>
                 ))}
               </div>
-              <button
-                className={`w-full py-2 rounded-lg text-sm font-medium transition-colors border border-slate-200 text-slate-700 hover:bg-slate-50`}>
-                Select
-              </button>
+              <a href={PAYSTACK_LINK} target="_blank" rel="noopener noreferrer"
+                className={`w-full py-2 rounded-lg text-sm font-medium transition-colors inline-flex items-center justify-center gap-1 ${p.current ? "bg-teal-600 text-white cursor-default" : "bg-[#0BA4DD] text-white hover:bg-[#0995c9]"}`}>
+                {p.current ? "Current Plan" : <>Subscribe <ExternalLink className="w-3 h-3" /></>}
+              </a>
             </div>
           ))}
         </div>
