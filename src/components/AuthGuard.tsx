@@ -7,6 +7,14 @@ import { canAccess, logAudit } from "@/lib/schoolStore";
 import { Shield, Lock, Loader2 } from "lucide-react";
 
 const PUBLIC_PATHS = ["/", "/login", "/signup", "/about", "/contact", "/pricing"];
+const ONBOARDING_PATH = "/onboarding";
+
+const isPublicPath = (path: string) => {
+  if (PUBLIC_PATHS.includes(path)) return true;
+  if (path === ONBOARDING_PATH) return true;
+  if (path.startsWith("/verify/")) return true;
+  return false;
+};
 
 const MODULE_MAP: Record<string, string> = {
   "/dashboard": "dashboard",
@@ -49,7 +57,7 @@ export function AuthGuard({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (isLoading) return;
-    const isPublic = PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith("/verify/"));
+    const isPublic = PUBLIC_PATHS.some((p) => pathname === p) || pathname === ONBOARDING_PATH || pathname.startsWith("/verify/");
     if (isPublic) {
       setAuthorized(true);
       return;

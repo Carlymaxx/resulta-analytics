@@ -2,13 +2,14 @@
 
 /* eslint-disable react-hooks/set-state-in-effect */
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { seedDemoSchoolIfMissing, registerSchool, saveSettings, loadSettings, SchoolSettings, getCurrentYear, getCurrentTerm, DEMO_SCHOOL_ID } from "@/lib/schoolStore";
 
 export type EducationLevel = "primary" | "junior" | "secondary" | "other";
 
 export const EDUCATION_LEVELS: { value: EducationLevel; label: string; description: string }[] = [
   { value: "primary", label: "Primary Schools", description: "Lower & Upper Primary (CBC)" },
   { value: "junior", label: "Junior School / KNEC Students", description: "Junior Secondary (CBC)" },
-   { value: "secondary", label: "Secondary Schools (KCSE)", description: "Grade 10 - Grade 12" },
+  { value: "secondary", label: "Secondary Schools (KCSE)", description: "Grade 10 - Grade 12" },
   { value: "other", label: "Other", description: "Other educational institution" },
 ];
 
@@ -37,6 +38,8 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   signup: (name: string, email: string, password: string, role: string, level: EducationLevel, school: string, schoolBadge: string, schoolAddress?: string, schoolBox?: string, schoolMotto?: string, schoolPhone?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
+  switchSchool: (schoolId: string) => void;
+  availableSchools: { schoolId: string; name: string }[];
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -72,6 +75,11 @@ const toUser = (u: MockUser): User => ({
   schoolPhone: u.schoolPhone,
 });
 
+const MOCK_USERS: MockUser[] = [
+  { id: "0", email: "maxxtechxmd@gmail.com", password: "super123", name: "Super Admin", role: "superadmin" },
+  { id: "demo-admin", email: "demo@resulta.app", password: "demo123", name: "Demo School Admin", role: "admin", school: "Resulta Demo Academy", schoolId: DEMO_SCHOOL_ID, level: "primary" },
+];
+
 const findUserByCredentials = (email: string, password: string): User | null => {
   const builtIn = MOCK_USERS.find(u => u.email === email && u.password === password);
   if (builtIn) return toUser(builtIn);
@@ -85,15 +93,6 @@ const findUserByCredentials = (email: string, password: string): User | null => 
     return null;
   }
 };
-
-const MOCK_USERS: MockUser[] = [
-  { id: "0", email: "maxxtechxmd@gmail.com", password: "super123", name: "Super Admin", role: "superadmin" },
-  { id: "1", email: "admin@school.edu", password: "admin123", name: "Admin User", role: "admin", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "", schoolAddress: "P.O. Box 123-00100, Nairobi, Kenya", schoolBox: "P.O. Box 123-00100", schoolMotto: "Education for Excellence", schoolPhone: "+254 700 000 000" },
-  { id: "3", email: "student@school.edu", password: "student123", name: "Student John", role: "student", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "" },
-  { id: "4", email: "principal@school.edu", password: "principal123", name: "Dr. Mary Wanjiku", role: "principal", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "" },
-  { id: "5", email: "accountant@school.edu", password: "account123", name: "James Otieno", role: "accountant", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "secondary", schoolBadge: "" },
-  { id: "6", email: "parent@school.edu", password: "parent123", name: "Mr. David Kamau", role: "parent", school: "Nairobi High School", schoolId: "school-nairobi-high", level: "primary", schoolBadge: "" },
-];
 
 export const ALL_ROLES: { value: UserRole; label: string }[] = [
   { value: "admin", label: "School Admin" },
@@ -124,7 +123,6 @@ export interface RegisteredUser {
   source: "built-in" | "signup";
 }
 
-// Returns all accounts the platform knows about: built-in demo accounts + self-signups.
 export function getRegisteredUsers(): RegisteredUser[] {
   const builtIn: RegisteredUser[] = MOCK_USERS.map((u) => ({
     id: u.id, name: u.name, email: u.email, role: u.role, level: u.level, school: u.school, schoolId: u.schoolId, schoolBadge: u.schoolBadge, source: "built-in",
@@ -146,11 +144,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentLevel, setCurrentLevelState] = useState<EducationLevel>("junior");
+  const [availableSchools, setAvailableSchools] = useState<{ schoolId: string; name: string }[]>([]);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      seedDemoSchoolIfMissing();
+    }
     const storedUser = localStorage.getItem("resulta_user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const u = JSON.parse(storedUser) as User;
+      setUser(u);
     }
     const storedLevel = localStorage.getItem("resulta_current_level") as EducationLevel;
     if (storedLevel) {
@@ -161,6 +164,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false);
   }, []);
 
+  useEffect(() => {
+    if (user?.schoolId) {
+      const s = loadSettings(user.schoolId);
+      if (s) setAvailableSchools([{ schoolId: s.schoolId, name: s.name }]);
+      const all = JSON.parse(localStorage.getItem("resulta_signups") || "[]") as MockUser[];
+      const schools = Array.from(new Set(all.map(u => u.schoolId).filter(Boolean))) as string[];
+      const mapped = schools.map(sid => {
+        const settings = loadSettings(sid);
+        return { schoolId: sid, name: settings?.name || sid };
+      });
+      setAvailableSchools(mapped);
+    }
+  }, [user]);
+
   const setCurrentLevel = (level: EducationLevel) => {
     setCurrentLevelState(level);
     localStorage.setItem("resulta_current_level", level);
@@ -168,7 +185,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await new Promise(resolve => setTimeout(resolve, 600));
     const foundUser = findUserByCredentials(email, password);
     if (foundUser) {
       setUser(foundUser);
@@ -193,6 +210,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const newUser: MockUser = { id: Date.now().toString(), email, password, name, role: role as UserRole, level, school, schoolId, schoolBadge, schoolAddress, schoolBox, schoolMotto, schoolPhone };
     existingUsers.push(newUser);
     localStorage.setItem("resulta_signups", JSON.stringify(existingUsers));
+
+    const settings: SchoolSettings = {
+      schoolId,
+      name: school,
+      motto: schoolMotto || "",
+      logo: schoolBadge || "",
+      address: schoolAddress || "",
+      city: "",
+      county: "",
+      subCounty: "",
+      phone: schoolPhone || "",
+      email,
+      schoolType: level === "primary" ? "primary" : level === "junior" ? "secondary" : "secondary",
+      curriculum: "CBC",
+      currency: "KES",
+      timezone: "Africa/Nairobi",
+      academicYear: getCurrentYear(),
+      term: getCurrentTerm(),
+      gradingSystem: "CBC",
+      principalName: name,
+      established: new Date().toISOString().split("T")[0],
+      createdAt: new Date().toISOString(),
+      onboarded: false,
+      onboardingStep: 0,
+      plan: "trial",
+      planStartedAt: new Date().toISOString(),
+      planEndsAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+    };
+    saveSettings(settings);
+    registerSchool({
+      schoolId,
+      name: school,
+      schoolType: settings.schoolType,
+      plan: "trial",
+      createdAt: settings.createdAt,
+      activeStudents: 0,
+      activeStaff: 1,
+      status: "trial",
+    });
+
     const userData = { id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role, school: newUser.school, schoolId: newUser.schoolId, level: newUser.level, schoolBadge: newUser.schoolBadge, schoolAddress: newUser.schoolAddress, schoolBox: newUser.schoolBox, schoolMotto: newUser.schoolMotto, schoolPhone: newUser.schoolPhone };
     setUser(userData);
     localStorage.setItem("resulta_user", JSON.stringify(userData));
@@ -205,8 +262,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("resulta_user");
   };
 
+  const switchSchool = (schoolId: string) => {
+    if (!user) return;
+    const stored = localStorage.getItem("resulta_signups");
+    if (!stored) return;
+    const signups: MockUser[] = JSON.parse(stored);
+    const found = signups.find(u => u.schoolId === schoolId && u.email === user.email);
+    if (found) {
+      const u = toUser(found);
+      setUser(u);
+      localStorage.setItem("resulta_user", JSON.stringify(u));
+    }
+  };
+
   return (
-     <AuthContext.Provider value={{ user, isLoading, currentLevel, setCurrentLevel, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, currentLevel, setCurrentLevel, login, signup, logout, switchSchool, availableSchools }}>
       {children}
     </AuthContext.Provider>
   );

@@ -387,3 +387,207 @@ export function getCurrentYear(): string {
 export function getTodayISO(): string {
   return TODAY();
 }
+
+export const CLASSES_BY_LEVEL_DEFAULT: Record<SchoolSettings["schoolType"], string[]> = {
+  primary: ["Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6"],
+  junior: ["Grade 7", "Grade 8", "Grade 9"],
+  secondary: ["Grade 10", "Grade 11", "Grade 12"],
+  tvet: ["Year 1", "Year 2", "Year 3"],
+  college: ["Year 1", "Year 2", "Year 3", "Year 4"],
+  custom: ["Class A", "Class B", "Class C"],
+};
+
+export const LEARNING_AREAS_DEFAULT: Record<SchoolSettings["curriculum"], string[]> = {
+  CBC: ["Mathematics", "English", "Kiswahili", "Science & Technology", "Social Studies", "Religious Education", "Creative Arts", "Physical Education"],
+  KCSE: ["Mathematics", "English", "Kiswahili", "Biology", "Chemistry", "Physics", "History", "Geography", "CRE", "Business Studies"],
+  IGCSE: ["Mathematics", "English", "Sciences", "Humanities", "Languages"],
+  TVET: ["Trade Theory", "Trade Practice", "Mathematics", "English", "Entrepreneurship"],
+  Other: ["Mathematics", "English", "Science", "Humanities"],
+};
+
+// =================== SCHOOL SETTINGS / TENANT ===================
+
+export type SchoolSettings = {
+  schoolId: string;
+  name: string;
+  motto: string;
+  logo: string;
+  address: string;
+  city: string;
+  county: string;
+  subCounty: string;
+  phone: string;
+  email: string;
+  schoolType: "primary" | "junior" | "secondary" | "tvet" | "college" | "custom";
+  curriculum: "CBC" | "KCSE" | "IGCSE" | "TVET" | "Other";
+  currency: "KES" | "USD" | "EUR" | "GBP";
+  timezone: string;
+  academicYear: string;
+  term: string;
+  gradingSystem: "CBC" | "KCSE" | "Custom";
+  principalName: string;
+  established: string;
+  createdAt: string;
+  onboarded: boolean;
+  onboardingStep: number;
+  plan: "trial" | "starter" | "professional" | "enterprise";
+  planStartedAt: string;
+  planEndsAt: string;
+};
+
+export const SETTINGS_KEY = "school_settings";
+export const DEMO_SCHOOL_ID = "school-demo";
+export const DEMO_SCHOOL_NAME = "Resulta Demo Academy";
+
+export function loadSettings(schoolId?: string): SchoolSettings | null {
+  if (!schoolId) return null;
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(SCHOOL_KEY(schoolId, SETTINGS_KEY));
+    return raw ? (JSON.parse(raw) as SchoolSettings) : null;
+  } catch { return null; }
+}
+
+export function saveSettings(settings: SchoolSettings): SchoolSettings {
+  if (typeof window === "undefined") return settings;
+  localStorage.setItem(SCHOOL_KEY(settings.schoolId, SETTINGS_KEY), JSON.stringify(settings));
+  return settings;
+}
+
+export function isOnboarded(schoolId?: string): boolean {
+  if (!schoolId) return false;
+  const s = loadSettings(schoolId);
+  return s?.onboarded === true;
+}
+
+export function getOnboardingStep(schoolId?: string): number {
+  if (!schoolId) return 0;
+  const s = loadSettings(schoolId);
+  return s?.onboardingStep ?? 0;
+}
+
+export function isDemoSchool(schoolId?: string): boolean {
+  return schoolId === DEMO_SCHOOL_ID;
+}
+
+// =================== SCHOOLS REGISTRY ===================
+
+export type SchoolRecord = {
+  schoolId: string;
+  name: string;
+  schoolType: SchoolSettings["schoolType"];
+  plan: SchoolSettings["plan"];
+  createdAt: string;
+  activeStudents: number;
+  activeStaff: number;
+  status: "active" | "trial" | "suspended";
+};
+
+export const SCHOOLS_KEY = "all_schools";
+
+export function loadAllSchools(): SchoolRecord[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(`resulta_${SCHOOLS_KEY}`);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+}
+
+export function saveAllSchools(schools: SchoolRecord[]): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(`resulta_${SCHOOLS_KEY}`, JSON.stringify(schools));
+}
+
+export function registerSchool(school: SchoolRecord): void {
+  const all = loadAllSchools();
+  if (!all.find(s => s.schoolId === school.schoolId)) {
+    all.push(school);
+    saveAllSchools(all);
+  }
+}
+
+export function updateSchoolRecord(schoolId: string, updates: Partial<SchoolRecord>): void {
+  const all = loadAllSchools();
+  const idx = all.findIndex(s => s.schoolId === schoolId);
+  if (idx >= 0) {
+    all[idx] = { ...all[idx], ...updates };
+    saveAllSchools(all);
+  }
+}
+
+// =================== DEMO DATA SEED ===================
+
+export function seedDemoSchoolIfMissing(): void {
+  if (typeof window === "undefined") return;
+  if (loadSettings(DEMO_SCHOOL_ID)) return;
+
+  const settings: SchoolSettings = {
+    schoolId: DEMO_SCHOOL_ID,
+    name: DEMO_SCHOOL_NAME,
+    motto: "Knowledge for Excellence",
+    logo: "",
+    address: "123 Resulta Way, Westlands",
+    city: "Nairobi",
+    county: "Nairobi",
+    subCounty: "Westlands",
+    phone: "+254 700 000 000",
+    email: "demo@resulta.app",
+    schoolType: "primary",
+    curriculum: "CBC",
+    currency: "KES",
+    timezone: "Africa/Nairobi",
+    academicYear: getCurrentYear(),
+    term: getCurrentTerm(),
+    gradingSystem: "CBC",
+    principalName: "Dr. Mary Wanjiku",
+    established: "2010-01-01",
+    createdAt: new Date().toISOString(),
+    onboarded: true,
+    onboardingStep: 8,
+    plan: "professional",
+    planStartedAt: new Date().toISOString(),
+    planEndsAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+  };
+  saveSettings(settings);
+
+  const demoStudents: Student[] = [
+    { id: 1, admNo: "DEMO001", firstName: "Amina", lastName: "Wanjiru", gender: "Female", dob: "2015-04-12", class: "Grade 5", level: "primary", guardianName: "Joyce Wanjiru", guardianPhone: "+254711111111", address: "Nairobi", status: "Active", joined: "2024-01-15" },
+    { id: 2, admNo: "DEMO002", firstName: "Brian", lastName: "Otieno", gender: "Male", dob: "2015-06-20", class: "Grade 5", level: "primary", guardianName: "John Otieno", guardianPhone: "+254722222222", address: "Kisumu", status: "Active", joined: "2024-01-15" },
+    { id: 3, admNo: "DEMO003", firstName: "Christine", lastName: "Mwangi", gender: "Female", dob: "2014-09-01", class: "Grade 6", level: "primary", guardianName: "Peter Mwangi", guardianPhone: "+254733333333", address: "Nairobi", status: "Active", joined: "2023-01-15" },
+    { id: 4, admNo: "DEMO004", firstName: "Dennis", lastName: "Kamau", gender: "Male", dob: "2014-03-15", class: "Grade 6", level: "primary", guardianName: "Sarah Kamau", guardianPhone: "+254744444444", address: "Nakuru", status: "Active", joined: "2023-01-15" },
+    { id: 5, admNo: "DEMO005", firstName: "Esther", lastName: "Njeri", gender: "Female", dob: "2013-11-22", class: "Grade 7", level: "junior", guardianName: "James Njeri", guardianPhone: "+254755555555", address: "Eldoret", status: "Active", joined: "2022-01-15" },
+    { id: 6, admNo: "DEMO006", firstName: "Frank", lastName: "Odhiambo", gender: "Male", dob: "2013-07-08", class: "Grade 7", level: "junior", guardianName: "Mary Odhiambo", guardianPhone: "+254766666666", address: "Kisumu", status: "Active", joined: "2022-01-15" },
+    { id: 7, admNo: "DEMO007", firstName: "Gloria", lastName: "Adhiambo", gender: "Female", dob: "2012-12-30", class: "Grade 8", level: "junior", guardianName: "Paul Adhiambo", guardianPhone: "+254777777777", address: "Nairobi", status: "Active", joined: "2021-01-15" },
+    { id: 8, admNo: "DEMO008", firstName: "Hassan", lastName: "Abdi", gender: "Male", dob: "2012-05-17", class: "Grade 8", level: "junior", guardianName: "Fatuma Abdi", guardianPhone: "+254788888888", address: "Garissa", status: "Active", joined: "2021-01-15" },
+    { id: 9, admNo: "DEMO009", firstName: "Irene", lastName: "Wambua", gender: "Female", dob: "2011-08-09", class: "Grade 9", level: "junior", guardianName: "Joseph Wambua", guardianPhone: "+254799999999", address: "Machakos", status: "Active", joined: "2020-01-15" },
+    { id: 10, admNo: "DEMO010", firstName: "John", lastName: "Muthoni", gender: "Male", dob: "2011-02-25", class: "Grade 9", level: "junior", guardianName: "Lucy Muthoni", guardianPhone: "+254700000001", address: "Nyeri", status: "Active", joined: "2020-01-15" },
+  ];
+  demoStudents.forEach(s => saveStudent(s, DEMO_SCHOOL_ID));
+
+  const demoStaff: StaffMember[] = [
+    { id: 1, name: "Dr. Mary Wanjiku", empId: "EMP001", email: "principal@demo.resulta.app", phone: "+254700000000", role: "Principal", department: "Administration", status: "Active", joined: "2010-01-01" },
+    { id: 2, name: "Agnes Wambui", empId: "EMP002", email: "agnes@demo.resulta.app", phone: "+254700000002", role: "Nurse", department: "Medical", status: "Active", joined: "2015-01-01" },
+    { id: 3, name: "James Kamau", empId: "EMP003", email: "james@demo.resulta.app", phone: "+254700000003", role: "Teacher", department: "Mathematics", status: "Active", joined: "2018-01-01" },
+  ];
+  demoStaff.forEach(s => saveStaff(s, DEMO_SCHOOL_ID));
+
+  const demoPayments: FeePayment[] = [
+    { id: 1, studentId: 1, amount: 15000, category: "Tuition", date: getTodayISO(), method: "M-Pesa", receipt: "DEMO-RCP-001", status: "Confirmed", schoolId: DEMO_SCHOOL_ID },
+    { id: 2, studentId: 2, amount: 15000, category: "Tuition", date: getTodayISO(), method: "Cash", receipt: "DEMO-RCP-002", status: "Confirmed", schoolId: DEMO_SCHOOL_ID },
+    { id: 3, studentId: 3, amount: 8000, category: "Boarding", date: getTodayISO(), method: "M-Pesa", receipt: "DEMO-RCP-003", status: "Pending", schoolId: DEMO_SCHOOL_ID },
+  ];
+  demoPayments.forEach(p => savePayment(p, DEMO_SCHOOL_ID));
+
+  logAudit({ userId: "system", userName: "Resulta Platform", userRole: "system", action: "DEMO_SEEDED", module: "system", details: "Demo school data initialized" }, DEMO_SCHOOL_ID);
+
+  registerSchool({
+    schoolId: DEMO_SCHOOL_ID,
+    name: DEMO_SCHOOL_NAME,
+    schoolType: "primary",
+    plan: "professional",
+    createdAt: new Date().toISOString(),
+    activeStudents: demoStudents.length,
+    activeStaff: demoStaff.length,
+    status: "active",
+  });
+}

@@ -1,9 +1,10 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { 
-  TrendingUp, 
-  Users, 
+import { useRouter } from "next/navigation";
+import {
+  TrendingUp,
+  Users,
   GraduationCap,
   AlertTriangle,
   ArrowUpRight,
@@ -11,7 +12,10 @@ import {
   CheckCircle,
   FileText,
   DollarSign,
-  Activity
+  Activity,
+  Sparkles,
+  ArrowRight,
+  BookOpen
 } from "lucide-react";
 import {
   Chart as ChartJS,
@@ -27,7 +31,7 @@ import {
 } from 'chart.js';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import { loadRecords, CLASSES_BY_LEVEL, LEARNING_AREAS_BY_LEVEL, averageScore } from '@/lib/grading';
-import { loadStudents, getStudentCount, getTotalCollectedRevenue, getStaffCount, getModelMetrics, logAudit, loadAuditLog } from '@/lib/schoolStore';
+import { loadStudents, getStudentCount, getTotalCollectedRevenue, getStaffCount, getModelMetrics, logAudit, loadAuditLog, isOnboarded, isDemoSchool } from '@/lib/schoolStore';
 import { useEffect, useState } from 'react';
 
 ChartJS.register(
@@ -44,14 +48,21 @@ ChartJS.register(
 
 export default function DashboardPage() {
   const { user, currentLevel } = useAuth();
+  const router = useRouter();
   const schoolName = user?.school || "My School";
   const [stats, setStats] = useState({ totalStudents: 0, avgScore: 0, atRiskCount: 0, learningAreas: 0, totalStaff: 0, collectedRevenue: 0 });
   const [atRiskStudents, setAtRiskStudents] = useState<{name: string; class: string; score: string; risk: string; schoolId?: string}[]>([]);
   const [recentActivity, setRecentActivity] = useState<{icon: any; color: string; bg: string; text: string; time: string}[]>([]);
   const [subjectAverages, setSubjectAverages] = useState<{subject: string; avg: number}[]>([]);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   useEffect(() => {
     if (!user) return;
+    if (user.role !== "superadmin" && !isDemoSchool(user.schoolId) && !isOnboarded(user.schoolId)) {
+      router.push("/onboarding");
+      return;
+    }
+    setShowWelcome(!isDemoSchool(user.schoolId) && getStudentCount(user.schoolId) === 0);
     logAudit(
       { userId: user.id, userName: user.name, userRole: user.role, action: "VIEW", module: "dashboard", details: "Viewed dashboard" },
       user.schoolId
@@ -186,6 +197,31 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      {showWelcome && (
+        <div className="bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200 rounded-2xl p-6">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-teal-600 flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-lg font-bold text-slate-800 mb-1">Welcome to {schoolName}!</h2>
+              <p className="text-slate-600 text-sm mb-3">Your school workspace is ready. Every module is empty — start by adding students and teachers to populate the dashboard.</p>
+              <div className="flex flex-wrap gap-2">
+                <button onClick={() => router.push("/students")} className="inline-flex items-center gap-1.5 bg-teal-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-teal-700">
+                  <Users className="w-3.5 h-3.5" /> Add Students <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+                <button onClick={() => router.push("/teachers")} className="inline-flex items-center gap-1.5 bg-white text-teal-700 border border-teal-200 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-teal-50">
+                  <Users className="w-3.5 h-3.5" /> Add Teachers
+                </button>
+                <button onClick={() => router.push("/marks")} className="inline-flex items-center gap-1.5 bg-white text-teal-700 border border-teal-200 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-teal-50">
+                  <FileText className="w-3.5 h-3.5" /> Enter Marks
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div>
         <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Dashboard</h1>
         <p className="text-slate-500 dark:text-slate-400">Real-time insights for {schoolName}</p>

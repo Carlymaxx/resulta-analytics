@@ -33,27 +33,15 @@ export default function LoginPage() {
   };
 
   const demoAccounts = [
-    { email: "maxxtechxmd@gmail.com", role: "Super Admin", icon: Shield, desc: "Platform-wide access" },
-    { email: "admin@school.edu", role: "School Admin", icon: School, desc: "Nairobi High School" },
-    { email: "principal@school.edu", role: "Principal", icon: GraduationCap, desc: "Academic leadership" },
-    { email: "student@school.edu", role: "Student", icon: GraduationCap, desc: "Learner account" },
-    { email: "accountant@school.edu", role: "Accountant", icon: Users, desc: "Finance officer" },
-    { email: "parent@school.edu", role: "Parent", icon: Users, desc: "Guardian access" },
+    { email: "maxxtechxmd@gmail.com", password: "super123", role: "Super Admin", icon: Shield, desc: "Platform-wide access" },
+    { email: "demo@resulta.app", password: "demo123", role: "Demo School", icon: School, desc: "Sample data — explore the platform" },
   ];
 
-  const fillDemo = async (demoEmail: string) => {
+  const fillDemo = async (demoEmail: string, demoPassword: string) => {
     setIsFilling(true);
     await new Promise(resolve => setTimeout(resolve, 300));
     setEmail(demoEmail);
-    const passwords: Record<string, string> = {
-      "maxxtechxmd@gmail.com": "super123",
-      "admin@school.edu": "admin123",
-      "principal@school.edu": "principal123",
-      "student@school.edu": "student123",
-      "accountant@school.edu": "account123",
-      "parent@school.edu": "parent123",
-    };
-    setPassword(passwords[demoEmail] || "super123");
+    setPassword(demoPassword);
     setError("");
     setIsFilling(false);
   };
@@ -138,7 +126,7 @@ export default function LoginPage() {
               return (
                 <button
                   key={demo.email}
-                  onClick={() => fillDemo(demo.email)}
+                  onClick={() => fillDemo(demo.email, demo.password)}
                   disabled={isFilling}
                   className="w-full flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:border-teal-500 hover:bg-teal-50 transition-all disabled:opacity-50"
                 >
@@ -156,7 +144,7 @@ export default function LoginPage() {
               );
             })}
           </div>
-          <p className="text-xs text-slate-400 mt-3">Password for all demo accounts: <span className="font-mono font-semibold">super123</span></p>
+          <p className="text-xs text-slate-400 mt-3">Sign up to create your own school, or log into Demo School to explore the platform.</p>
         </div>
       </div>
     </div>

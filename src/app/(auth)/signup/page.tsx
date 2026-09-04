@@ -61,7 +61,7 @@ export default function SignupPage() {
 
     const result = await signup(name, email, password, role, level, school, schoolBadge, schoolAddress, schoolBox, schoolMotto, schoolPhone);
     if (result.success) {
-      router.push("/portal");
+      router.push("/onboarding");
     } else {
       setError(result.error || "Signup failed");
     }
