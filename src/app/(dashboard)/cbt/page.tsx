@@ -8,7 +8,7 @@ import { CLASSES_BY_LEVEL, LEARNING_AREAS_BY_LEVEL } from "@/lib/grading";
 const getExamsForLevel = (level: string) => {
   const schoolId = "school-nairobi-high";
   const cls = level === "primary" ? "Grade 4" : level === "secondary" ? "Form 3" : "Grade 8";
-  const cls2 = level === "primary" ? "Grade 5" : level === "secondary" ? "Form 4" : "Grade 9";
+  const cls2 = level === "primary" ? "Grade 5" : level === "secondary" ? "Grade 9" : "Grade 9";
   const areas = LEARNING_AREAS_BY_LEVEL[level] || LEARNING_AREAS_BY_LEVEL.junior;
   const area1 = areas[0] || "Mathematics";
   const area2 = areas[1] || "English";

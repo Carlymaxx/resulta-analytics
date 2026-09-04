@@ -28,7 +28,7 @@ const reportTypes = [
 
 const generatedReports = [
   { id: 1, name: "Q1 2025 Performance Report", type: "Performance Report", date: "2025-04-10", status: "Ready", size: "2.4 MB", schoolId: "school-nairobi-high" },
-  { id: 2, name: "Form 4 Mid-Term Report", type: "Class Report", date: "2025-04-08", status: "Ready", size: "1.8 MB", schoolId: "school-nairobi-high" },
+  { id: 2, name: "Grade 9 Mid-Term Report", type: "Class Report", date: "2025-04-08", status: "Ready", size: "1.8 MB", schoolId: "school-nairobi-high" },
   { id: 3, name: "At-Risk Students - April", type: "At-Risk Report", date: "2025-04-05", status: "Ready", size: "856 KB", schoolId: "school-nairobi-high" },
   { id: 4, name: "Learning Area Analysis - Mathematics", type: "Learning Area Report", date: "2025-04-01", status: "Ready", size: "1.2 MB", schoolId: "school-nairobi-high" },
   { id: 5, name: "Annual Trend Analysis 2024", type: "Trend Report", date: "2025-03-28", status: "Ready", size: "3.1 MB", schoolId: "school-nairobi-high" },
